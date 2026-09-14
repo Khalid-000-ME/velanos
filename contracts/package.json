@@ -1,0 +1,13 @@
+{
+  "name": "@aegis/contracts",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test -vv",
+    "fmt": "forge fmt",
+    "deploy:rh": "forge script script/Deploy.s.sol:Deploy --rpc-url robinhood --broadcast --slow -vvv",
+    "deploy:arb": "forge script script/Deploy.s.sol:Deploy --rpc-url arbitrum_sepolia --broadcast --slow -vvv",
+    "seed": "forge script script/SeedRobinhood.s.sol:SeedRobinhood --rpc-url robinhood --broadcast --slow -vvv"
+  }
+}
