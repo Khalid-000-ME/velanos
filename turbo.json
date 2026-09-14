@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "stream",
+  "globalDependencies": [".env"],
+  "globalEnv": [
+    "NODE_ENV", "RH_TESTNET_RPC", "ARB_SEPOLIA_RPC", "USDG_MODE", "STOCK_TOKEN_MODE",
+    "PERP_MODE", "LLM_PROVIDER", "LLM_MODEL", "LLM_MODE", "LLM_RECORD", "ANTHROPIC_API_KEY",
+    "SERVER_PORT", "AGENT_PORT", "DEMO_ADMIN_TOKEN", "NEXT_PUBLIC_SERVER_URL",
+    "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID", "AGENT_SIGNER_PK", "OPERATOR_PK",
+    "DEPOSITOR_PK", "WATCHER_PK", "PRICE_UPDATER_PK", "DEPLOYER_PK",
+    "WARN_COOLDOWN_SECONDS", "SETTLE_GRACE_SECONDS", "BOND_COOLDOWN_SECONDS"
+  ],
+  "tasks": {
+    "build": { "dependsOn": ["^build"], "outputs": ["dist/**", ".next/**", "!.next/cache/**"] },
+    "dev": { "cache": false, "persistent": true },
+    "typecheck": { "dependsOn": ["^build"] },
+    "lint": {},
+    "test": { "dependsOn": ["^build"] }
+  }
+}

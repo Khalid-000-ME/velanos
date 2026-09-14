@@ -1,0 +1,32 @@
+node_modules/
+.pnpm-store/
+dist/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+.env.*.local
+
+# foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/lib/
+
+# data
+apps/server/data/*.db
+apps/server/data/*.db-*
+
+# os / editor
+.DS_Store
+*.log
+coverage/
+playwright-report/
+test-results/
+
+# local build spec (not part of the shipped repo)
+AEGIS_PROP_PRD.md
