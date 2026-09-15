@@ -1,0 +1,9 @@
+{
+  "chainId": 421614,
+  "note": "GMX v2 perp markets on Arbitrum Sepolia. Market addresses are read from the GMX synthetics deployments at deploy time; never hard-coded.",
+  "markets": {
+    "ETH-USD": { "label": "ETH/USD", "allowed": true },
+    "BTC-USD": { "label": "BTC/USD", "allowed": true },
+    "DOGE-USD": { "label": "DOGE/USD", "allowed": false }
+  }
+}

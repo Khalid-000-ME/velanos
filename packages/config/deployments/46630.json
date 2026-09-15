@@ -1,0 +1,7 @@
+{
+  "chainId": 46630,
+  "mode": { "usdg": "mock", "stocks": "mock", "perp": null },
+  "contracts": {},
+  "assets": {},
+  "deployedAtBlock": 0
+}

@@ -1,0 +1,11 @@
+{
+  "chainId": 46630,
+  "note": "Stock token metadata for Robinhood Chain testnet. In STOCK_TOKEN_MODE=official, addresses are filled in from the faucet/explorer and decimals() is read on-chain. In mock mode the deploy script writes the MockStockToken addresses.",
+  "stocks": {
+    "TSLA": { "name": "Test Tesla", "symbol": "tTSLA", "seedPriceUsd": 250, "allowed": true },
+    "AMZN": { "name": "Test Amazon", "symbol": "tAMZN", "seedPriceUsd": 200, "allowed": true },
+    "AMD":  { "name": "Test AMD",    "symbol": "tAMD",  "seedPriceUsd": 160, "allowed": true },
+    "PLTR": { "name": "Test Palantir", "symbol": "tPLTR", "seedPriceUsd": 40, "allowed": false },
+    "NFLX": { "name": "Test Netflix",  "symbol": "tNFLX", "seedPriceUsd": 700, "allowed": false }
+  }
+}
