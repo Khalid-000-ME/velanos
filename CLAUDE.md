@@ -40,6 +40,14 @@ Use "loss floor backed by agent bond" instead of insurance language.
 5. Static rules (1xx) are slashable; stateful (2xx) never are; validity (3xx) are ignored.
 6. After `compensateDrawdown`, `pricePerShare >= floor` whenever bond available ≥ shortfall.
 
+## Contract size budget
+
+`VaultDeployer` carries `AegisVault`'s full creation code, so it sits ~300 bytes under the
+EIP-170 limit. **Adding code to `AegisVault` can break deployment.** Check `forge build --sizes`
+after touching the vault; if it no longer fits, move view or pure logic into `AegisVaultLib` (a
+linked external library) rather than reaching for a proxy — vault code must stay immutable after
+creation. `via_ir` makes the vault *bigger*, so it stays off.
+
 ## Before declaring a milestone done
 
 ```
