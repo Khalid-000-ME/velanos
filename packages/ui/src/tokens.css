@@ -1,0 +1,109 @@
+/**
+ * Aegis Prop design tokens.
+ *
+ * White canvas, green for money and brand action, black for structure and emphasis, red-orange
+ * reserved strictly for losses and slashes. The restraint is the point: when every surface is a
+ * gradient, a slash looks like decoration. Here the only time the UI turns red-orange is when
+ * somebody lost money, so it means something.
+ *
+ * Light mode only for the main app, because white *is* the brand. The incident replay hero and the
+ * global header use black surfaces deliberately rather than as a theme.
+ */
+:root {
+  /* ── canvas ───────────────────────────────────────────────────────────── */
+  --bg: #ffffff;
+  --bg-subtle: #f7f7f7;
+  --bg-muted: #efefef;
+
+  /* ── text and structure ───────────────────────────────────────────────── */
+  --ink: #000000;
+  --ink-2: #3c3c3c;
+  --ink-3: #6b6b6b;
+  --line: #e3e3e3;
+  --line-strong: #cfcfcf;
+
+  /* ── brand green: money, positive, primary action ─────────────────────── */
+  --green: #00c805;
+  --green-hover: #00a804;
+  --green-press: #008f03;
+  --green-tint: #e8fae8;
+  /* Green text on white only ever uses this: #00C805 on white is ~1.7:1 and fails AA badly. */
+  --green-ink: #006b02;
+
+  /* ── dark surfaces ────────────────────────────────────────────────────── */
+  --black: #0b0b0b;
+  --black-2: #1a1a1a;
+  --on-black: #ffffff;
+  --on-black-2: #b5b5b5;
+
+  /* ── loss and warning ─────────────────────────────────────────────────── */
+  --loss: #ff5000;
+  --loss-tint: #ffede5;
+  --warn: #f5a300;
+  --warn-tint: #fff6e0;
+
+  /* ── shape ────────────────────────────────────────────────────────────── */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-raised: 0 2px 4px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.08);
+  --focus: 0 0 0 3px rgba(0, 200, 5, 0.35);
+
+  --header-h: 64px;
+  --status-h: 32px;
+  --content-max: 1240px;
+}
+
+/**
+ * The app is light-only, but a browser in dark mode would otherwise render unstyled regions dark
+ * and leave black-on-black text in form controls. Pinning the scheme is a correctness fix.
+ */
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/**
+ * Every figure in this product is a number someone is comparing to another number — a bond to a
+ * shortfall, NAV to a floor. Proportional digits make columns jitter as values tick, so tabular
+ * figures are the default everywhere rather than an opt-in.
+ */
+body {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: var(--radius-sm);
+}
+
+/* Respect a reader who has asked for less motion: the replay timeline and the number tickers are
+   decorative, and the information must survive without them. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

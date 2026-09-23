@@ -1,0 +1,31 @@
+{
+  "name": "@aegis/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.css": "./src/tokens.css"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "echo ok"
+  },
+  "dependencies": {
+    "@aegis/config": "workspace:*",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.51.0",
+    "tailwind-merge": "^3.3.1",
+    "viem": "^2.57.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  }
+}
