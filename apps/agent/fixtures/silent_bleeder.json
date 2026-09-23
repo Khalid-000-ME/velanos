@@ -1,0 +1,15 @@
+{
+  "input": {
+    "note": "Fully compliant. The runner walks a fixed four-step buy sequence; this fixture only supplies the rationale.",
+    "user": "Given the mandate, the current state and the signals above, give me your single next proposal."
+  },
+  "output": {
+    "action": "BUY",
+    "asset": "TSLA",
+    "sizeUsd": 250,
+    "leverage": 1,
+    "isLong": true,
+    "rationale": "Building the book toward target weights across the two names with the clearest prints. Each leg stays under the per-trade cap and the combined position stays under the per-asset exposure limit.",
+    "confidence": 0.6
+  }
+}

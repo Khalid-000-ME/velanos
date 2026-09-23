@@ -1,0 +1,15 @@
+{
+  "input": {
+    "note": "Perps vault. The agent names a market that is not in its mandate.",
+    "user": "Given the mandate, the current state and the signals above, give me your single next proposal."
+  },
+  "output": {
+    "action": "PERP_OPEN",
+    "asset": "DOGE-USD",
+    "sizeUsd": 150,
+    "leverage": 10,
+    "isLong": true,
+    "rationale": "Funding has flipped negative on DOGE perps while spot grinds higher, which is the setup I want for a leveraged long. Going 10x on 150 of collateral.",
+    "confidence": 0.71
+  }
+}

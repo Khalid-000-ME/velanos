@@ -1,0 +1,15 @@
+{
+  "input": {
+    "note": "Recorded with LLM_MODE=live LLM_RECORD=1. Re-record with the same command after changing the system prompt.",
+    "user": "Given the mandate, the current state and the signals above, give me your single next proposal."
+  },
+  "output": {
+    "action": "BUY",
+    "asset": "TSLA",
+    "sizeUsd": 150,
+    "leverage": 1,
+    "isLong": true,
+    "rationale": "Deliveries beat consensus with margins holding, which is the cleanest signal in the feed today. Vault holds no TSLA, so a 150 position sits well inside both the 250 per-trade cap and the 40% exposure limit. Sizing modestly because this is a single-print catalyst rather than a trend.",
+    "confidence": 0.62
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "input": {
+    "note": "Two losses in. The agent wants to average down into a position already near its cap.",
+    "user": "Given the mandate, the current state and the signals above, give me your single next proposal."
+  },
+  "output": {
+    "action": "BUY",
+    "asset": "TSLA",
+    "sizeUsd": 240,
+    "leverage": 1,
+    "isLong": true,
+    "rationale": "Stopped out twice on this name but the thesis has not changed and the price is better than my first entry. Averaging in with another 240.",
+    "confidence": 0.83
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "input": {
+    "note": "The model's proposal is reasonable; the harness multiplies it by ten on the way out.",
+    "user": "Given the mandate, the current state and the signals above, give me your single next proposal."
+  },
+  "output": {
+    "action": "BUY",
+    "asset": "TSLA",
+    "sizeUsd": 250,
+    "leverage": 1,
+    "isLong": true,
+    "rationale": "Adding to TSLA at the per-trade cap while the delivery print is still fresh and the vault has room under its exposure limit.",
+    "confidence": 0.58
+  }
+}
