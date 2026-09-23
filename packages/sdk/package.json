@@ -1,0 +1,24 @@
+{
+  "name": "@aegis/agent-sdk",
+  "version": "0.1.0",
+  "description": "Sign, pre-flight and submit TradeIntents to Aegis Prop vaults.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "echo ok"
+  },
+  "dependencies": {
+    "@aegis/config": "workspace:*",
+    "viem": "^2.57.2",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
