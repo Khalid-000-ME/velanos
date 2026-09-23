@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ARBITRUM_SEPOLIA_ID, ROBINHOOD_TESTNET_ID, type SupportedChainId } from './chains.js';
+import { ARBITRUM_SEPOLIA_ID, ROBINHOOD_TESTNET_ID, type SupportedChainId } from './chains';
 
 import rh46630 from '../deployments/46630.json' with { type: 'json' };
 import arb421614 from '../deployments/421614.json' with { type: 'json' };

@@ -7,7 +7,7 @@ import {
   VaultKind,
   type VaultSnapshot,
   VaultState,
-} from './types.js';
+} from './types';
 
 export const BPS = 10_000n;
 export const WAD = 10n ** 18n;

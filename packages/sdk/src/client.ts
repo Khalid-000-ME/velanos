@@ -18,8 +18,8 @@ import {
   rpcUrlFor,
   violationCourtAbi,
 } from '@aegis/config';
-import { checkStatic, checkStateful, explain } from './guard.js';
-import { hashIntent, rationaleHash, signIntent } from './eip712.js';
+import { checkStatic, checkStateful, explain } from './guard';
+import { hashIntent, rationaleHash, signIntent } from './eip712';
 import type {
   CheckResult,
   ExecStatus,
@@ -27,7 +27,7 @@ import type {
   RuleId,
   TradeIntent,
   VaultSnapshot,
-} from './types.js';
+} from './types';
 
 export interface AegisClientOptions {
   chainId: number;

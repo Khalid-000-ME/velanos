@@ -1,5 +1,5 @@
 import { formatUnits } from 'viem';
-import { IntentKind, type Mandate, VaultKind } from './types.js';
+import { IntentKind, type Mandate, VaultKind } from './types';
 
 export interface MandateEnglishOptions {
   settlementSymbol: string;

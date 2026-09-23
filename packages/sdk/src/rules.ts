@@ -1,4 +1,4 @@
-import type { RuleId } from './types.js';
+import type { RuleId } from './types';
 
 export interface RuleMeta {
   code: string;

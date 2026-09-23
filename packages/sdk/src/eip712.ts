@@ -7,7 +7,7 @@ import {
   recoverTypedDataAddress,
   stringToHex,
 } from 'viem';
-import type { TradeIntent } from './types.js';
+import type { TradeIntent } from './types';
 
 /**
  * The EIP-712 type, byte-identical to `AegisVaultLib.TRADE_INTENT_TYPEHASH`.
