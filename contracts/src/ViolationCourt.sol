@@ -95,28 +95,35 @@ contract ViolationCourt {
 
     /**
      * @notice Called by a vault from inside `execute` when a static rule failed.
-     * @param submitter whoever sent the transaction, and the bounty recipient — unless it is
-     *        the agent or the operator.
+     * @param submitter whoever sent the transaction. Recorded in the event, never paid.
      *
-     * @dev Zeroing the bounty for the agent and the operator closes an obvious farm: without
-     *      it, an agent could sign a deliberately bad intent, submit it itself, and recycle
-     *      10% of its own penalty back out of the vault. With it, self-reporting costs the
-     *      agent the full penalty and pays depositors every cent.
+     * @dev **No bounty is ever paid on this path**, and that is a deliberate asymmetry.
+     *
+     *      A bounty is compensation for *discovering* misconduct. Reaching this function requires
+     *      no discovery: the submitter pushed an intent into `execute` and the vault caught it
+     *      unaided. A genuine watcher never needs to do that — it reports through
+     *      `reportSignedViolation`, which executes nothing and risks nothing.
+     *
+     *      Paying here would also leave a farm open that no allowlist can close. Checking the
+     *      submitter against `agentSigner` and `operator` is not enough, because an operator can
+     *      submit its own violating intent from a third address it controls and recycle the bounty
+     *      straight back. Routing every bounty through the reporting path removes the incentive
+     *      instead of trying to enumerate the attacker's keys.
+     *
+     *      Consequence: an agent whose bad intent reaches the vault pays the full penalty, and
+     *      every cent of it goes to depositors.
      */
     function slashFromVault(TradeIntent calldata i, bytes calldata sig, uint16 ruleId, address submitter) external {
         if (!ICourtFactory(factory).isVault(msg.sender)) revert OnlyVault(msg.sender);
         ICourtVault vault = ICourtVault(msg.sender);
         Mandate memory m = vault.mandate();
 
-        address reporter = (submitter == m.agentSigner || submitter == m.operator) ? address(0) : submitter;
-
         vault.applyStaticViolation(i.nonce);
         uint256 paid = ICourtBondManager(bondManager).slash(
-            msg.sender, m.perViolationPenalty, reporter, m.reporterBountyBps, CompensationKind.PENALTY
+            msg.sender, m.perViolationPenalty, address(0), 0, CompensationKind.PENALTY
         );
-        uint256 bounty = reporter == address(0) ? 0 : Math.mulDiv(paid, m.reporterBountyBps, AegisConstants.BPS);
 
-        emit ViolationReported(msg.sender, i.nonce, ruleId, submitter, paid, bounty);
+        emit ViolationReported(msg.sender, i.nonce, ruleId, submitter, paid, 0);
         // `sig` is not re-verified here: the vault recovered it before calling, and only
         // factory-registered vaults can reach this function.
         sig;
@@ -135,6 +142,13 @@ contract ViolationCourt {
      * @dev Griefing is structurally impossible: the caller cannot fabricate the agent's
      *      signature, cannot reuse a nonce that has already been resolved, and cannot argue a
      *      rule the guard does not agree was broken.
+     *
+     *      This is the only path that pays a bounty. The agent and the operator are excluded, which
+     *      closes the obvious case; an operator reporting from an unrelated address it controls can
+     *      still recover the bounty share, so the penalty it suffers is the full amount less that
+     *      share rather than the full amount. The leak is bounded by `reporterBountyBps` and
+     *      self-reporting is still strictly worse for the agent than not violating the mandate. It
+     *      is recorded as a known limitation rather than papered over.
      */
     function reportSignedViolation(TradeIntent calldata i, bytes calldata sig) external returns (uint16 ruleId) {
         address vaultAddr = i.vault;
