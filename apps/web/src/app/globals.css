@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+@import '@aegis/ui/tokens.css';
+
+/**
+ * Tailwind 4 reads its theme from CSS, so the design tokens defined in @aegis/ui are mapped into
+ * utility names here. One definition, two consumers: `bg-bg-subtle` in a class and
+ * `var(--bg-subtle)` in a style both resolve to the same value, so a token change cannot leave half
+ * the app behind.
+ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-bg-muted: var(--bg-muted);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-green: var(--green);
+  --color-green-hover: var(--green-hover);
+  --color-green-press: var(--green-press);
+  --color-green-tint: var(--green-tint);
+  --color-green-ink: var(--green-ink);
+
+  --color-black-surface: var(--black);
+  --color-black-2: var(--black-2);
+  --color-on-black: var(--on-black);
+  --color-on-black-2: var(--on-black-2);
+
+  --color-loss: var(--loss);
+  --color-loss-tint: var(--loss-tint);
+  --color-warn: var(--warn);
+  --color-warn-tint: var(--warn-tint);
+
+  --radius-sm: var(--radius-sm);
+  --radius-DEFAULT: var(--radius);
+  --radius-lg: var(--radius-lg);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+
+  /* Addresses, hashes and figures are compared character by character; a proportional font makes
+     two different hashes look alike at a glance. */
+  code,
+  pre,
+  .font-mono {
+    font-family: var(--font-mono);
+    font-variant-ligatures: none;
+  }
+}
+
+@layer utilities {
+  .content-width {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  /* 16px gutter at phone width, per the layout spec. */
+  @media (max-width: 640px) {
+    .content-width {
+      padding-inline: 16px;
+    }
+  }
+
+  .ticker {
+    font-variant-numeric: tabular-nums;
+    transition: color 200ms ease-out;
+  }
+}
