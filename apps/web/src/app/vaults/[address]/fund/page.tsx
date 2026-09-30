@@ -1,7 +1,15 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Check, X } from 'lucide-react';
-import { Card, Chip, formatAmount, formatBps, formatWad } from '@aegis/ui';
+import {
+  Chip,
+  Eyebrow,
+  HairlineCell,
+  HairlineGrid,
+  formatAmount,
+  formatBps,
+  formatWad,
+} from '@aegis/ui';
 import { DepositPanel } from '@/components/DepositPanel';
 import { api } from '@/lib/api';
 
@@ -44,17 +52,18 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
   const acceptsDeposits = vault.state === 1 || vault.state === 2;
 
   return (
-    <div className="content-width pt-8">
+    <div className="content-width py-10">
       <Link
         href={`/vaults/${address}`}
-        className="inline-flex items-center gap-1.5 text-sm text-[var(--ink-3)] hover:text-[var(--ink)]"
+        className="inline-flex items-center gap-1.5 text-[14px] text-[var(--ink-3)] transition-colors hover:text-[var(--ink)]"
       >
         <ArrowLeft size={14} /> {vault.name}
       </Link>
 
-      <h1 className="mt-4 text-2xl font-semibold tracking-[-0.02em]">Fund {vault.name}</h1>
+      <Eyebrow className="mt-6">Deposit</Eyebrow>
+      <h1 className="text-h1 mt-3">Fund {vault.name}</h1>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.05fr] lg:items-start">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1.05fr] lg:items-start">
         <DepositPanel
           vault={vault.address}
           chainId={vault.chainId}
@@ -67,32 +76,34 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
 
         <div className="space-y-4">
           {/* ── the worst case, in black ─────────────────────────────── */}
-          <Card dark className="p-6">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.07em] text-[var(--on-black-2)]">
-              If things go wrong
-            </p>
-            <p className="mt-3 text-[22px] font-semibold leading-snug tracking-[-0.01em]">
+          <div className="relative overflow-hidden rounded-[var(--radius)] bg-[var(--black)] p-7 text-[var(--on-black)]">
+            <div className="grid-field pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+            <div className="relative">
+            <Eyebrow tone="onBlack">If things go wrong</Eyebrow>
+            <p className="mt-5 text-[1.375rem] font-medium leading-snug tracking-[-0.02em]">
               Your loss is capped at {formatBps(ddBps)} of the high-water mark — backed by{' '}
-              <span className="text-[var(--green)]">
+              <span className="text-[var(--green-on-black)]">
                 {formatAmount(vault.bondAvailable, dec, { maxFractionDigits: 0, symbol: sym })}
               </span>{' '}
               of the agent&rsquo;s own money.
             </p>
 
-            <dl className="mt-5 grid gap-4 border-t border-white/15 pt-4 sm:grid-cols-2">
+            <dl className="mt-7 grid gap-5 border-t border-[var(--line-on-black)] pt-5 sm:grid-cols-2">
               <div>
-                <dt className="text-[11px] uppercase tracking-[0.06em] text-[var(--on-black-2)]">
+                <dt className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
                   Floor per share
                 </dt>
-                <dd className="mt-1 font-mono text-lg font-semibold">{formatWad(vault.floorWad)}</dd>
+                <dd className="mt-2 text-[1.5rem] font-medium leading-none tracking-[-0.03em] tabular-nums">
+                  {formatWad(vault.floorWad)}
+                </dd>
               </div>
               <div>
-                <dt className="text-[11px] uppercase tracking-[0.06em] text-[var(--on-black-2)]">
+                <dt className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
                   Bond coverage
                 </dt>
-                <dd className="mt-1 font-mono text-lg font-semibold">
+                <dd className="mt-2 text-[1.5rem] font-medium leading-none tracking-[-0.03em] tabular-nums">
                   {fullyBacked ? (
-                    <span className="text-[var(--green)]">Fully backed</span>
+                    <span className="text-[var(--green-on-black)]">Full</span>
                   ) : (
                     <span className="text-[var(--warn)]">
                       {((Number(bond) / Number(maxShortfall)) * 100).toFixed(0)}%
@@ -103,7 +114,7 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
             </dl>
 
             {!fullyBacked ? (
-              <p className="mt-4 rounded-[var(--radius-sm)] bg-[var(--loss)]/20 px-3 py-2.5 text-[12px] leading-relaxed text-white">
+              <p className="mt-6 rounded-[var(--radius-sm)] border border-[var(--loss)]/30 bg-[var(--loss)]/10 px-4 py-3 text-[13px] leading-relaxed text-white">
                 If this vault filled to its {formatAmount(maxAllocation.toString(), dec, { maxFractionDigits: 0 })}{' '}
                 cap and fell straight to the floor, the bond would be short by{' '}
                 <strong className="font-semibold">
@@ -112,60 +123,63 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
                 . That remainder would stay with depositors. We would rather you knew now.
               </p>
             ) : (
-              <p className="mt-4 text-[12px] leading-relaxed text-[var(--on-black-2)]">
+              <p className="mt-6 text-[13px] leading-relaxed text-[var(--on-black-2)]">
                 The bond currently covers the full distance to the floor even if this vault filled to
                 its cap.
               </p>
             )}
-          </Card>
+            </div>
+          </div>
 
           {/* ── covered / not covered ────────────────────────────────── */}
-          <Card className="p-5">
-            <div className="grid gap-5 sm:grid-cols-2">
+          <HairlineGrid columns={2}>
+            <HairlineCell className="p-6">
               <div>
-                <h2 className="text-sm font-semibold">Covered</h2>
-                <ul className="mt-2 space-y-1.5">
+                <Eyebrow tone="green">Covered</Eyebrow>
+                <ul className="mt-4 space-y-2.5">
                   {COVERED.map((item) => (
-                    <li key={item} className="flex gap-2 text-[13px] leading-snug text-[var(--ink-2)]">
-                      <Check size={14} className="mt-0.5 shrink-0 text-[var(--green-ink)]" strokeWidth={2.5} />
+                    <li key={item} className="flex gap-2.5 text-[14px] leading-snug text-[var(--ink-2)]">
+                      <Check size={14} className="mt-1 shrink-0 text-[var(--green-ink)]" strokeWidth={2.25} />
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
+            </HairlineCell>
+            <HairlineCell className="p-6">
               <div>
-                <h2 className="text-sm font-semibold">Not covered</h2>
-                <ul className="mt-2 space-y-1.5">
+                <Eyebrow>Not covered</Eyebrow>
+                <ul className="mt-4 space-y-2.5">
                   {NOT_COVERED.map((item) => (
-                    <li key={item} className="flex gap-2 text-[13px] leading-snug text-[var(--ink-3)]">
-                      <X size={14} className="mt-0.5 shrink-0 text-[var(--ink-3)]" strokeWidth={2.5} />
+                    <li key={item} className="flex gap-2.5 text-[14px] leading-snug text-[var(--ink-3)]">
+                      <X size={14} className="mt-1 shrink-0 text-[var(--ink-3)]" strokeWidth={2.25} />
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
-            </div>
-          </Card>
+            </HairlineCell>
+          </HairlineGrid>
 
           {/* ── the mandate ──────────────────────────────────────────── */}
-          <Card className="p-5">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold">The mandate you are agreeing to</h2>
+          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+            <div className="flex items-center justify-between gap-3">
+              <Eyebrow>The mandate you are agreeing to</Eyebrow>
               <Chip>Immutable</Chip>
             </div>
-            <ul className="mt-3 space-y-1.5">
+            <ul className="mt-5 space-y-2.5">
               {vault.mandateEnglish.map((line) => (
-                <li key={line} className="flex gap-2 text-[13px] leading-relaxed text-[var(--ink-2)]">
-                  <span className="mt-[7px] size-1 shrink-0 rounded-full bg-[var(--green)]" aria-hidden />
+                <li key={line} className="flex gap-2.5 text-[14px] leading-relaxed text-[var(--ink-2)]">
+                  <span className="mt-[9px] size-1 shrink-0 rounded-full bg-[var(--green)]" aria-hidden />
                   {line}
                 </li>
               ))}
             </ul>
-            <p className="mt-3 border-t border-[var(--line)] pt-3 text-[12px] leading-relaxed text-[var(--ink-3)]">
+            <p className="mt-5 border-t border-[var(--line)] pt-4 text-[13px] leading-relaxed text-[var(--ink-3)]">
               These terms were fixed when the vault was created and cannot be changed. New terms
               require a new vault with a new bond.
             </p>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

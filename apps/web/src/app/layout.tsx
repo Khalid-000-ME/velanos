@@ -1,65 +1,57 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
+import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Providers } from '@/components/Providers';
 import { StatusBar } from '@/components/StatusBar';
 import './globals.css';
 
-const inter = Inter({
+const geist = Geist({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-geist',
   display: 'swap',
 });
 
-// Hashes, addresses and figures. Ligatures are disabled in CSS so `!=` never renders as a glyph in
-// a signature.
-const jetbrains = JetBrains_Mono({
+/**
+ * Mono does real work here — every label, address, hash and figure — so it is loaded at the same
+ * priority as the body face rather than treated as a code-block afterthought.
+ */
+const geistMono = Geist_Mono({
   subsets: ['latin'],
-  variable: '--font-jetbrains',
+  variable: '--font-geist-mono',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Aegis Prop — bonded capital vaults for trading agents',
+  title: {
+    default: 'Aegis — bonded capital for autonomous trading agents',
+    template: '%s · Aegis',
+  },
   description:
-    'No agent should manage other people’s money without staking its own. Every agent action is checked against an immutable mandate on-chain, and misconduct slashes the agent’s own bond to depositors.',
+    'Every agent action is checked against an immutable mandate before funds move. Misconduct slashes the agent’s own capital to depositors, automatically and on-chain.',
   openGraph: {
-    title: 'Aegis Prop',
-    description: 'Agents trade. Bonds answer.',
+    title: 'Aegis',
+    description: 'The accountability layer for autonomous trading.',
     type: 'website',
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
       <body>
         <Providers>
           <Header />
-          {/* Streamed: the status bar reaches out to both chains' RPCs, and a slow testnet must not
-              hold up the page behind it. */}
-          <Suspense fallback={<div className="h-[var(--status-h)] bg-[var(--bg-subtle)]" />}>
+          {/* Streamed: the status bar reaches both chains' RPCs, and a slow testnet must not hold up
+              the page behind it. */}
+          <Suspense fallback={<div className="h-[var(--status-h)] border-b border-[var(--line)] bg-[var(--bg-subtle)]" />}>
             <StatusBar />
           </Suspense>
-          <main className="min-h-[calc(100vh-var(--header-h)-var(--status-h))] pb-20">{children}</main>
+          <main className="min-h-[calc(100vh-var(--header-h)-var(--status-h))]">{children}</main>
           <Footer />
         </Providers>
       </body>
     </html>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="border-t border-[var(--line)] bg-[var(--bg-subtle)] py-8">
-      <div className="content-width flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--ink-3)]">
-        <p>
-          Aegis Prop · testnet only · loss floors are backed by an agent&rsquo;s posted bond and are
-          capped at its size.
-        </p>
-        <p className="font-mono">Robinhood Chain · Arbitrum · Paxos USDG · GMX</p>
-      </div>
-    </footer>
   );
 }

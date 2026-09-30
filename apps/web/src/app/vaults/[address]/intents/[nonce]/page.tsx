@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Check, ExternalLink, Minus, X } from 'lucide-react';
-import { Card, Chip, cn, formatAmount, shortAddress } from '@aegis/ui';
+import { Chip, Eyebrow, cn, formatAmount, shortAddress } from '@aegis/ui';
 import { api } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
@@ -29,16 +29,18 @@ export default async function InspectorPage({
 
   if (!detail) {
     return (
-      <div className="content-width pt-8">
+      <div className="content-width py-10">
         <BackLink address={address} name={vault.name} />
-        <Card className="mt-6 p-8">
-          <h1 className="text-lg font-semibold">This intent&rsquo;s body was not captured</h1>
+        <div className="mt-6 rounded-[var(--radius)] border border-[var(--line)] bg-white p-8">
+          <h1 className="text-[1.25rem] font-medium tracking-[-0.01em]">
+            This intent&rsquo;s body was not captured
+          </h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--ink-3)]">
             The checklist is recomputed from the signed intent, so it needs the full body. Only intents
             that went through the relay or the public evidence feed carry it; one submitted straight to
             the vault leaves just its on-chain events behind.
           </p>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -49,30 +51,31 @@ export default async function InspectorPage({
   const dec = vault.settlementDecimals;
 
   return (
-    <div className="content-width pt-8">
+    <div className="content-width py-10">
       <BackLink address={address} name={vault.name} />
 
-      <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+      <div className="mt-5 flex flex-wrap items-start justify-between gap-5">
         <div>
-          <h1 className="text-2xl font-semibold tracking-[-0.02em]">
-            Intent #{detail.nonce}
+          <Eyebrow>Pre-flight inspector</Eyebrow>
+          <h1 className="text-h1 mt-3">
+            {KIND_NAMES[Number(intent.kind)] ?? 'Trade'}{' '}
+            <span className="text-[var(--ink-3)]">
+              {formatAmount(String(intent.amountIn), dec, {
+                maxFractionDigits: 2,
+                symbol: vault.settlementSymbol,
+              })}
+            </span>
           </h1>
-          <p className="mt-1 text-sm text-[var(--ink-3)]">
-            {KIND_NAMES[Number(intent.kind)] ?? 'TRADE'} ·{' '}
-            {formatAmount(String(intent.amountIn), dec, {
-              maxFractionDigits: 2,
-              symbol: vault.settlementSymbol,
-            })}
-          </p>
+          <p className="mt-2 font-mono text-[12px] text-[var(--ink-3)]">nonce {detail.nonce}</p>
         </div>
         <Outcome detail={detail} decimals={dec} symbol={vault.settlementSymbol} />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.35fr] lg:items-start">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1.35fr] lg:items-start">
         {/* ── the intent itself ───────────────────────────────────────── */}
         <div className="space-y-4">
-          <Card className="p-5">
-            <h2 className="mb-3 text-sm font-semibold">The signed intent</h2>
+          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+            <Eyebrow className="mb-5">The signed intent</Eyebrow>
             <dl className="space-y-2 text-[13px]">
               <Field label="Kind" value={KIND_NAMES[Number(intent.kind)] ?? '—'} />
               <Field label="Asset in" value={shortAddress(String(intent.assetIn), 6)} mono />
@@ -104,16 +107,16 @@ export default async function InspectorPage({
               <p className="mt-1 break-all font-mono text-[11px] text-[var(--ink-2)]">
                 {detail.digest}
               </p>
-              <p className="mt-2 text-[11px] leading-relaxed text-[var(--ink-3)]">
+              <p className="mt-3 text-[12px] leading-relaxed text-[var(--ink-3)]">
                 The domain binds this signature to this vault on this chain, so it is inert anywhere
                 else.
               </p>
             </div>
-          </Card>
+          </div>
 
           {detail.rationale ? (
-            <Card className="p-5">
-              <h2 className="text-sm font-semibold">Why the agent said it did this</h2>
+            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+              <Eyebrow>Why the agent said it did this</Eyebrow>
               <blockquote className="mt-2 rounded-[var(--radius-sm)] bg-[var(--bg-subtle)] px-3 py-2.5 text-[13px] italic leading-relaxed text-[var(--ink-2)]">
                 &ldquo;{detail.rationale.text}&rdquo;
               </blockquote>
@@ -121,39 +124,35 @@ export default async function InspectorPage({
                 {detail.rationale.model}
                 {detail.rationale.profile ? ` · profile ${detail.rationale.profile}` : ''}
               </p>
-              <p className="mt-2 text-[11px] leading-relaxed text-[var(--ink-3)]">
+              <p className="mt-3 text-[12px] leading-relaxed text-[var(--ink-3)]">
                 The hash of this text is committed on-chain alongside the signature, so it cannot be
                 rewritten after the fact.
               </p>
-            </Card>
+            </div>
           ) : null}
         </div>
 
         {/* ── the checklist ───────────────────────────────────────────── */}
         <div className="space-y-4">
-          <Card className="overflow-hidden p-0">
-            <div className="border-b border-[var(--line)] px-5 py-3">
-              <h2 className="text-sm font-semibold">
-                Static rules
-                <span className="ml-2 font-normal text-[var(--ink-3)]">
-                  checkable before signing · slashable
-                </span>
-              </h2>
-            </div>
+          <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+            <header className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--line)] px-5 py-3">
+              <Eyebrow>Static rules</Eyebrow>
+              <span className="text-[12px] text-[var(--ink-3)]">
+                checkable before signing · slashable
+              </span>
+            </header>
             <CheckList checks={statics} failing={detail.ruleId} />
-          </Card>
+          </section>
 
-          <Card className="overflow-hidden p-0">
-            <div className="border-b border-[var(--line)] px-5 py-3">
-              <h2 className="text-sm font-semibold">
-                Stateful rules
-                <span className="ml-2 font-normal text-[var(--ink-3)]">
-                  depend on live state · never slashable
-                </span>
-              </h2>
-            </div>
+          <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+            <header className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--line)] px-5 py-3">
+              <Eyebrow>Stateful rules</Eyebrow>
+              <span className="text-[12px] text-[var(--ink-3)]">
+                depend on live state · never slashable
+              </span>
+            </header>
             <CheckList checks={statefuls} failing={detail.ruleId} />
-          </Card>
+          </section>
         </div>
       </div>
     </div>

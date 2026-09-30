@@ -59,18 +59,21 @@ export function NavChart({ series, height = 280 }: { series: NavSeries; height?:
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={points} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
           <defs>
+            {/* Fades out quickly: a fill that reaches the axis reads as a solid block and collides
+                with the floor band underneath it. */}
             <linearGradient id="navFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--green)" stopOpacity={0.12} />
+              <stop offset="0%" stopColor="var(--green)" stopOpacity={0.14} />
+              <stop offset="55%" stopColor="var(--green)" stopOpacity={0.03} />
               <stop offset="100%" stopColor="var(--green)" stopOpacity={0} />
             </linearGradient>
           </defs>
 
-          <CartesianGrid stroke="var(--line)" vertical={false} />
+          <CartesianGrid stroke="var(--line)" vertical={false} strokeDasharray="2 4" />
           <XAxis
             dataKey="ts"
             tickFormatter={(ts: number) => formatTime(ts)}
             stroke="var(--ink-3)"
-            tick={{ fontSize: 11 }}
+            tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }}
             tickLine={false}
             axisLine={{ stroke: 'var(--line)' }}
             minTickGap={48}
@@ -86,7 +89,7 @@ export function NavChart({ series, height = 280 }: { series: NavSeries; height?:
           />
 
           {/* Everything below the floor is the region the bond is responsible for. */}
-          <ReferenceArea y1={min} y2={floor} fill="var(--loss)" fillOpacity={0.07} />
+          <ReferenceArea y1={min} y2={floor} fill="var(--loss)" fillOpacity={0.045} />
 
           <Line
             type="monotone"

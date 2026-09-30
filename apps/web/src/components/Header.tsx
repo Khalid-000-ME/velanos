@@ -3,30 +3,34 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@aegis/ui';
-import { Shield } from './Shield';
 import { ConnectButton } from './ConnectButton';
+import { Wordmark } from './Wordmark';
 
 const NAV = [
-  { href: '/', label: 'Discover' },
-  { href: '/watch', label: 'Watch' },
-  { href: '/operator', label: 'Operator' },
-  { href: '/docs', label: 'Docs' },
+  { href: '/', label: 'Vaults' },
+  { href: '/watch', label: 'Evidence' },
+  { href: '/operator', label: 'Console' },
+  { href: '/docs', label: 'Protocol' },
 ] as const;
 
-/** Black bar, white wordmark, green active underline. The only persistent dark surface. */
+/**
+ * Light header with a hairline rule.
+ *
+ * The earlier version used a black bar, which fought every dark section further down the page for
+ * attention. Keeping the chrome quiet lets the dark bands mean something when they arrive.
+ */
 export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--black)] text-[var(--on-black)]">
+    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--bg)]/85 backdrop-blur-md">
       <div className="content-width flex h-[var(--header-h)] items-center justify-between gap-6">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2 text-[17px] font-semibold tracking-[-0.01em]">
-            <Shield size={22} />
-            Aegis
+        <div className="flex items-center gap-10">
+          <Link href="/" aria-label="Aegis home">
+            <Wordmark />
           </Link>
 
-          <nav className="hidden items-center gap-6 sm:flex">
+          <nav className="hidden items-center gap-1 sm:flex">
             {NAV.map((item) => {
               const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
               return (
@@ -34,10 +38,10 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'relative py-5 text-sm transition-colors',
+                    'rounded-[var(--radius-sm)] px-3 py-1.5 text-[14px] transition-colors',
                     active
-                      ? 'font-medium text-white after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-[var(--green)]'
-                      : 'text-[var(--on-black-2)] hover:text-white',
+                      ? 'bg-[var(--bg-muted)] font-medium text-[var(--ink)]'
+                      : 'text-[var(--ink-3)] hover:text-[var(--ink)]',
                   )}
                 >
                   {item.label}

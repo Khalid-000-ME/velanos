@@ -1,8 +1,8 @@
-import { api, CHAIN_LABELS } from '@/lib/api';
+import { api, CHAIN_SHORT } from '@/lib/api';
 
 /**
- * The thin bar under the header: which chains are indexed, how far behind, which services are
- * alive, and which integrations are running against test stand-ins.
+ * System status strip: which chains are indexed, how far behind, which services are alive, and which
+ * integrations are running against test stand-ins.
  *
  * Permanently visible rather than tucked into a settings page. The product's claim is that every
  * number on screen came from a chain, and this is where that claim is auditable — including the
@@ -13,13 +13,9 @@ export async function StatusBar() {
 
   if (!status) {
     return (
-      <div className="border-b border-[var(--line)] bg-[var(--bg-subtle)]">
-        <div className="content-width flex h-[var(--status-h)] items-center">
-          <span className="font-mono text-[11px] text-[var(--loss)]">
-            indexer unreachable — start it with pnpm dev
-          </span>
-        </div>
-      </div>
+      <Bar>
+        <span className="text-[var(--loss)]">Indexer unreachable — start it with pnpm dev</span>
+      </Bar>
     );
   }
 
@@ -28,37 +24,47 @@ export async function StatusBar() {
   const agent = status.services.find((s) => s.service === 'agent');
 
   return (
+    <Bar>
+      {deployed.length === 0 ? (
+        <span className="text-[var(--ink-2)]">
+          No chain deployed — run pnpm contracts:deploy:rh
+        </span>
+      ) : (
+        deployed.map((c) => (
+          <span key={c.chainId} className="flex items-center gap-1.5">
+            <span className="text-[var(--ink-2)]">{CHAIN_SHORT[c.chainId] ?? c.chainId}</span>
+            <span className="tabular-nums">{c.head?.toLocaleString() ?? '—'}</span>
+            {c.blocksBehind !== null && c.blocksBehind > 5 ? (
+              <span className="text-[var(--warn)]">+{c.blocksBehind}</span>
+            ) : null}
+          </span>
+        ))
+      )}
+
+      <Dot />
+      <Service label="Watcher" live={watcher?.live ?? false} />
+      <Service label="Agent" live={agent?.live ?? false} />
+
+      <Dot />
+      {Object.values(status.modes).map((label) => (
+        <span key={label}>{label}</span>
+      ))}
+    </Bar>
+  );
+}
+
+function Bar({ children }: { children: React.ReactNode }) {
+  return (
     <div className="border-b border-[var(--line)] bg-[var(--bg-subtle)]">
-      <div className="content-width flex h-[var(--status-h)] items-center gap-4 overflow-x-auto whitespace-nowrap font-mono text-[11px] text-[var(--ink-3)]">
-        {deployed.length === 0 ? (
-          <span className="text-[var(--ink-2)]">no chain deployed yet — run pnpm contracts:deploy:rh</span>
-        ) : (
-          deployed.map((c) => (
-            <span key={c.chainId} className="flex items-center gap-1.5">
-              <span className="text-[var(--ink-2)]">{CHAIN_LABELS[c.chainId] ?? c.chainId}</span>
-              <span>block {c.head?.toLocaleString() ?? '—'}</span>
-              {c.blocksBehind !== null && c.blocksBehind > 5 ? (
-                <span className="text-[var(--warn)]">({c.blocksBehind} behind)</span>
-              ) : null}
-            </span>
-          ))
-        )}
-
-        <Divider />
-        <Service label="Watcher" live={watcher?.live ?? false} />
-        <Service label="Agent" live={agent?.live ?? false} />
-
-        <Divider />
-        {Object.values(status.modes).map((label) => (
-          <span key={label}>{label}</span>
-        ))}
+      <div className="content-width flex h-[var(--status-h)] items-center gap-4 overflow-x-auto whitespace-nowrap font-mono text-[11px] tracking-[0.02em] text-[var(--ink-3)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {children}
       </div>
     </div>
   );
 }
 
-function Divider() {
-  return <span className="text-[var(--line-strong)]">·</span>;
+function Dot() {
+  return <span className="text-[var(--line-strong)]">/</span>;
 }
 
 function Service({ label, live }: { label: string; live: boolean }) {
@@ -69,7 +75,7 @@ function Service({ label, live }: { label: string; live: boolean }) {
         style={{ background: live ? 'var(--green)' : 'var(--line-strong)' }}
         aria-hidden
       />
-      {label} {live ? 'live' : 'offline'}
+      {label}
     </span>
   );
 }

@@ -1,4 +1,4 @@
-import { Card, Chip } from '@aegis/ui';
+import { Chip, Eyebrow, HairlineCell, HairlineGrid, SectionHeading } from '@aegis/ui';
 import { CHAIN_LABELS, api, explorerAddressUrl } from '@/lib/api';
 import { ExternalLink } from 'lucide-react';
 
@@ -61,9 +61,10 @@ export default async function DocsPage() {
   const status = await api.chainStatus();
 
   return (
-    <div className="content-width pt-8">
-      <h1 className="text-2xl font-semibold tracking-[-0.02em]">How Aegis Prop works</h1>
-      <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-[var(--ink-2)]">
+    <div className="content-width py-12">
+      <Eyebrow>Protocol reference</Eyebrow>
+      <h1 className="text-h1 mt-4 max-w-3xl">How Aegis works</h1>
+      <p className="mt-5 max-w-3xl text-[16px] leading-relaxed text-[var(--ink-2)]">
         An agent that wants outside capital posts its own capital first. Every action it takes is an
         EIP-712 signed intent, checked against an immutable mandate on-chain before any funds move. A
         rule-breaking intent is never executed — and the agent&rsquo;s signature on it is cryptographic
@@ -71,53 +72,53 @@ export default async function DocsPage() {
         transaction.
       </p>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+      <HairlineGrid columns={3} className="mt-10">
         {[
           { n: 'Prevent', body: 'The mandate is checked before funds move. No arbitrary calls exist.' },
           { n: 'Prove', body: 'A blocked intent still carries a signature. That is the evidence.' },
           { n: 'Pay', body: 'Evidence slashes the bond to depositors, automatically.' },
         ].map((item) => (
-          <Card key={item.n} className="p-4">
-            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--green-ink)]">
-              {item.n}
-            </p>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-[var(--ink-2)]">{item.body}</p>
-          </Card>
+          <HairlineCell key={item.n} className="p-6">
+            <Eyebrow tone="green">{item.n}</Eyebrow>
+            <p className="mt-3 text-[14px] leading-relaxed text-[var(--ink-2)]">{item.body}</p>
+          </HairlineCell>
         ))}
-      </div>
+      </HairlineGrid>
 
       {/* ── rule table ─────────────────────────────────────────────────── */}
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold tracking-[-0.01em]">The rulebook</h2>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--ink-3)]">
-          Rules are banded by who is to blame, and the band decides the consequence. This is the single
-          most important distinction in the protocol: it is what lets us punish misconduct without
-          punishing an agent for volatility.
-        </p>
+      <section className="mt-20">
+        <SectionHeading
+          eyebrow="Rulebook"
+          index="01"
+          title="The rulebook"
+          sub="Rules are banded by who is to blame, and the band decides the consequence. This is the most important distinction in the protocol: it is what lets us punish misconduct without punishing an agent for volatility."
+        />
 
         {(['static', 'stateful', 'validity'] as const).map((band) => (
-          <div key={band} className="mt-7">
-            <h3 className="text-sm font-semibold">{BAND_COPY[band].title}</h3>
-            <p className="mt-1.5 max-w-3xl text-[13px] leading-relaxed text-[var(--ink-3)]">
+          <div key={band} className="mt-10">
+            <h3 className="text-[1.0625rem] font-medium tracking-[-0.01em]">{BAND_COPY[band].title}</h3>
+            <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-[var(--ink-3)]">
               {BAND_COPY[band].explain}
             </p>
 
-            <Card className="mt-3 overflow-hidden p-0">
+            <div className="mt-5 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
               <table className="w-full text-sm">
                 <tbody>
                   {RULES.filter((r) => r.band === band).map((rule) => (
                     <tr key={rule.id} className="border-b border-[var(--line)] last:border-0">
-                      <td className="w-14 px-4 py-3 align-top font-mono text-[12px] font-bold text-[var(--ink-3)]">
+                      <td className="w-16 px-5 py-4 align-top font-mono text-[13px] tabular-nums text-[var(--ink-3)]">
                         {rule.id}
                       </td>
-                      <td className="px-2 py-3 align-top">
-                        <p className="text-[13px] font-medium">{rule.title}</p>
-                        <p className="mt-0.5 font-mono text-[10px] text-[var(--ink-3)]">{rule.code}</p>
-                        <p className="mt-1 max-w-2xl text-[12px] leading-relaxed text-[var(--ink-3)]">
+                      <td className="px-2 py-4 align-top">
+                        <p className="text-[14px] font-medium">{rule.title}</p>
+                        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.06em] text-[var(--ink-3)]">
+                          {rule.code}
+                        </p>
+                        <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-[var(--ink-3)]">
                           {rule.description}
                         </p>
                       </td>
-                      <td className="w-28 px-4 py-3 align-top">
+                      <td className="w-32 px-5 py-4 align-top">
                         <Chip tone={rule.slashable ? 'negative' : 'neutral'}>
                           {rule.slashable ? 'Slashable' : 'No slash'}
                         </Chip>
@@ -126,26 +127,30 @@ export default async function DocsPage() {
                   ))}
                 </tbody>
               </table>
-            </Card>
+            </div>
           </div>
         ))}
       </section>
 
       {/* ── deployments ────────────────────────────────────────────────── */}
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold tracking-[-0.01em]">Deployed contracts</h2>
-        <p className="mt-2 text-sm text-[var(--ink-3)]">
-          Read from the deployment files the deploy scripts write. There is no address literal anywhere
-          else in the codebase.
-        </p>
+      <section id="contracts" className="mt-20 scroll-mt-24">
+        <SectionHeading
+          eyebrow="Deployments"
+          index="02"
+          title="Deployed contracts"
+          sub="Read from the deployment files the deploy scripts write. There is no address literal anywhere else in the codebase."
+        />
 
-        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2">
           {(status?.chains ?? [])
             .filter((c) => c.deployed)
             .map((chain) => (
-              <Card key={chain.chainId} className="p-5">
+              <div
+                key={chain.chainId}
+                className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6"
+              >
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold">
+                  <h3 className="text-[15px] font-medium">
                     {CHAIN_LABELS[chain.chainId] ?? chain.chainId}
                   </h3>
                   <Chip>chain {chain.chainId}</Chip>
@@ -190,57 +195,59 @@ export default async function DocsPage() {
                     })}
                   </dl>
                 ) : null}
-              </Card>
+              </div>
             ))}
           {(status?.chains ?? []).every((c) => !c.deployed) ? (
-            <Card className="p-5">
-              <p className="text-sm text-[var(--ink-3)]">
+            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+              <p className="text-[14px] text-[var(--ink-3)]">
                 Nothing deployed yet. Run <code className="font-mono">pnpm contracts:deploy:rh</code>.
               </p>
-            </Card>
+            </div>
           ) : null}
         </div>
       </section>
 
       {/* ── limitations ────────────────────────────────────────────────── */}
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold tracking-[-0.01em]">Known limitations</h2>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--ink-3)]">
-          Stated plainly, because a loss floor is only worth something if its edges are known.
-        </p>
-        <Card className="mt-4 p-5">
+      <section id="limitations" className="mt-20 scroll-mt-24">
+        <SectionHeading
+          eyebrow="Limitations"
+          index="03"
+          title="Known limitations"
+          sub="Stated plainly, because a loss floor is only worth something if its edges are known."
+        />
+        <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-7">
           <ul className="space-y-2.5 text-[13px] leading-relaxed text-[var(--ink-2)]">
             <li>
-              <strong className="font-semibold">Payouts are capped by the bond.</strong> If a drawdown
+              <strong className="font-medium">Payouts are capped by the bond.</strong> If a drawdown
               is deeper than the bond can cover, depositors keep the remainder of the loss. The fund
               screen shows that unbacked amount before anyone deposits.
             </li>
             <li>
-              <strong className="font-semibold">The oracle is a role-gated test oracle.</strong> It
+              <strong className="font-medium">The oracle is a role-gated test oracle.</strong> It
               exists so the drawdown demo is exact and reproducible. Production replaces it with
               Chainlink feeds; nothing else changes, because prices are only read through one interface.
             </li>
             <li>
-              <strong className="font-semibold">The venue is not a real DEX.</strong> Fills come from an
+              <strong className="font-medium">The venue is not a real DEX.</strong> Fills come from an
               oracle-priced pool with a fixed spread and linear depth impact, so the arithmetic in the
               demo is checkable. Mainnet uses a Uniswap adapter.
             </li>
             <li>
-              <strong className="font-semibold">A self-reporting operator can recover the bounty.</strong>{' '}
+              <strong className="font-medium">A self-reporting operator can recover the bounty.</strong>{' '}
               Bounties are only paid on the reporting path and the agent and operator addresses are
               excluded, but an operator reporting from an unrelated address it controls keeps that
               share. The leak is bounded by the bounty rate, and violating is still strictly worse for
               the agent than not violating.
             </li>
             <li>
-              <strong className="font-semibold">Perp NAV is simplified.</strong> One position per market,
+              <strong className="font-medium">Perp NAV is simplified.</strong> One position per market,
               valued as collateral plus unrealised PnL.
             </li>
             <li>
-              <strong className="font-semibold">Not audited.</strong> Testnet only.
+              <strong className="font-medium">Not audited.</strong> Testnet only.
             </li>
           </ul>
-        </Card>
+        </div>
       </section>
     </div>
   );

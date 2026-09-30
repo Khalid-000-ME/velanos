@@ -4,10 +4,10 @@ import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { shortAddress } from '@aegis/ui';
 
 /**
- * Connect / disconnect, styled for the black header.
+ * Connect / disconnect.
  *
- * Deliberately minimal: the only wallet actions in this product are depositing, withdrawing,
- * staking a bond and reporting a violation, and all four live on the page that needs them.
+ * Deliberately minimal: the only wallet actions in this product are depositing, withdrawing, staking
+ * a bond and reporting a violation, and each lives on the screen that needs it.
  */
 export function ConnectButton() {
   const { address, isConnected } = useAccount();
@@ -18,9 +18,10 @@ export function ConnectButton() {
     return (
       <button
         onClick={() => disconnect()}
-        className="rounded-[var(--radius-pill)] border border-white/30 px-4 py-2 font-mono text-[13px] text-white transition-colors hover:bg-white/10"
+        className="flex items-center gap-2 rounded-[var(--radius-sm)] border border-[var(--line)] px-3 py-1.5 font-mono text-[12px] text-[var(--ink-2)] transition-colors hover:bg-[var(--bg-subtle)]"
         title="Disconnect"
       >
+        <span className="size-1.5 rounded-full bg-[var(--green)]" aria-hidden />
         {shortAddress(address)}
       </button>
     );
@@ -32,9 +33,9 @@ export function ConnectButton() {
     <button
       onClick={() => injected && connect({ connector: injected })}
       disabled={!injected || isPending}
-      className="rounded-[var(--radius-pill)] bg-[var(--green)] px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-[var(--green-hover)] disabled:opacity-50"
+      className="rounded-[var(--radius-sm)] bg-[var(--black)] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-[var(--black-2)] disabled:opacity-50"
     >
-      {isPending ? 'Connecting…' : injected ? 'Connect wallet' : 'No wallet found'}
+      {isPending ? 'Connecting…' : injected ? 'Connect wallet' : 'No wallet'}
     </button>
   );
 }

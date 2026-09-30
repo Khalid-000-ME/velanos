@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import { Card, Chip, formatAmount, formatDate, shortAddress } from '@aegis/ui';
+import { Chip, Eyebrow, formatAmount, formatDate, shortAddress } from '@aegis/ui';
 import { IncidentTimeline } from '@/components/IncidentTimeline';
 import { MoneyFlow } from '@/components/MoneyFlow';
 import { CHAIN_LABELS, api } from '@/lib/api';
@@ -39,7 +39,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
   ).toString();
 
   return (
-    <div className="content-width pt-8">
+    <div className="content-width py-10">
       <Link
         href={`/vaults/${incident.vault}`}
         className="inline-flex items-center gap-1.5 text-sm text-[var(--ink-3)] hover:text-[var(--ink)]"
@@ -48,44 +48,46 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
       </Link>
 
       {/* ── black hero ─────────────────────────────────────────────────── */}
-      <div className="mt-4 rounded-[var(--radius-lg)] bg-[var(--black)] px-6 py-8 text-[var(--on-black)] sm:px-10 sm:py-10">
-        <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
+      <div className="relative mt-5 overflow-hidden rounded-[var(--radius-lg)] bg-[var(--black)] px-6 py-10 text-[var(--on-black)] sm:px-10 sm:py-12">
+        <div className="grid-field pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+
+        <div className="relative grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-start">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--green)]">
-                {copy.kicker}
-              </span>
+              <Eyebrow tone="onBlack">{copy.kicker}</Eyebrow>
               {incident.rule ? (
-                <span className="rounded-[var(--radius-sm)] bg-[var(--loss)] px-2 py-0.5 font-mono text-[11px] font-bold text-white">
+                <span className="rounded-[var(--radius-sm)] border border-[var(--loss)]/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--loss-on-black)]">
                   Rule {incident.ruleId}
                 </span>
               ) : null}
             </div>
 
-            <h1 className="mt-3 max-w-2xl text-3xl font-semibold leading-[1.12] tracking-[-0.02em] sm:text-4xl">
-              {incident.title}
-            </h1>
+            <h1 className="text-h1 mt-5 max-w-2xl text-[var(--on-black)]">{incident.title}</h1>
 
-            <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-[var(--on-black-2)]">
+            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[var(--on-black-2)]">
               {copy.explain}
             </p>
 
-            <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-[var(--on-black-2)]">
+            <p className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-[var(--on-black-2)]">
               <span>{CHAIN_LABELS[incident.chainId] ?? incident.chainId}</span>
               <span>{shortAddress(incident.vault, 6)}</span>
               <span>{formatDate(incident.openedAt)}</span>
-              {incident.closedAt ? <span>resolved</span> : <span className="text-[var(--warn)]">open</span>}
+              {incident.closedAt ? (
+                <span>resolved</span>
+              ) : (
+                <span className="text-[var(--warn)]">open</span>
+              )}
             </p>
           </div>
 
-          <div className="space-y-6 rounded-[var(--radius)] bg-white/[0.06] p-5">
+          <div className="space-y-7 rounded-[var(--radius)] border border-[var(--line-on-black)] bg-white/[0.04] p-6">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.07em] text-[var(--on-black-2)]">
+              <p className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
                 Paid out of the agent&rsquo;s bond
               </p>
-              <p className="mt-1.5 font-mono text-4xl font-semibold leading-none tracking-[-0.02em] text-[var(--green)]">
+              <p className="mt-3 text-[2.75rem] font-medium leading-none tracking-[-0.03em] tabular-nums text-[var(--green-on-black)]">
                 {formatAmount(totalPaid, dec, { maxFractionDigits: 2 })}
-                <span className="ml-2 text-xs font-medium text-[var(--on-black-2)]">{sym}</span>
+                <span className="ml-2 text-[12px] font-normal text-[var(--on-black-2)]">{sym}</span>
               </p>
             </div>
 
@@ -100,53 +102,65 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* ── timeline + context ─────────────────────────────────────────── */}
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-start">
-        <Card className="p-6">
-          <IncidentTimeline steps={incident.steps} />
-        </Card>
+      <div className="mt-10 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+        <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+          <header className="border-b border-[var(--line)] px-6 py-3">
+            <h2 className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--ink-3)]">
+              Causal chain
+            </h2>
+          </header>
+          <div className="p-6">
+            <IncidentTimeline steps={incident.steps} />
+          </div>
+        </section>
 
         <div className="space-y-4">
           {incident.rule ? (
-            <Card className="p-5">
-              <h2 className="text-sm font-semibold">
-                Rule {incident.ruleId} — {incident.rule.title}
+            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+              <Eyebrow>Rule {incident.ruleId}</Eyebrow>
+              <h2 className="mt-3 text-[1.0625rem] font-medium tracking-[-0.01em]">
+                {incident.rule.title}
               </h2>
-              <p className="mt-2 text-[13px] leading-relaxed text-[var(--ink-2)]">
+              <p className="mt-3 text-[14px] leading-relaxed text-[var(--ink-2)]">
                 {incident.rule.description}
               </p>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-1.5">
                 <Chip tone={incident.rule.slashable ? 'negative' : 'warn'}>
                   {incident.rule.slashable ? 'Slashable' : 'Not slashable'}
                 </Chip>
-                <Chip>{incident.rule.band} rule</Chip>
+                <Chip>{incident.rule.band}</Chip>
               </div>
               {incident.rule.slashable ? (
-                <p className="mt-3 border-t border-[var(--line)] pt-3 text-[12px] leading-relaxed text-[var(--ink-3)]">
+                <p className="mt-5 border-t border-[var(--line)] pt-4 text-[13px] leading-relaxed text-[var(--ink-3)]">
                   Static rules depend only on the intent and the mandate, so the agent could have
                   checked this itself before signing. That is why signing it is misconduct rather than
                   bad luck.
                 </p>
               ) : null}
-            </Card>
+            </div>
           ) : null}
 
-          <Card className="p-5">
-            <h2 className="text-sm font-semibold">What this does not cover</h2>
-            <ul className="mt-2 space-y-1.5 text-[13px] text-[var(--ink-3)]">
+          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+            <Eyebrow>Scope</Eyebrow>
+            <h2 className="mt-3 text-[1.0625rem] font-medium tracking-[-0.01em]">
+              What this does not cover
+            </h2>
+            <ul className="mt-3 space-y-1.5 text-[14px] text-[var(--ink-3)]">
               <li>Losses within the drawdown limit</li>
               <li>Strategy underperformance</li>
             </ul>
-            <p className="mt-3 border-t border-[var(--line)] pt-3 text-[12px] leading-relaxed text-[var(--ink-3)]">
+            <p className="mt-5 border-t border-[var(--line)] pt-4 text-[13px] leading-relaxed text-[var(--ink-3)]">
               Payouts are capped at the size of the bond. Any shortfall beyond it stays with
-              depositors, and the fund screen shows that remainder before anyone deposits.
+              depositors, and the fund screen names that remainder before anyone deposits.
             </p>
-          </Card>
+          </div>
 
           <Link
             href={`/vaults/${incident.vault}`}
-            className="block rounded-[var(--radius)] border border-[var(--line)] px-5 py-4 text-sm font-medium transition-colors hover:bg-[var(--bg-subtle)]"
+            className="flex items-center justify-between rounded-[var(--radius)] border border-[var(--line)] bg-white px-6 py-4 text-[14px] font-medium transition-colors hover:bg-[var(--bg-subtle)]"
           >
-            Open the vault cockpit →
+            Open the vault cockpit
+            <span aria-hidden>&rarr;</span>
           </Link>
         </div>
       </div>
