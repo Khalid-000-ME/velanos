@@ -1,66 +1,84 @@
 /**
- * Aegis Prop design tokens.
+ * Aegis design tokens.
  *
- * White canvas, green for money and brand action, black for structure and emphasis, red-orange
- * reserved strictly for losses and slashes. The restraint is the point: when every surface is a
- * gradient, a slash looks like decoration. Here the only time the UI turns red-orange is when
- * somebody lost money, so it means something.
+ * The system is built on three ideas borrowed from how institutional data products actually read:
  *
- * Light mode only for the main app, because white *is* the brand. The incident replay hero and the
- * global header use black surfaces deliberately rather than as a theme.
+ * 1. **Monospace carries meaning, not decoration.** Every label, eyebrow, address, hash and figure is
+ *    mono. Prose is grotesk. The reader learns within one screen that mono means "this is data", so a
+ *    rule ID and a paragraph never get confused for one another.
+ * 2. **Hairlines over shadows.** Sections are divided by 1px rules on a shared background rather than
+ *    floated as separate cards. Dense financial information reads better as a continuous grid.
+ * 3. **Colour is reserved.** Green means money and brand action, red-orange means a loss or a slash,
+ *    and nothing else is coloured at all. When every surface is tinted, a slash looks like styling.
  */
 :root {
   /* ── canvas ───────────────────────────────────────────────────────────── */
   --bg: #ffffff;
-  --bg-subtle: #f7f7f7;
-  --bg-muted: #efefef;
+  --bg-subtle: #fafaf9;
+  --bg-muted: #f2f1ef;
 
   /* ── text and structure ───────────────────────────────────────────────── */
-  --ink: #000000;
-  --ink-2: #3c3c3c;
-  --ink-3: #6b6b6b;
-  --line: #e3e3e3;
-  --line-strong: #cfcfcf;
+  --ink: #0a0a0a;
+  --ink-2: #44443f;
+  --ink-3: #78786f;
+  --line: #e7e6e2;
+  --line-strong: #d2d1cb;
 
-  /* ── brand green: money, positive, primary action ─────────────────────── */
+  /* ── brand green ──────────────────────────────────────────────────────── */
   --green: #00c805;
   --green-hover: #00a804;
   --green-press: #008f03;
-  --green-tint: #e8fae8;
+  --green-tint: #e9fae9;
   /* Green text on white only ever uses this: #00C805 on white is ~1.7:1 and fails AA badly. */
-  --green-ink: #006b02;
+  --green-ink: #056b07;
 
   /* ── dark surfaces ────────────────────────────────────────────────────── */
-  --black: #0b0b0b;
-  --black-2: #1a1a1a;
-  --on-black: #ffffff;
-  --on-black-2: #b5b5b5;
+  --black: #0a0a0a;
+  --black-2: #171716;
+  --black-3: #232321;
+  --on-black: #fafaf9;
+  --on-black-2: #8f8f87;
+  --line-on-black: rgba(255, 255, 255, 0.1);
+  /* Green is too dim against black for small text; this is the on-dark equivalent. */
+  --green-on-black: #4ade4f;
 
   /* ── loss and warning ─────────────────────────────────────────────────── */
-  --loss: #ff5000;
-  --loss-tint: #ffede5;
-  --warn: #f5a300;
-  --warn-tint: #fff6e0;
+  --loss: #ff4d00;
+  --loss-tint: #fff0e9;
+  --loss-on-black: #ff7a3d;
+  --warn: #c88a00;
+  --warn-tint: #fdf6e3;
 
   /* ── shape ────────────────────────────────────────────────────────────── */
-  --radius-sm: 8px;
-  --radius: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
   --radius-pill: 999px;
 
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
-  --shadow-raised: 0 2px 4px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.08);
-  --focus: 0 0 0 3px rgba(0, 200, 5, 0.35);
+  --shadow-card: 0 1px 2px rgba(10, 10, 10, 0.04);
+  --shadow-raised: 0 4px 24px rgba(10, 10, 10, 0.07);
+  --focus: 0 0 0 3px rgba(0, 200, 5, 0.3);
 
-  --header-h: 64px;
-  --status-h: 32px;
-  --content-max: 1240px;
+  --header-h: 60px;
+  --status-h: 30px;
+  --content-max: 1200px;
+
+  /* ── type scale ───────────────────────────────────────────────────────── */
+  /* Display sizes carry negative tracking; at 48px+ default spacing reads loose and amateur. */
+  --t-display: clamp(2.5rem, 1.2rem + 4.2vw, 4.25rem);
+  --t-h1: clamp(2rem, 1.2rem + 2.6vw, 3rem);
+  --t-h2: clamp(1.5rem, 1.1rem + 1.3vw, 2rem);
+  --t-h3: 1.0625rem;
+  --t-body: 0.9375rem;
+  --t-small: 0.8125rem;
+  --t-label: 0.6875rem;
+
+  --track-display: -0.035em;
+  --track-h1: -0.028em;
+  --track-h2: -0.02em;
+  --track-label: 0.1em;
 }
 
-/**
- * The app is light-only, but a browser in dark mode would otherwise render unstyled regions dark
- * and leave black-on-black text in form controls. Pinning the scheme is a correctness fix.
- */
 :root {
   color-scheme: light;
 }
@@ -76,17 +94,32 @@ body {
   background: var(--bg);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 /**
- * Every figure in this product is a number someone is comparing to another number — a bond to a
- * shortfall, NAV to a floor. Proportional digits make columns jitter as values tick, so tabular
- * figures are the default everywhere rather than an opt-in.
+ * Every figure here is compared against another figure — a bond against a shortfall, NAV against a
+ * floor. Proportional digits make columns jitter as values tick, so tabular figures are the default
+ * rather than an opt-in that someone forgets.
  */
 body {
   font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum' 1;
+  font-feature-settings: 'tnum' 1, 'cv05' 1;
+  font-size: var(--t-body);
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
 }
 
 :focus-visible {
@@ -95,8 +128,13 @@ body {
   border-radius: var(--radius-sm);
 }
 
-/* Respect a reader who has asked for less motion: the replay timeline and the number tickers are
-   decorative, and the information must survive without them. */
+::selection {
+  background: var(--green);
+  color: #000;
+}
+
+/* The replay timeline and the number tickers are decorative; the information must survive without
+   them for a reader who has asked for less motion. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
