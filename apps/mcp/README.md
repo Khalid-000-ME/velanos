@@ -1,6 +1,6 @@
 # @aegis/mcp
 
-MCP server that lets any agent framework join an Aegis Prop vault without understanding EIP-712, raw
+MCP server that lets any agent framework join an Aegis vault without understanding EIP-712, raw
 token decimals or the rule bands.
 
 ## Tools

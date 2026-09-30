@@ -1,6 +1,6 @@
 <div align="center">
 
-# Aegis Prop
+# Aegis
 
 ### No agent should manage other people's money without staking its own.
 

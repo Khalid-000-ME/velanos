@@ -1,6 +1,6 @@
 # Threat model
 
-Aegis Prop holds depositor capital and hands trading authority to a program. This document states
+Aegis holds depositor capital and hands trading authority to a program. This document states
 what we defend against, how, and where the defences stop.
 
 ## Trust assumptions

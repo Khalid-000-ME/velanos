@@ -12,7 +12,7 @@ import { streamRoutes } from './routes/stream';
 import { vaultRoutes } from './routes/vaults';
 
 /**
- * The read side of Aegis Prop: an indexer, a REST/SSE API over it, an intent relay, and the demo
+ * The read side of Aegis: an indexer, a REST/SSE API over it, an intent relay, and the demo
  * controls.
  *
  * Nothing here is trusted by the protocol. The server holds no authority over a vault — it can pay

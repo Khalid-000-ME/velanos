@@ -1,7 +1,7 @@
 {
   "name": "@aegis/agent-sdk",
   "version": "0.1.0",
-  "description": "Sign, pre-flight and submit TradeIntents to Aegis Prop vaults.",
+  "description": "Sign, pre-flight and submit TradeIntents to Aegis vaults.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",

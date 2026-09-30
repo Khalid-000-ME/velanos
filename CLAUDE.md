@@ -1,4 +1,4 @@
-# Aegis Prop — working rules
+# Aegis — working rules
 
 Bonded capital vaults for autonomous trading agents.
 Spec: `AEGIS_PROP_PRD.md` (authoritative). Build order: PRD §17.

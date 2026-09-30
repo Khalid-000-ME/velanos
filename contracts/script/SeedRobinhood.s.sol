@@ -69,11 +69,14 @@ contract SeedRobinhood is Script {
         address[] memory adapters = new address[](1);
         adapters[0] = stockAdapter;
 
-        vaults[0] = _create(assets, adapters, 2 hours, "Delta Equities I", "aDELTA1");
-        vaults[2] = _create(assets, adapters, 2 hours, "Delta Equities II", "aDELTA2");
-        vaults[3] = _create(assets, adapters, 2 hours, "Delta Equities III", "aDELTA3");
-        // Vault E expires 3 minutes after the seed so the post-expiry scenario fits a demo slot.
-        vaults[4] = _create(assets, adapters, 3 minutes, "Delta Equities (expiring)", "aDELTAX");
+        // Share symbols follow the vault, not the agent: a depositor holds a claim on a mandate, and
+        // the agent behind it can be slashed out of relevance without the ticker becoming a lie.
+        vaults[0] = _create(assets, adapters, 2 hours, "Delta Equities I", "aEQ1");
+        vaults[2] = _create(assets, adapters, 2 hours, "Delta Equities II", "aEQ2");
+        vaults[3] = _create(assets, adapters, 2 hours, "Delta Equities III", "aEQ3");
+        // Vault IV carries a deliberately short term so the post-expiry scenario fits a demo slot.
+        // The term is metadata the UI surfaces as a countdown, never part of the name.
+        vaults[4] = _create(assets, adapters, 3 minutes, "Delta Equities IV", "aEQ4");
 
         usdg.approve(address(bond), 1_200 * ONE_USDG);
         bond.stake(vaults[0], 300 * ONE_USDG);
@@ -90,10 +93,10 @@ contract SeedRobinhood is Script {
         vm.stopBroadcast();
 
         console2.log("agentId", agentId);
-        console2.log("vault A (scenarios 0-2) ", vaults[0]);
-        console2.log("vault C (scenario 4)    ", vaults[2]);
-        console2.log("vault D (scenario 6)    ", vaults[3]);
-        console2.log("vault E (scenario 5)    ", vaults[4]);
+        console2.log("vault A  Delta Equities I   (scenarios 0-2)", vaults[0]);
+        console2.log("vault C  Delta Equities II  (scenario 4)  ", vaults[2]);
+        console2.log("vault D  Delta Equities III (scenario 6)  ", vaults[3]);
+        console2.log("vault E  Delta Equities IV  (scenario 5)  ", vaults[4]);
         _writeSeedFile();
     }
 
