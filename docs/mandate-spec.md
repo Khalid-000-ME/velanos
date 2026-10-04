@@ -57,7 +57,7 @@ UI, the tests and the court never disagree about which rule was broken.
 TradeIntent(address vault,uint8 kind,address adapter,address assetIn,address assetOut,uint256 amountIn,uint256 minOut,uint32 leverageBps,bool isLong,uint256 nonce,uint64 issuedAt,uint64 deadline,bytes32 rationaleHash)
 ```
 
-Domain: `name = "AegisProp"`, `version = "1"`, `chainId = block.chainid`,
+Domain: `name = "Velanos"`, `version = "1"`, `chainId = block.chainid`,
 `verifyingContract = <vault address>`.
 
 The domain binds the signature to one vault on one chain. `rationaleHash` commits to the agent's own

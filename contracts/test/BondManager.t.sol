@@ -2,15 +2,15 @@
 pragma solidity 0.8.24;
 
 import {Harness} from "./Harness.sol";
-import {AegisVault} from "../src/AegisVault.sol";
+import {VelanosVault} from "../src/VelanosVault.sol";
 import {BondManager} from "../src/BondManager.sol";
-import {CompensationKind, FreezeReason, TradeIntent, VaultState} from "../src/AegisTypes.sol";
+import {CompensationKind, FreezeReason, TradeIntent, VaultState} from "../src/VelanosTypes.sol";
 
 contract BondManagerTest is Harness {
     function test_stake_activatesVaultAtThreshold() public {
         vm.prank(operator);
         (address addr,) = factory.createVault(agentId, spotMandate(1_000 * ONE_USDG), "Fresh", "aF");
-        AegisVault v = AegisVault(addr);
+        VelanosVault v = VelanosVault(addr);
         assertEq(uint8(v.state()), uint8(VaultState.PENDING_BOND));
 
         vm.startPrank(operator);

@@ -2,14 +2,14 @@
 // Produced by `scripts/generate-abis.ts` from contracts/out. Run `pnpm contracts:build`.
 /* eslint-disable */
 
-export const aegisVaultAbi = [
+export const velanosVaultAbi = [
   {
     "type": "constructor",
     "inputs": [
       {
         "name": "c",
         "type": "tuple",
-        "internalType": "struct AegisVault.Config",
+        "internalType": "struct VelanosVault.Config",
         "components": [
           {
             "name": "mandate",
@@ -5267,7 +5267,7 @@ export const vaultFactoryAbi = [
   }
 ] as const;
 
-export const aegisPriceOracleAbi = [
+export const velanosPriceOracleAbi = [
   {
     "type": "constructor",
     "inputs": [
@@ -6698,7 +6698,7 @@ export const oracleSwapPoolAbi = [
       {
         "name": "",
         "type": "address",
-        "internalType": "contract AegisPriceOracle"
+        "internalType": "contract VelanosPriceOracle"
       }
     ],
     "stateMutability": "view"

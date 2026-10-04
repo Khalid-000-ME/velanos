@@ -1,6 +1,6 @@
 import { EventEmitter } from 'node:events';
 
-export interface AegisEvent {
+export interface VelanosEvent {
   type: string;
   chainId: number;
   vault?: string;
@@ -17,11 +17,11 @@ export interface AegisEvent {
  * paying for durability here would buy nothing.
  */
 class EventBus extends EventEmitter {
-  publish(event: AegisEvent): void {
+  publish(event: VelanosEvent): void {
     this.emit('event', event);
   }
 
-  subscribe(listener: (event: AegisEvent) => void): () => void {
+  subscribe(listener: (event: VelanosEvent) => void): () => void {
     this.on('event', listener);
     return () => this.off('event', listener);
   }

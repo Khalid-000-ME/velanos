@@ -1,16 +1,16 @@
 {
-  "name": "aegis-prop",
+  "name": "velanos",
   "private": true,
   "packageManager": "pnpm@10.26.1",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "contracts:build": "pnpm --filter @aegis/contracts build && tsx scripts/generate-abis.ts",
-    "contracts:test": "pnpm --filter @aegis/contracts test",
-    "contracts:deploy:rh": "pnpm --filter @aegis/contracts deploy:rh",
-    "contracts:deploy:arb": "pnpm --filter @aegis/contracts deploy:arb",
-    "demo:seed": "pnpm --filter @aegis/contracts seed",
+    "contracts:build": "pnpm --filter @velanos/contracts build && tsx scripts/generate-abis.ts",
+    "contracts:test": "pnpm --filter @velanos/contracts test",
+    "contracts:deploy:rh": "pnpm --filter @velanos/contracts deploy:rh",
+    "contracts:deploy:arb": "pnpm --filter @velanos/contracts deploy:arb",
+    "demo:seed": "pnpm --filter @velanos/contracts seed",
     "demo:preflight": "tsx scripts/demo-preflight.ts",
     "demo:run": "tsx scripts/demo-run.ts",
     "demo:all": "tsx scripts/demo-run.ts all",

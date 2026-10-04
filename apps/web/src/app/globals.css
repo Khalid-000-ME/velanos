@@ -1,16 +1,16 @@
 @import 'tailwindcss';
-@import '@aegis/ui/tokens.css';
+@import '@velanos/ui/tokens.css';
 
 /**
  * Tailwind 4 discovers source files relative to this stylesheet and skips node_modules, so the
- * workspace UI package — symlinked in as @aegis/ui — was invisible to the scanner. Any class used
+ * workspace UI package — symlinked in as @velanos/ui — was invisible to the scanner. Any class used
  * only there (responsive grid columns, chip tones, button variants) was silently dropped from the
  * build, which showed up as a four-column metric strip rendering as two.
  */
 @source "../../../../packages/ui/src";
 
 /**
- * Tailwind 4 reads its theme from CSS, so the tokens defined in @aegis/ui are mapped into utility
+ * Tailwind 4 reads its theme from CSS, so the tokens defined in @velanos/ui are mapped into utility
  * names here. One definition, two consumers: `text-ink-3` in a class and `var(--ink-3)` in a style
  * resolve to the same value, so a token change cannot leave half the app behind.
  */

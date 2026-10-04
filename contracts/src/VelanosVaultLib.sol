@@ -5,17 +5,17 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {
-    AegisConstants, IntentKind, Mandate, TradeIntent, VaultKind, VaultSnapshot, VaultState
-} from "./AegisTypes.sol";
+    VelanosConstants, IntentKind, Mandate, TradeIntent, VaultKind, VaultSnapshot, VaultState
+} from "./VelanosTypes.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {IAdapter} from "./adapters/IAdapter.sol";
-import {AegisPriceOracle} from "./oracle/AegisPriceOracle.sol";
+import {VelanosPriceOracle} from "./oracle/VelanosPriceOracle.sol";
 
 /**
- * @title AegisVaultLib
+ * @title VelanosVaultLib
  * @notice The vault's read paths, deployed once and linked into every vault.
  *
- * `AegisVault` is a full ERC-4626 plus an EIP-712 verifier plus a rule pipeline, and inlining
+ * `VelanosVault` is a full ERC-4626 plus an EIP-712 verifier plus a rule pipeline, and inlining
  * all of it put the contract that deploys vaults over the 24 KB code limit. Moving the pure and
  * view-only arithmetic here keeps the vault deployable without resorting to proxies, so each
  * vault's code is still fixed at creation.
@@ -23,7 +23,7 @@ import {AegisPriceOracle} from "./oracle/AegisPriceOracle.sol";
  * Nothing here holds state or moves tokens; every function is a pure or view computation over
  * arguments the vault supplies.
  */
-library AegisVaultLib {
+library VelanosVaultLib {
     using SafeERC20 for IERC20;
 
     /// @dev Declared identically to the vault's event so the topic matches; emitted from a
@@ -65,9 +65,9 @@ library AegisVaultLib {
         view
         returns (uint256)
     {
-        (uint256 p,) = AegisPriceOracle(oracle).price(token);
+        (uint256 p,) = VelanosPriceOracle(oracle).price(token);
         uint256 usd = Math.mulDiv(amount, p, 10 ** IERC20Metadata(token).decimals());
-        return Math.mulDiv(usd, 10 ** settlementDecimals, AegisConstants.PRICE_SCALE);
+        return Math.mulDiv(usd, 10 ** settlementDecimals, VelanosConstants.PRICE_SCALE);
     }
 
     function heldAssetValue(address oracle, address vault, address[] memory held, uint8 settlementDecimals)
@@ -145,7 +145,7 @@ library AegisVaultLib {
             assetOut: settlementAsset,
             amountIn: bal,
             minOut: 0,
-            leverageBps: AegisConstants.BPS,
+            leverageBps: VelanosConstants.BPS,
             isLong: false,
             nonce: 0,
             issuedAt: uint64(block.timestamp),
@@ -179,11 +179,11 @@ library AegisVaultLib {
     }
 
     function floorWad(uint256 hwmWad, uint16 maxDrawdownBps) public pure returns (uint256) {
-        return Math.mulDiv(hwmWad, AegisConstants.BPS - maxDrawdownBps, AegisConstants.BPS);
+        return Math.mulDiv(hwmWad, VelanosConstants.BPS - maxDrawdownBps, VelanosConstants.BPS);
     }
 
     function shortfall(uint256 ppsWad, uint256 floorWad_, uint256 supply) public pure returns (uint256) {
         if (ppsWad >= floorWad_) return 0;
-        return Math.mulDiv(floorWad_ - ppsWad, supply, AegisConstants.WAD);
+        return Math.mulDiv(floorWad_ - ppsWad, supply, VelanosConstants.WAD);
     }
 }

@@ -1,4 +1,4 @@
-import { Chip, Eyebrow, HairlineCell, HairlineGrid, SectionHeading } from '@aegis/ui';
+import { Chip, Eyebrow, HairlineCell, HairlineGrid, SectionHeading } from '@velanos/ui';
 import { CHAIN_LABELS, api, explorerAddressUrl } from '@/lib/api';
 import { ExternalLink } from 'lucide-react';
 
@@ -63,7 +63,7 @@ export default async function DocsPage() {
   return (
     <div className="content-width py-12">
       <Eyebrow>Protocol reference</Eyebrow>
-      <h1 className="text-h1 mt-4 max-w-3xl">How Aegis works</h1>
+      <h1 className="text-h1 mt-4 max-w-3xl">How Velanos works</h1>
       <p className="mt-5 max-w-3xl text-[16px] leading-relaxed text-[var(--ink-2)]">
         An agent that wants outside capital posts its own capital first. Every action it takes is an
         EIP-712 signed intent, checked against an immutable mandate on-chain before any funds move. A

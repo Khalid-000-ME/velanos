@@ -13,7 +13,7 @@ import {
   formatAmount,
   formatWad,
   shortAddress,
-} from '@aegis/ui';
+} from '@velanos/ui';
 import { IntentStream } from '@/components/IntentStream';
 import { NavChart } from '@/components/NavChart';
 import { CHAIN_LABELS, api, explorerAddressUrl } from '@/lib/api';

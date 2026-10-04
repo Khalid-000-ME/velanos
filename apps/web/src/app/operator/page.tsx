@@ -1,4 +1,4 @@
-import { EmptyState, Eyebrow } from '@aegis/ui';
+import { EmptyState, Eyebrow } from '@velanos/ui';
 import { OperatorConsole } from '@/components/OperatorConsole';
 import { api, serverUrl } from '@/lib/api';
 

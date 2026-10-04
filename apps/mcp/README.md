@@ -1,6 +1,6 @@
-# @aegis/mcp
+# @velanos/mcp
 
-MCP server that lets any agent framework join an Aegis vault without understanding EIP-712, raw
+MCP server that lets any agent framework join an Velanos vault without understanding EIP-712, raw
 token decimals or the rule bands.
 
 ## Tools
@@ -22,9 +22,9 @@ The operator runs their own instance with their own signing key.
 ```json
 {
   "mcpServers": {
-    "aegis-prop": {
+    "velanos": {
       "command": "node",
-      "args": ["/path/to/aegis/apps/mcp/dist/index.js"],
+      "args": ["/path/to/velanos/apps/mcp/dist/index.js"],
       "env": {
         "AGENT_SIGNER_PK": "0x…",
         "SERVER_URL": "http://localhost:4000"
@@ -38,5 +38,5 @@ Omit `AGENT_SIGNER_PK` for a read-only instance: `get_mandate`, `get_vault_state
 `preflight_intent` all work without a key, and `submit_intent` reports that it has none.
 
 ```bash
-pnpm --filter @aegis/mcp build
+pnpm --filter @velanos/mcp build
 ```

@@ -8,7 +8,7 @@ import {
     VaultKind,
     VaultSnapshot,
     VaultState
-} from "../src/AegisTypes.sol";
+} from "../src/VelanosTypes.sol";
 
 /**
  * @notice Mandate and intent builders shared by the test suite.

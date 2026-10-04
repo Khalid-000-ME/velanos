@@ -19,7 +19,7 @@
         └──────┬───────┘  └───────┬────────┘                   │
                │ signed intents   │ permissionless tx           │
     ┌──────────▼──────────────────▼───────────────────────────▼─────────────┐
-    │ contracts · AgentRegistry · VaultFactory · AegisVault · PolicyGuard    │
+    │ contracts · AgentRegistry · VaultFactory · VelanosVault · PolicyGuard    │
     │            BondManager · ViolationCourt · Oracle · Adapters            │
     └───────────────────────────────────────────────────────────────────────┘
 ```
@@ -28,16 +28,16 @@
 
 | Contract | Responsibility |
 |---|---|
-| `AegisTypes.sol` | Mandate, TradeIntent, snapshot structs, and the three rule bands |
+| `VelanosTypes.sol` | Mandate, TradeIntent, snapshot structs, and the three rule bands |
 | `PolicyGuard` | The whole rulebook as pure functions. No storage |
-| `AegisVault` | ERC-4626 over the settlement asset. Verifies, checks, trades, unwinds, settles |
-| `AegisVaultLib` | The vault's view arithmetic, as a linked external library |
+| `VelanosVault` | ERC-4626 over the settlement asset. Verifies, checks, trades, unwinds, settles |
+| `VelanosVaultLib` | The vault's view arithmetic, as a linked external library |
 | `VaultDeployer` | Holds the vault's creation code so the factory stays under EIP-170 |
 | `VaultFactory` | Creates vaults and is the registry of which addresses are real |
 | `BondManager` | Custody for the agent's capital: stake, slash, release |
 | `ViolationCourt` | Turns evidence into payment. Four permissionless paths |
 | `AgentRegistry` | Identity, track record, and the bond schedule derived from it |
-| `AegisPriceOracle` | Role-gated USD prices with a shock function, marked TEST CONTROL |
+| `VelanosPriceOracle` | Role-gated USD prices with a shock function, marked TEST CONTROL |
 | `adapters/*` | The only way funds leave a vault. Typed, allowlisted |
 | `testenv/*` | tUSDG, stock tokens, and the deterministic oracle-priced pool |
 

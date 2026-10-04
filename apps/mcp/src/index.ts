@@ -16,9 +16,9 @@ import {
 } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { arbitrumSepolia } from 'viem/chains';
-import { aegisVaultAbi } from '@aegis/config';
+import { velanosVaultAbi } from '@velanos/config';
 import {
-  AegisClient,
+  VelanosClient,
   RULES,
   mandateToEnglish,
   rationaleHash,
@@ -26,7 +26,7 @@ import {
   type Mandate,
   type RuleId,
   type TradeIntent,
-} from '@aegis/agent-sdk';
+} from '@velanos/agent-sdk';
 
 /**
  * MCP server for third-party agents.
@@ -110,9 +110,9 @@ async function locateVault(vault: string) {
   };
 }
 
-function clientFor(chainId: number): AegisClient {
+function clientFor(chainId: number): VelanosClient {
   const d = deployment(chainId);
-  return new AegisClient({
+  return new VelanosClient({
     chainId,
     chain: chainFor(chainId),
     relayUrl: ENV.SERVER_URL,
@@ -194,7 +194,7 @@ async function buildIntent(args: {
   return { intent, chainId: info.chainId, mandate, symbol: info.settlementSymbol };
 }
 
-const server = new McpServer({ name: 'aegis-prop', version: '0.1.0' });
+const server = new McpServer({ name: 'velanos', version: '0.1.0' });
 
 server.registerTool(
   'get_mandate',

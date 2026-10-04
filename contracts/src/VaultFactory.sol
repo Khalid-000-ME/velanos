@@ -3,8 +3,8 @@ pragma solidity 0.8.24;
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {AegisConstants, Mandate, VaultKind} from "./AegisTypes.sol";
-import {AegisVault} from "./AegisVault.sol";
+import {VelanosConstants, Mandate, VaultKind} from "./VelanosTypes.sol";
+import {VelanosVault} from "./VelanosVault.sol";
 import {AgentRegistry} from "./AgentRegistry.sol";
 import {PerpAdapterDeployer, VaultDeployer} from "./VaultDeployer.sol";
 
@@ -147,7 +147,7 @@ contract VaultFactory is Ownable {
             mem.allowedAdapters = adapters;
         }
 
-        AegisVault.Config memory cfg = AegisVault.Config({
+        VelanosVault.Config memory cfg = VelanosVault.Config({
             mandate: mem,
             court: court,
             bondManager: bondManager,
@@ -163,7 +163,7 @@ contract VaultFactory is Ownable {
             symbol: symbol
         });
 
-        AegisVault v = AegisVault(vaultDeployer.deploy(abi.encode(cfg)));
+        VelanosVault v = VelanosVault(vaultDeployer.deploy(abi.encode(cfg)));
         vault = address(v);
         isVault[vault] = true;
         allVaults.push(vault);
@@ -190,7 +190,7 @@ contract VaultFactory is Ownable {
         }
 
         uint16 bps = registry.requiredBondBps(agentId, m.riskTier);
-        uint256 required = Math.mulDiv(m.maxAllocation, bps, AegisConstants.BPS);
+        uint256 required = Math.mulDiv(m.maxAllocation, bps, VelanosConstants.BPS);
         if (m.bondRequired < required) revert BondTooSmall(m.bondRequired, required);
     }
 }

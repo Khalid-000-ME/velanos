@@ -1,14 +1,14 @@
 import { and, eq, sql } from 'drizzle-orm';
 import { type Address, type Log, decodeEventLog, parseAbiItem } from 'viem';
 import {
-  aegisPriceOracleAbi,
-  aegisVaultAbi,
+  velanosPriceOracleAbi,
+  velanosVaultAbi,
   agentRegistryAbi,
   bondManagerAbi,
   vaultFactoryAbi,
   violationCourtAbi,
-} from '@aegis/config';
-import { RULES, type RuleId } from '@aegis/agent-sdk';
+} from '@velanos/config';
+import { RULES, type RuleId } from '@velanos/agent-sdk';
 import { db, schema } from './db/index';
 import { activeChains, env } from './env';
 import { publicClientFor } from './lib/chains';
@@ -120,7 +120,7 @@ export class Indexer {
       client.getLogs({ address: contractOf(d, 'AgentRegistry'), fromBlock, toBlock }),
       client.getLogs({ address: contractOf(d, 'ViolationCourt'), fromBlock, toBlock }),
       client.getLogs({ address: contractOf(d, 'BondManager'), fromBlock, toBlock }),
-      client.getLogs({ address: contractOf(d, 'AegisPriceOracle'), fromBlock, toBlock }),
+      client.getLogs({ address: contractOf(d, 'VelanosPriceOracle'), fromBlock, toBlock }),
     ]);
     const vaultLogs =
       knownVaults.length > 0
@@ -221,7 +221,7 @@ export class Indexer {
     const symbols = symbolIndex(chainId);
 
     for (const log of logs) {
-      const decoded = this.decode(aegisVaultAbi, log);
+      const decoded = this.decode(velanosVaultAbi, log);
       if (!decoded) continue;
       const vault = log.address as Address;
       const txHash = log.transactionHash ?? undefined;
@@ -524,7 +524,7 @@ export class Indexer {
   private async handleOracleLogs(chainId: number, logs: Log[]): Promise<void> {
     const symbols = symbolIndex(chainId);
     for (const log of logs) {
-      const decoded = this.decode(aegisPriceOracleAbi, log);
+      const decoded = this.decode(velanosPriceOracleAbi, log);
       if (decoded?.eventName !== 'MarketShock') continue;
 
       const a = decoded.args as { asset: Address; bps: number; fromUsd8: bigint; toUsd8: bigint };
@@ -560,17 +560,17 @@ export class Indexer {
     try {
       const [state, freezeReason, frozenAt, settledAt, nav, pps, hwm, floor, violations, strikes, mandate] =
         await Promise.all([
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'state' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'freezeReason' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'frozenAt' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'settledAt' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'navSettlement' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'pricePerShareWad' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'hwmPricePerShareWad' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'floorPricePerShareWad' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'staticViolationCount' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'strikesInWindow' }),
-          client.readContract({ address: vault, abi: aegisVaultAbi, functionName: 'mandate' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'state' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'freezeReason' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'frozenAt' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'settledAt' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'navSettlement' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'pricePerShareWad' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'hwmPricePerShareWad' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'floorPricePerShareWad' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'staticViolationCount' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'strikesInWindow' }),
+          client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'mandate' }),
         ]);
 
       const [available, slashed] = (await client.readContract({
@@ -628,7 +628,7 @@ export class Indexer {
     try {
       const held = (await client.readContract({
         address: vault,
-        abi: aegisVaultAbi,
+        abi: velanosVaultAbi,
         functionName: 'heldAssetsList',
       })) as readonly Address[];
       for (const asset of held) {

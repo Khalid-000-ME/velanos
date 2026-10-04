@@ -3,7 +3,7 @@ pragma solidity 0.8.24;
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {
-    AegisConstants,
+    VelanosConstants,
     CheckResult,
     IntentKind,
     Mandate,
@@ -12,7 +12,7 @@ import {
     VaultKind,
     VaultSnapshot,
     VaultState
-} from "./AegisTypes.sol";
+} from "./VelanosTypes.sol";
 
 interface IPolicyGuard {
     function checkStatic(TradeIntent calldata i, Mandate calldata m, uint64 frozenAt)
@@ -171,8 +171,8 @@ contract PolicyGuard is IPolicyGuard {
     }
 
     function _leverageAllowed(TradeIntent calldata i, Mandate calldata m) internal pure returns (bool) {
-        if (m.kind == VaultKind.SPOT) return i.leverageBps == AegisConstants.BPS;
-        return i.leverageBps >= AegisConstants.BPS && i.leverageBps <= m.maxLeverageBps;
+        if (m.kind == VaultKind.SPOT) return i.leverageBps == VelanosConstants.BPS;
+        return i.leverageBps >= VelanosConstants.BPS && i.leverageBps <= m.maxLeverageBps;
     }
 
     /// @dev Only risk-increasing legs are size-capped. Selling or closing always reduces
@@ -189,7 +189,7 @@ contract PolicyGuard is IPolicyGuard {
     ///      arbitrary user-supplied numbers, so an overflow revert would turn the
     ///      inspector into a blank screen instead of showing why an intent fails.
     function _slippageFloor(Mandate calldata m, VaultSnapshot calldata s) internal pure returns (uint256) {
-        return Math.mulDiv(s.oracleOut, AegisConstants.BPS - m.maxSlippageBps, AegisConstants.BPS);
+        return Math.mulDiv(s.oracleOut, VelanosConstants.BPS - m.maxSlippageBps, VelanosConstants.BPS);
     }
 
     function _slippageBreached(TradeIntent calldata i, Mandate calldata m, VaultSnapshot calldata s)
@@ -209,7 +209,7 @@ contract PolicyGuard is IPolicyGuard {
             uint256 after_ = s.assetValueBefore + i.amountIn;
             // A sum that wrapped is unreachable with real balances; treat it as "over cap".
             if (after_ < s.assetValueBefore) return type(uint256).max;
-            return Math.mulDiv(after_, AegisConstants.BPS, s.navSettlement);
+            return Math.mulDiv(after_, VelanosConstants.BPS, s.navSettlement);
         }
     }
 
@@ -224,7 +224,7 @@ contract PolicyGuard is IPolicyGuard {
     }
 
     function _dailyLossFloorWad(Mandate calldata m, VaultSnapshot calldata s) internal pure returns (uint256) {
-        return Math.mulDiv(s.dayOpenPricePerShareWad, AegisConstants.BPS - m.maxDailyLossBps, AegisConstants.BPS);
+        return Math.mulDiv(s.dayOpenPricePerShareWad, VelanosConstants.BPS - m.maxDailyLossBps, VelanosConstants.BPS);
     }
 
     /// @dev A bad day stops new risk but never blocks de-risking.

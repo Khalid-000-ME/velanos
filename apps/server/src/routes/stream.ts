@@ -1,5 +1,5 @@
 import type { FastifyInstance, FastifyReply } from 'fastify';
-import { bus, type AegisEvent } from '../lib/events';
+import { bus, type VelanosEvent } from '../lib/events';
 
 /**
  * Server-sent events for the live UI.
@@ -46,7 +46,7 @@ function openStream(reply: FastifyReply): void {
   reply.raw.write(': connected\n\n');
 }
 
-function send(reply: FastifyReply, event: AegisEvent): void {
+function send(reply: FastifyReply, event: VelanosEvent): void {
   if (reply.raw.writableEnded) return;
   reply.raw.write(`event: ${event.type}\n`);
   reply.raw.write(`data: ${JSON.stringify(event)}\n\n`);

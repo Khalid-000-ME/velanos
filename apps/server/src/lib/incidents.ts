@@ -1,5 +1,5 @@
 import { and, desc, eq } from 'drizzle-orm';
-import { RULES, type RuleId } from '@aegis/agent-sdk';
+import { RULES, type RuleId } from '@velanos/agent-sdk';
 import { db, schema } from '../db/index';
 
 export type IncidentStepType =

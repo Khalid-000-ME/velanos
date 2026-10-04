@@ -10,19 +10,19 @@ import {
 import { privateKeyToAccount } from 'viem/accounts';
 import { arbitrumSepolia } from 'viem/chains';
 import {
-  aegisVaultAbi,
+  velanosVaultAbi,
   chainById,
   isSupportedChainId,
   robinhoodTestnet,
-} from '@aegis/config';
+} from '@velanos/config';
 import {
-  AegisClient,
+  VelanosClient,
   RULES,
   serialiseIntent,
   signIntent,
   type Mandate,
   type TradeIntent,
-} from '@aegis/agent-sdk';
+} from '@velanos/agent-sdk';
 import { env, rpcFor } from './env';
 import { propose } from './llm';
 import { buildIntent, UnmappableProposal, type AssetBook } from './harness';
@@ -225,7 +225,7 @@ export class AgentRunner {
 
     const txHash = await wallet.writeContract({
       address: vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'execute',
       args: [intent as never, sig],
       chain: chainFor(ctx.chainId),
@@ -271,7 +271,7 @@ export class AgentRunner {
     // local anvil fork as well as the public testnets — the committed address book only covers the
     // latter, and a demo that cannot be rehearsed locally is a demo that gets rehearsed on camera.
     const addresses = await this.loadProtocolAddresses(chainId);
-    const client = new AegisClient({
+    const client = new VelanosClient({
       chainId,
       chain: chainFor(chainId),
       addresses,
@@ -358,7 +358,7 @@ export class AgentRunner {
     model: string,
     profile: string,
   ): Promise<void> {
-    const { rationaleHash } = await import('@aegis/agent-sdk');
+    const { rationaleHash } = await import('@velanos/agent-sdk');
     await fetch(`${env.SERVER_URL}/rationales`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

@@ -32,15 +32,15 @@ importers:
 
   apps/agent:
     dependencies:
-      '@aegis/agent-sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
-      '@aegis/config':
-        specifier: workspace:*
-        version: link:../../packages/config
       '@anthropic-ai/sdk':
         specifier: ^0.131.0
         version: 0.131.0(zod@4.6.5)
+      '@velanos/agent-sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
+      '@velanos/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       fastify:
         specifier: ^5.12.5
         version: 5.12.5
@@ -66,15 +66,15 @@ importers:
 
   apps/mcp:
     dependencies:
-      '@aegis/agent-sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
-      '@aegis/config':
-        specifier: workspace:*
-        version: link:../../packages/config
       '@modelcontextprotocol/sdk':
         specifier: ^1.32.0
         version: 1.32.0(zod@4.6.5)
+      '@velanos/agent-sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
+      '@velanos/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       viem:
         specifier: ^2.57.2
         version: 2.57.2(typescript@5.9.3)(zod@4.6.5)
@@ -94,15 +94,15 @@ importers:
 
   apps/server:
     dependencies:
-      '@aegis/agent-sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
-      '@aegis/config':
-        specifier: workspace:*
-        version: link:../../packages/config
       '@fastify/cors':
         specifier: ^11.1.0
         version: 11.3.0
+      '@velanos/agent-sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
+      '@velanos/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       better-sqlite3:
         specifier: ^13.0.3
         version: 13.0.3
@@ -143,10 +143,10 @@ importers:
 
   apps/watcher:
     dependencies:
-      '@aegis/agent-sdk':
+      '@velanos/agent-sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
-      '@aegis/config':
+      '@velanos/config':
         specifier: workspace:*
         version: link:../../packages/config
       viem:
@@ -168,18 +168,18 @@ importers:
 
   apps/web:
     dependencies:
-      '@aegis/agent-sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
-      '@aegis/config':
-        specifier: workspace:*
-        version: link:../../packages/config
-      '@aegis/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@tanstack/react-query':
         specifier: ^5.104.1
         version: 5.104.1(react@19.3.0)
+      '@velanos/agent-sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
+      '@velanos/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@velanos/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -253,7 +253,7 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@aegis/config':
+      '@velanos/config':
         specifier: workspace:*
         version: link:../config
       viem:
@@ -272,7 +272,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@aegis/config':
+      '@velanos/config':
         specifier: workspace:*
         version: link:../config
       clsx:

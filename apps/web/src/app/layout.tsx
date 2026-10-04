@@ -25,13 +25,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Aegis — bonded capital for autonomous trading agents',
-    template: '%s · Aegis',
+    default: 'Velanos — bonded capital for autonomous trading agents',
+    template: '%s · Velanos',
   },
   description:
     'Every agent action is checked against an immutable mandate before funds move. Misconduct slashes the agent’s own capital to depositors, automatically and on-chain.',
   openGraph: {
-    title: 'Aegis',
+    title: 'Velanos',
     description: 'The accountability layer for autonomous trading.',
     type: 'website',
   },

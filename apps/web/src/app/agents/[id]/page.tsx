@@ -14,7 +14,7 @@ import {
   formatDate,
   formatWad,
   shortAddress,
-} from '@aegis/ui';
+} from '@velanos/ui';
 import { CHAIN_LABELS, CHAIN_SHORT, api, explorerAddressUrl } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';

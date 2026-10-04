@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { and, eq, desc } from 'drizzle-orm';
-import { aegisVaultAbi } from '@aegis/config';
-import { RULES, explain, type Mandate, type RuleId, type TradeIntent } from '@aegis/agent-sdk';
+import { velanosVaultAbi } from '@velanos/config';
+import { RULES, explain, type Mandate, type RuleId, type TradeIntent } from '@velanos/agent-sdk';
 import { db, schema } from '../db/index';
 import { explorerTxUrl, publicClientFor } from '../lib/chains';
 
@@ -61,26 +61,26 @@ export async function inspectRoutes(app: FastifyInstance): Promise<void> {
       const [mandate, frozenAt] = await Promise.all([
         client.readContract({
           address: intent.vault,
-          abi: aegisVaultAbi,
+          abi: velanosVaultAbi,
           functionName: 'mandate',
         }) as Promise<unknown>,
         client.readContract({
           address: intent.vault,
-          abi: aegisVaultAbi,
+          abi: velanosVaultAbi,
           functionName: 'frozenAt',
         }) as Promise<unknown>,
       ]);
 
       const snapshot = (await client.readContract({
         address: intent.vault,
-        abi: aegisVaultAbi,
+        abi: velanosVaultAbi,
         functionName: 'snapshot',
         args: [intent as never],
       })) as never;
 
       const digest = (await client.readContract({
         address: intent.vault,
-        abi: aegisVaultAbi,
+        abi: velanosVaultAbi,
         functionName: 'hashIntent',
         args: [intent as never],
       })) as string;

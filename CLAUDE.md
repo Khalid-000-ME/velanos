@@ -1,4 +1,4 @@
-# Aegis — working rules
+# Velanos — working rules
 
 Bonded capital vaults for autonomous trading agents.
 Spec: `AEGIS_PROP_PRD.md` (authoritative). Build order: PRD §17.
@@ -23,7 +23,7 @@ Use "loss floor backed by agent bond" instead of insurance language.
 |---|---|
 | `contracts/` | Foundry project — vaults, guard, bond, court, oracle, adapters |
 | `packages/config` | chains, deployments JSON, asset metadata, generated ABIs |
-| `packages/sdk` | `@aegis/agent-sdk` — EIP-712, rule mirror, client |
+| `packages/sdk` | `@velanos/agent-sdk` — EIP-712, rule mirror, client |
 | `packages/ui` | design tokens + shared React components |
 | `apps/web` | Next.js App Router frontend |
 | `apps/server` | Fastify indexer + REST/SSE + relay + demo control |
@@ -42,9 +42,9 @@ Use "loss floor backed by agent bond" instead of insurance language.
 
 ## Contract size budget
 
-`VaultDeployer` carries `AegisVault`'s full creation code, so it sits ~300 bytes under the
-EIP-170 limit. **Adding code to `AegisVault` can break deployment.** Check `forge build --sizes`
-after touching the vault; if it no longer fits, move view or pure logic into `AegisVaultLib` (a
+`VaultDeployer` carries `VelanosVault`'s full creation code, so it sits ~300 bytes under the
+EIP-170 limit. **Adding code to `VelanosVault` can break deployment.** Check `forge build --sizes`
+after touching the vault; if it no longer fits, move view or pure logic into `VelanosVaultLib` (a
 linked external library) rather than reaching for a proxy — vault code must stay immutable after
 creation. `via_ir` makes the vault *bigger*, so it stays off.
 

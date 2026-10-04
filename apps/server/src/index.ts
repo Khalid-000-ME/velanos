@@ -12,7 +12,7 @@ import { streamRoutes } from './routes/stream';
 import { vaultRoutes } from './routes/vaults';
 
 /**
- * The read side of Aegis: an indexer, a REST/SSE API over it, an intent relay, and the demo
+ * The read side of Velanos: an indexer, a REST/SSE API over it, an intent relay, and the demo
  * controls.
  *
  * Nothing here is trusted by the protocol. The server holds no authority over a vault — it can pay
@@ -45,7 +45,7 @@ async function main(): Promise<void> {
   await indexer.start();
 
   await app.listen({ port: env.SERVER_PORT, host: '0.0.0.0' });
-  app.log.info(`aegis server listening on :${env.SERVER_PORT}`);
+  app.log.info(`velanos server listening on :${env.SERVER_PORT}`);
 }
 
 function bigintReplacer(_key: string, value: unknown): unknown {

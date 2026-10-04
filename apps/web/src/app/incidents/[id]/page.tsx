@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import { Chip, Eyebrow, formatAmount, formatDate, shortAddress } from '@aegis/ui';
+import { Chip, Eyebrow, formatAmount, formatDate, shortAddress } from '@velanos/ui';
 import { IncidentTimeline } from '@/components/IncidentTimeline';
 import { MoneyFlow } from '@/components/MoneyFlow';
 import { CHAIN_LABELS, api } from '@/lib/api';

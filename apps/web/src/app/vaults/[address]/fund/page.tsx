@@ -9,7 +9,7 @@ import {
   formatAmount,
   formatBps,
   formatWad,
-} from '@aegis/ui';
+} from '@velanos/ui';
 import { DepositPanel } from '@/components/DepositPanel';
 import { api } from '@/lib/api';
 

@@ -34,7 +34,7 @@ enum FreezeReason {
     GUARDIAN
 }
 
-/// @notice Outcome of `AegisVault.execute`. Never reverts on a rule failure, so every
+/// @notice Outcome of `VelanosVault.execute`. Never reverts on a rule failure, so every
 ///         rejection is observable on-chain.
 enum ExecStatus {
     EXECUTED,
@@ -177,7 +177,7 @@ struct CheckResult {
     uint256 limit;
 }
 
-library AegisConstants {
+library VelanosConstants {
     uint16 internal constant BPS = 10_000;
     uint256 internal constant WAD = 1e18;
     /// @dev Oracle prices are USD with 8 decimals.

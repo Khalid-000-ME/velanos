@@ -6,8 +6,8 @@ import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IER
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
-import {AegisPriceOracle} from "../oracle/AegisPriceOracle.sol";
-import {AegisConstants} from "../AegisTypes.sol";
+import {VelanosPriceOracle} from "../oracle/VelanosPriceOracle.sol";
+import {VelanosConstants} from "../VelanosTypes.sol";
 
 /**
  * @title OracleSwapPool
@@ -28,7 +28,7 @@ contract OracleSwapPool is Ownable {
 
     IERC20 public immutable settlement;
     IERC20 public immutable stock;
-    AegisPriceOracle public immutable oracle;
+    VelanosPriceOracle public immutable oracle;
 
     uint8 public immutable settlementDecimals;
     uint8 public immutable stockDecimals;
@@ -48,7 +48,7 @@ contract OracleSwapPool is Ownable {
     constructor(address settlement_, address stock_, address oracle_, address owner_) Ownable(owner_) {
         settlement = IERC20(settlement_);
         stock = IERC20(stock_);
-        oracle = AegisPriceOracle(oracle_);
+        oracle = VelanosPriceOracle(oracle_);
         settlementDecimals = IERC20Metadata(settlement_).decimals();
         stockDecimals = IERC20Metadata(stock_).decimals();
     }
@@ -112,11 +112,11 @@ contract OracleSwapPool is Ownable {
     // ─────────────────────────── unit conversions ───────────────────────────────
 
     function _settlementToUsd(uint256 amount) internal view returns (uint256) {
-        return Math.mulDiv(amount, AegisConstants.PRICE_SCALE, 10 ** settlementDecimals);
+        return Math.mulDiv(amount, VelanosConstants.PRICE_SCALE, 10 ** settlementDecimals);
     }
 
     function _usdToSettlement(uint256 usd) internal view returns (uint256) {
-        return Math.mulDiv(usd, 10 ** settlementDecimals, AegisConstants.PRICE_SCALE);
+        return Math.mulDiv(usd, 10 ** settlementDecimals, VelanosConstants.PRICE_SCALE);
     }
 
     function _stockToUsd(uint256 amount) internal view returns (uint256) {

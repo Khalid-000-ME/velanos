@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Play, RotateCcw, Zap } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button, Card, Chip, StateChip, TestControlBadge, cn } from '@aegis/ui';
+import { Button, Card, Chip, StateChip, TestControlBadge, cn } from '@velanos/ui';
 import type { VaultSummary } from '@/lib/api';
 
 interface Profile {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import {TradeIntent} from "../AegisTypes.sol";
+import {TradeIntent} from "../VelanosTypes.sol";
 
 /**
  * @notice The only way funds leave a vault.

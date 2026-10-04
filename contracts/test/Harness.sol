@@ -4,19 +4,19 @@ pragma solidity 0.8.24;
 import {Test} from "forge-std/Test.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import {AegisVault} from "../src/AegisVault.sol";
+import {VelanosVault} from "../src/VelanosVault.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {BondManager} from "../src/BondManager.sol";
 import {PolicyGuard} from "../src/PolicyGuard.sol";
 import {ViolationCourt} from "../src/ViolationCourt.sol";
 import {VaultFactory} from "../src/VaultFactory.sol";
 import {PerpAdapterDeployer, VaultDeployer} from "../src/VaultDeployer.sol";
-import {AegisPriceOracle} from "../src/oracle/AegisPriceOracle.sol";
+import {VelanosPriceOracle} from "../src/oracle/VelanosPriceOracle.sol";
 import {StockSwapAdapter} from "../src/adapters/StockSwapAdapter.sol";
 import {MockStockToken} from "../src/testenv/MockStockToken.sol";
 import {MockUSDG} from "../src/testenv/MockUSDG.sol";
 import {OracleSwapPool} from "../src/testenv/OracleSwapPool.sol";
-import {IntentKind, Mandate, TradeIntent, VaultKind} from "../src/AegisTypes.sol";
+import {IntentKind, Mandate, TradeIntent, VaultKind} from "../src/VelanosTypes.sol";
 
 /**
  * @notice Stands up the entire protocol the way the deploy script does, then exposes helpers
@@ -51,7 +51,7 @@ contract Harness is Test {
     address internal guardian = makeAddr("guardian");
 
     // ── protocol ──
-    AegisPriceOracle internal oracle;
+    VelanosPriceOracle internal oracle;
     PolicyGuard internal guard;
     VaultFactory internal factory;
     AgentRegistry internal registry;
@@ -68,7 +68,7 @@ contract Harness is Test {
     OracleSwapPool internal amznPool;
 
     uint256 internal agentId;
-    AegisVault internal vault;
+    VelanosVault internal vault;
 
     function setUp() public virtual {
         agentSigner = vm.addr(agentPk);
@@ -85,7 +85,7 @@ contract Harness is Test {
 
     function _deployProtocol() internal {
         vm.startPrank(deployer);
-        oracle = new AegisPriceOracle(deployer);
+        oracle = new VelanosPriceOracle(deployer);
         guard = new PolicyGuard();
         factory = new VaultFactory(address(guard), address(oracle), WARN_COOLDOWN, SETTLE_GRACE, deployer);
         registry = new AgentRegistry(address(factory));
@@ -175,14 +175,14 @@ contract Harness is Test {
 
     function _createSpotVault(string memory name, string memory symbol, uint256 maxAllocation)
         internal
-        returns (AegisVault v)
+        returns (VelanosVault v)
     {
         vm.prank(operator);
         (address addr,) = factory.createVault(agentId, spotMandate(maxAllocation), name, symbol);
-        v = AegisVault(addr);
+        v = VelanosVault(addr);
     }
 
-    function _bondAndFund(AegisVault v, uint256 bondAmount, uint256 deposit) internal {
+    function _bondAndFund(VelanosVault v, uint256 bondAmount, uint256 deposit) internal {
         vm.startPrank(operator);
         usdg.approve(address(bond), bondAmount);
         bond.stake(address(v), bondAmount);
@@ -198,7 +198,7 @@ contract Harness is Test {
 
     // ──────────────────────────────── intents ───────────────────────────────────
 
-    function buyIntent(AegisVault v, address stock, uint256 amountIn, uint256 nonce)
+    function buyIntent(VelanosVault v, address stock, uint256 amountIn, uint256 nonce)
         internal
         view
         returns (TradeIntent memory)
@@ -220,7 +220,7 @@ contract Harness is Test {
         });
     }
 
-    function sellIntent(AegisVault v, address stock, uint256 amountIn, uint256 nonce)
+    function sellIntent(VelanosVault v, address stock, uint256 amountIn, uint256 nonce)
         internal
         view
         returns (TradeIntent memory)
@@ -232,18 +232,18 @@ contract Harness is Test {
         return i;
     }
 
-    function sign(AegisVault v, TradeIntent memory i, uint256 pk) internal view returns (bytes memory) {
+    function sign(VelanosVault v, TradeIntent memory i, uint256 pk) internal view returns (bytes memory) {
         (uint8 yParity, bytes32 r, bytes32 s) = vm.sign(pk, v.hashIntent(i));
         return abi.encodePacked(r, s, yParity);
     }
 
-    function signAsAgent(AegisVault v, TradeIntent memory i) internal view returns (bytes memory) {
+    function signAsAgent(VelanosVault v, TradeIntent memory i) internal view returns (bytes memory) {
         return sign(v, i, agentPk);
     }
 
     /// @dev Submits as the watcher by default, so bounty behaviour is exercised unless a test
     ///      deliberately submits as the agent or the operator.
-    function executeAsWatcher(AegisVault v, TradeIntent memory i) internal returns (bytes memory sig) {
+    function executeAsWatcher(VelanosVault v, TradeIntent memory i) internal returns (bytes memory sig) {
         sig = signAsAgent(v, i);
         vm.prank(watcher);
         v.execute(i, sig);
@@ -255,7 +255,7 @@ contract Harness is Test {
         oracle.shock(token, bps);
     }
 
-    function bondAvailable(AegisVault v) internal view returns (uint256 available) {
+    function bondAvailable(VelanosVault v) internal view returns (uint256 available) {
         (available,,) = bond.bondOf(address(v));
     }
 }

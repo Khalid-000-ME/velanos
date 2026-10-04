@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { eq, and, desc } from 'drizzle-orm';
 import { z } from 'zod';
-import { aegisVaultAbi } from '@aegis/config';
+import { velanosVaultAbi } from '@velanos/config';
 import {
   RULES,
   SignedIntentSchema,
@@ -11,7 +11,7 @@ import {
   type Mandate,
   type RuleId,
   type TradeIntent,
-} from '@aegis/agent-sdk';
+} from '@velanos/agent-sdk';
 import { db, schema } from '../db/index';
 import { publicClientFor, relayWalletFor, explorerTxUrl, chainFor } from '../lib/chains';
 import { readDeployment } from '../lib/deployments';
@@ -58,7 +58,7 @@ export async function relayRoutes(app: FastifyInstance): Promise<void> {
     // to the agent's key is not evidence of anything and must not reach the public feed.
     const mandate = (await client.readContract({
       address: intent.vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'mandate',
     })) as unknown as Mandate;
 
@@ -69,7 +69,7 @@ export async function relayRoutes(app: FastifyInstance): Promise<void> {
 
     const frozenAt = (await client.readContract({
       address: intent.vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'frozenAt',
     })) as bigint;
 
@@ -90,7 +90,7 @@ export async function relayRoutes(app: FastifyInstance): Promise<void> {
 
     const snapshot = (await client.readContract({
       address: intent.vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'snapshot',
       args: [intent as never],
     })) as never;
@@ -123,7 +123,7 @@ export async function relayRoutes(app: FastifyInstance): Promise<void> {
 
     const txHash = await wallet.writeContract({
       address: intent.vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'execute',
       args: [intent as never, sig],
       chain: chainFor(chainId),

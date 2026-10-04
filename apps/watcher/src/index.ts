@@ -9,12 +9,12 @@ import {
 } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import {
-  aegisVaultAbi,
+  velanosVaultAbi,
   chainById,
   isSupportedChainId,
   violationCourtAbi,
-} from '@aegis/config';
-import { RULES, type RuleId, type TradeIntent } from '@aegis/agent-sdk';
+} from '@velanos/config';
+import { RULES, type RuleId, type TradeIntent } from '@velanos/agent-sdk';
 import { env, rpcFor } from './env';
 import { TxQueue, isTerminalFailure } from './txqueue';
 
@@ -207,7 +207,7 @@ async function sweepVaults(): Promise<void> {
     if (needsPoke) {
       await send('poked', () =>
         wallet.writeContract({
-          address: v.address, abi: aegisVaultAbi, functionName: 'poke',
+          address: v.address, abi: velanosVaultAbi, functionName: 'poke',
           chain: chainFor(v.chainId), account,
         }),
       );
@@ -229,7 +229,7 @@ async function sweepVaults(): Promise<void> {
     if (v.state === VaultState.FROZEN || v.state === VaultState.EXPIRED) {
       await send('unwound', () =>
         wallet.writeContract({
-          address: v.address, abi: aegisVaultAbi, functionName: 'unwind',
+          address: v.address, abi: velanosVaultAbi, functionName: 'unwind',
           chain: chainFor(v.chainId), account,
         }),
       );
@@ -247,7 +247,7 @@ async function sweepVaults(): Promise<void> {
       );
       await send('settled', () =>
         wallet.writeContract({
-          address: v.address, abi: aegisVaultAbi, functionName: 'settle',
+          address: v.address, abi: velanosVaultAbi, functionName: 'settle',
           chain: chainFor(v.chainId), account,
         }),
       );
@@ -257,7 +257,7 @@ async function sweepVaults(): Promise<void> {
     // An agent that stops answering after expiry is itself a breach, and the penalty is claimable.
     try {
       const late = (await publicClient.readContract({
-        address: v.address, abi: aegisVaultAbi, functionName: 'isLateToSettle',
+        address: v.address, abi: velanosVaultAbi, functionName: 'isLateToSettle',
       })) as boolean;
       if (late) {
         await send('force-settled', () =>
@@ -289,7 +289,7 @@ async function isPastExpiry(
 ): Promise<boolean> {
   try {
     const mandate = (await client.readContract({
-      address: vault, abi: aegisVaultAbi, functionName: 'mandate',
+      address: vault, abi: velanosVaultAbi, functionName: 'mandate',
     })) as { expiry: bigint };
     return BigInt(Math.floor(Date.now() / 1000)) >= mandate.expiry;
   } catch {

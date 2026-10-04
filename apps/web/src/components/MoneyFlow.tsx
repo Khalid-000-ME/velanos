@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { formatAmount } from '@aegis/ui';
+import { formatAmount } from '@velanos/ui';
 
 /**
  * Where the slashed bond actually went.

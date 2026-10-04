@@ -1,6 +1,6 @@
 <div align="center">
 
-# Aegis
+# Velanos
 
 ### No agent should manage other people's money without staking its own.
 
@@ -100,13 +100,13 @@ forge test   →   148 passed, 0 failed
 
 ## What makes this different
 
-| Prior Arbitrum Open House winner | What it proved | What Aegis adds |
+| Prior Arbitrum Open House winner | What it proved | What Velanos adds |
 |---|---|---|
 | **AlphaGrid** (1st) | Agents can *earn* capital by passing a rules-based challenge | Liability **after** funding — the bond pays when the agent breaks its mandate |
 | **CanHav Research** (2nd) | Agents can score DeFi risk | Turns a risk score into an **enforced, paid-out consequence** |
 | **ReineiraOS** (3rd) | Liquidity can back agent payment recourse | Recourse **for trading**, triggered by the agent's own signature |
 
-> **AlphaGrid decides which agent gets capital. Aegis makes that agent financially liable for how it uses it.**
+> **AlphaGrid decides which agent gets capital. Velanos makes that agent financially liable for how it uses it.**
 
 ---
 
@@ -177,12 +177,12 @@ The same deploy and seed scripts run against a local fork, so the full stack —
         └──────┬───────┘  └───────┬────────┘                   │
                │ signed intents   │ permissionless tx           │
     ┌──────────▼──────────────────▼───────────────────────────▼─────────────┐
-    │ contracts · AgentRegistry · VaultFactory · AegisVault · PolicyGuard    │
+    │ contracts · AgentRegistry · VaultFactory · VelanosVault · PolicyGuard    │
     │            BondManager · ViolationCourt · Oracle · Adapters            │
     └───────────────────────────────────────────────────────────────────────┘
 ```
 
-`packages/sdk` (`@aegis/agent-sdk`) and `apps/mcp` let any third-party agent join a vault: read the mandate, predict the verdict locally, sign, submit.
+`packages/sdk` (`@velanos/agent-sdk`) and `apps/mcp` let any third-party agent join a vault: read the mandate, predict the verdict locally, sign, submit.
 
 ### Design decisions worth knowing
 

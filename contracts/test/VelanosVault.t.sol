@@ -2,10 +2,10 @@
 pragma solidity 0.8.24;
 
 import {Harness} from "./Harness.sol";
-import {AegisVault} from "../src/AegisVault.sol";
-import {ExecStatus, FreezeReason, Rules, TradeIntent, VaultState} from "../src/AegisTypes.sol";
+import {VelanosVault} from "../src/VelanosVault.sol";
+import {ExecStatus, FreezeReason, Rules, TradeIntent, VaultState} from "../src/VelanosTypes.sol";
 
-contract AegisVaultTest is Harness {
+contract VelanosVaultTest is Harness {
     // ───────────────────────────── happy path ─────────────────────────────────
 
     function test_execute_goodBuyMovesFunds() public {
@@ -168,7 +168,7 @@ contract AegisVaultTest is Harness {
     /// @dev A signature lifted from another vault must be inert here, which is what the
     ///      EIP-712 domain binding buys us.
     function test_execute_signatureFromAnotherVaultIsIgnored() public {
-        AegisVault other = _createSpotVault("Delta Equities II", "aDELTA2", 1_000 * ONE_USDG);
+        VelanosVault other = _createSpotVault("Delta Equities II", "aDELTA2", 1_000 * ONE_USDG);
         _bondAndFund(other, 300 * ONE_USDG, 1_000 * ONE_USDG);
 
         TradeIntent memory i = buyIntent(other, address(tsla), 150 * ONE_USDG, 1);
@@ -180,7 +180,7 @@ contract AegisVaultTest is Harness {
     }
 
     function test_hashIntent_differsAcrossVaults() public {
-        AegisVault other = _createSpotVault("Delta Equities II", "aDELTA2", 1_000 * ONE_USDG);
+        VelanosVault other = _createSpotVault("Delta Equities II", "aDELTA2", 1_000 * ONE_USDG);
         TradeIntent memory i = buyIntent(vault, address(tsla), 150 * ONE_USDG, 1);
         assertTrue(vault.hashIntent(i) != other.hashIntent(i));
     }
@@ -190,7 +190,7 @@ contract AegisVaultTest is Harness {
     function test_deposit_blockedBeforeBondIsPosted() public {
         vm.prank(operator);
         (address addr,) = factory.createVault(agentId, spotMandate(1_000 * ONE_USDG), "Unbonded", "aUB");
-        AegisVault unbonded = AegisVault(addr);
+        VelanosVault unbonded = VelanosVault(addr);
 
         assertEq(uint8(unbonded.state()), uint8(VaultState.PENDING_BOND));
         assertEq(unbonded.maxDeposit(depositor), 0);
@@ -294,7 +294,7 @@ contract AegisVaultTest is Harness {
         vm.warp(block.timestamp + 2 hours + 1);
         vault.poke();
 
-        vm.expectRevert(AegisVault.PositionsStillOpen.selector);
+        vm.expectRevert(VelanosVault.PositionsStillOpen.selector);
         vault.settle();
     }
 

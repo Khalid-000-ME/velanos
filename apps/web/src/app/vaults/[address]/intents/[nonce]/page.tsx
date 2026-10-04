@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Check, ExternalLink, Minus, X } from 'lucide-react';
-import { Chip, Eyebrow, cn, formatAmount, shortAddress } from '@aegis/ui';
+import { Chip, Eyebrow, cn, formatAmount, shortAddress } from '@velanos/ui';
 import { api } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';

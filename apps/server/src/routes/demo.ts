@@ -1,7 +1,7 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { aegisPriceOracleAbi } from '@aegis/config';
+import { velanosPriceOracleAbi } from '@velanos/config';
 import { db, resetIndexedState, schema } from '../db/index';
 import { env } from '../env';
 import { chainFor, priceUpdaterWalletFor, publicClientFor } from '../lib/chains';
@@ -55,8 +55,8 @@ export async function demoRoutes(app: FastifyInstance): Promise<void> {
     }
 
     const txHash = await wallet.writeContract({
-      address: contractOf(d, 'AegisPriceOracle'),
-      abi: aegisPriceOracleAbi,
+      address: contractOf(d, 'VelanosPriceOracle'),
+      abi: velanosPriceOracleAbi,
       functionName: 'shock',
       args: [entry.address, bps],
       chain: chainFor(chainId),

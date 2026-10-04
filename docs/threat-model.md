@@ -1,6 +1,6 @@
 # Threat model
 
-Aegis holds depositor capital and hands trading authority to a program. This document states
+Velanos holds depositor capital and hands trading authority to a program. This document states
 what we defend against, how, and where the defences stop.
 
 ## Trust assumptions
@@ -107,6 +107,6 @@ verdicts from live chain state rather than trusting stored values.
    it is not a real DEX.
 3. **Simplified perp NAV.** One position per market, valued as collateral plus unrealised PnL.
 4. **Bounty leak on self-reporting.** Bounded by `reporterBountyBps`, described above.
-5. **`VaultDeployer` size headroom.** ~300 bytes under EIP-170. Adding code to `AegisVault` can break
+5. **`VaultDeployer` size headroom.** ~300 bytes under EIP-170. Adding code to `VelanosVault` can break
    deployment; the fix is to move view logic into the linked library, never to a proxy.
 6. **No audit.** Testnet only.

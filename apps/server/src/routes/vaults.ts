@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { and, asc, desc, eq, gte } from 'drizzle-orm';
 import { z } from 'zod';
-import { mandateToEnglish, type Mandate } from '@aegis/agent-sdk';
+import { mandateToEnglish, type Mandate } from '@velanos/agent-sdk';
 import { db, schema } from '../db/index';
 import { explorerTxUrl } from '../lib/chains';
 import { readDeployment } from '../lib/deployments';

@@ -1,5 +1,5 @@
 import { type Address, parseUnits } from 'viem';
-import { RULES, rationaleHash, type Mandate, type TradeIntent } from '@aegis/agent-sdk';
+import { RULES, rationaleHash, type Mandate, type TradeIntent } from '@velanos/agent-sdk';
 import type { Proposal } from './proposal';
 
 export interface AssetBook {

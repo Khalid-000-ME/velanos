@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Chip, StateChip, formatAmount, formatBps, formatWad } from '@aegis/ui';
+import { Chip, StateChip, formatAmount, formatBps, formatWad } from '@velanos/ui';
 import { CHAIN_SHORT, type AgentWithStats } from '@/lib/api';
 
 const TIER_LABELS = ['Conservative', 'Balanced', 'Aggressive'] as const;

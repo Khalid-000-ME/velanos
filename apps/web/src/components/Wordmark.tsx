@@ -1,40 +1,31 @@
-import { cn } from '@aegis/ui';
+import { cn } from '@velanos/ui';
 
 /**
- * The mark: a shield whose notch reads as a downward step — the drawdown floor the bond defends.
+ * The mark: a V whose descent is cut flat by a floor line.
  *
- * Drawn rather than lettered so it holds at 16px in a browser tab and at 40px in a hero.
+ * It reads as the initial, and it is also the product in one glyph — a drawdown that stops at a
+ * floor instead of running to a point. Drawn as strokes on a filled tile so it holds at favicon size
+ * and at hero size without a separate small-size variant.
  */
 export function Mark({ size = 22, className }: { size?: number; className?: string }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      className={className}
-      aria-hidden
-    >
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <rect width="24" height="24" rx="6" fill="currentColor" />
       <path
-        d="M12 2 4 5.2v6.1c0 4.7 3.2 8.8 8 10.7 4.8-1.9 8-6 8-10.7V5.2L12 2Z"
-        fill="currentColor"
-      />
-      <path
-        d="M8.2 12.4h2.5l1.4-3 1.5 5 1.1-2h1.6"
+        d="M6.5 6.5 10.6 14.2h2.8L17.5 6.5"
         stroke="var(--black)"
-        strokeWidth="1.6"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      <path d="M5.5 17.6h13" stroke="var(--black)" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
 
 /**
- * Lowercase wordmark.
- *
- * Lowercase and tightly tracked because the alternative — a capitalised two-word name with a sector
- * suffix — reads like a pitch deck title rather than a product.
+ * Lowercase wordmark, tightly tracked. A capitalised name with a sector suffix reads like a pitch
+ * deck title; lowercase reads like a product.
  */
 export function Wordmark({
   className,
@@ -48,7 +39,7 @@ export function Wordmark({
   return (
     <span className={cn('inline-flex items-center gap-2', className)}>
       <Mark size={size} className={cn('text-[var(--green)]', markClassName)} />
-      <span className="text-[17px] font-medium lowercase tracking-[-0.03em]">aegis</span>
+      <span className="text-[17px] font-medium lowercase tracking-[-0.03em]">velanos</span>
     </span>
   );
 }

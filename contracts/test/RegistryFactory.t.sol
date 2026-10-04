@@ -4,7 +4,7 @@ pragma solidity 0.8.24;
 import {Harness} from "./Harness.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {VaultFactory} from "../src/VaultFactory.sol";
-import {FreezeReason, Mandate, VaultKind} from "../src/AegisTypes.sol";
+import {FreezeReason, Mandate, VaultKind} from "../src/VelanosTypes.sol";
 
 contract RegistryFactoryTest is Harness {
     // ──────────────────────────────── registry ────────────────────────────────
@@ -160,7 +160,7 @@ contract RegistryFactoryTest is Harness {
 
     function _settleCleanly() internal {
         uint256 before = registry.agent(agentId).cleanSeasons;
-        AegisVaultLocal v = AegisVaultLocal(address(_createSpotVault("Season", "aS", 1_000 * ONE_USDG)));
+        VelanosVaultLocal v = VelanosVaultLocal(address(_createSpotVault("Season", "aS", 1_000 * ONE_USDG)));
         vm.startPrank(operator);
         usdg.approve(address(bond), 300 * ONE_USDG);
         bond.stake(address(v), 300 * ONE_USDG);
@@ -174,7 +174,7 @@ contract RegistryFactoryTest is Harness {
     }
 }
 
-interface AegisVaultLocal {
+interface VelanosVaultLocal {
     function poke() external;
     function unwind() external;
     function settle() external;

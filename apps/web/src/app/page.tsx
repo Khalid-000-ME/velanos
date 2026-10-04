@@ -8,7 +8,7 @@ import {
   HairlineGrid,
   SectionHeading,
   formatAmount,
-} from '@aegis/ui';
+} from '@velanos/ui';
 import { Hero } from '@/components/Hero';
 import { VaultCard } from '@/components/VaultCard';
 import { api } from '@/lib/api';

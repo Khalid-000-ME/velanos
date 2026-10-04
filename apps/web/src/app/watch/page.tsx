@@ -1,4 +1,4 @@
-import { EmptyState, Eyebrow, Metric, MetricCell, MetricStrip, SectionHeading } from '@aegis/ui';
+import { EmptyState, Eyebrow, Metric, MetricCell, MetricStrip, SectionHeading } from '@velanos/ui';
 import { WatchFeed } from '@/components/WatchFeed';
 import { api } from '@/lib/api';
 

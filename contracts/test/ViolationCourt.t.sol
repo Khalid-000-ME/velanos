@@ -2,9 +2,9 @@
 pragma solidity 0.8.24;
 
 import {Harness} from "./Harness.sol";
-import {AegisVault} from "../src/AegisVault.sol";
+import {VelanosVault} from "../src/VelanosVault.sol";
 import {ViolationCourt} from "../src/ViolationCourt.sol";
-import {FreezeReason, Rules, TradeIntent, VaultState} from "../src/AegisTypes.sol";
+import {FreezeReason, Rules, TradeIntent, VaultState} from "../src/VelanosTypes.sol";
 
 contract ViolationCourtTest is Harness {
     // ───────────────── reporting an intent that never reached a vault ──────────

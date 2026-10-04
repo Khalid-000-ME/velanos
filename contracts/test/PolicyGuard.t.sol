@@ -3,7 +3,7 @@ pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
 import {PolicyGuard} from "../src/PolicyGuard.sol";
-import {CheckResult, IntentKind, Rules, TradeIntent, VaultSnapshot, VaultState} from "../src/AegisTypes.sol";
+import {CheckResult, IntentKind, Rules, TradeIntent, VaultSnapshot, VaultState} from "../src/VelanosTypes.sol";
 import {Fixtures} from "./Fixtures.sol";
 
 /// @notice Every rule ID gets a passing case and a failing case, plus the order guarantees

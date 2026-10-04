@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@aegis/ui';
+import { cn } from '@velanos/ui';
 import { ConnectButton } from './ConnectButton';
 import { Wordmark } from './Wordmark';
 
@@ -26,7 +26,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--bg)]/85 backdrop-blur-md">
       <div className="content-width flex h-[var(--header-h)] items-center justify-between gap-6">
         <div className="flex items-center gap-10">
-          <Link href="/" aria-label="Aegis home">
+          <Link href="/" aria-label="Velanos home">
             <Wordmark />
           </Link>
 

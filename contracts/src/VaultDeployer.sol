@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import {AegisVault} from "./AegisVault.sol";
+import {VelanosVault} from "./VelanosVault.sol";
 import {MockPerpAdapter} from "./adapters/MockPerpAdapter.sol";
 
 /**
- * @notice Holds `AegisVault`'s creation code so the factory does not have to.
+ * @notice Holds `VelanosVault`'s creation code so the factory does not have to.
  *
  * A full ERC-4626 vault with an EIP-712 verifier is ~19 KB of runtime code, and any contract
  * that deploys it must carry its ~24 KB of creation code. Inlining that in `VaultFactory` put
@@ -32,7 +32,7 @@ contract VaultDeployer {
     function deploy(bytes calldata encodedConfig) external returns (address vault) {
         if (msg.sender != factory) revert OnlyFactory(msg.sender);
 
-        bytes memory initCode = abi.encodePacked(type(AegisVault).creationCode, encodedConfig);
+        bytes memory initCode = abi.encodePacked(type(VelanosVault).creationCode, encodedConfig);
         assembly ("memory-safe") {
             vault := create(0, add(initCode, 0x20), mload(initCode))
         }

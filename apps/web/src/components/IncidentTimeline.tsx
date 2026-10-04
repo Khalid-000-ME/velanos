@@ -15,7 +15,7 @@ import {
   TrendingDown,
   Users,
 } from 'lucide-react';
-import { Button, formatTime } from '@aegis/ui';
+import { Button, formatTime } from '@velanos/ui';
 import type { IncidentStep } from '@/lib/api';
 
 const STEP_ICONS: Record<string, typeof Ban> = {

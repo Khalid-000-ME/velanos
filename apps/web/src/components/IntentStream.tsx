@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ChevronDown, ExternalLink } from 'lucide-react';
-import { RulePill, cn, formatAmount, formatTime } from '@aegis/ui';
+import { RulePill, cn, formatAmount, formatTime } from '@velanos/ui';
 import { serverUrl, type IntentRow } from '@/lib/api';
 
 /**

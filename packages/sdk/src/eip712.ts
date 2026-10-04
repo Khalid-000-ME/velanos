@@ -10,7 +10,7 @@ import {
 import type { TradeIntent } from './types';
 
 /**
- * The EIP-712 type, byte-identical to `AegisVaultLib.TRADE_INTENT_TYPEHASH`.
+ * The EIP-712 type, byte-identical to `VelanosVaultLib.TRADE_INTENT_TYPEHASH`.
  *
  * Field order and types are load-bearing: change one and every signature this SDK produces stops
  * verifying on-chain. There is a test that recomputes the digest against a live vault's
@@ -37,7 +37,7 @@ export const TRADE_INTENT_TYPES = {
 export const TRADE_INTENT_TYPE_STRING =
   'TradeIntent(address vault,uint8 kind,address adapter,address assetIn,address assetOut,uint256 amountIn,uint256 minOut,uint32 leverageBps,bool isLong,uint256 nonce,uint64 issuedAt,uint64 deadline,bytes32 rationaleHash)';
 
-export const EIP712_DOMAIN_NAME = 'AegisProp';
+export const EIP712_DOMAIN_NAME = 'Velanos';
 export const EIP712_DOMAIN_VERSION = '1';
 
 /**
@@ -75,7 +75,7 @@ export function toTypedMessage(intent: TradeIntent) {
   } as const;
 }
 
-/** The digest the agent signs, computed locally. Must equal `AegisVault.hashIntent`. */
+/** The digest the agent signs, computed locally. Must equal `VelanosVault.hashIntent`. */
 export function hashIntent(intent: TradeIntent, chainId: number): Hex {
   return hashTypedData({
     domain: domainFor(intent.vault, chainId),

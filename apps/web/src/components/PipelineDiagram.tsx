@@ -1,4 +1,4 @@
-import { cn } from '@aegis/ui';
+import { cn } from '@velanos/ui';
 
 /**
  * The protocol in one picture: a signed intent meets the mandate, and the path forks.

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ARBITRUM_SEPOLIA_ID, ROBINHOOD_TESTNET_ID, type SupportedChainId } from '@aegis/config';
+import { ARBITRUM_SEPOLIA_ID, ROBINHOOD_TESTNET_ID, type SupportedChainId } from '@velanos/config';
 
 const EnvSchema = z.object({
   SERVER_PORT: z.coerce.number().int().default(4000),
@@ -7,7 +7,7 @@ const EnvSchema = z.object({
   ARB_SEPOLIA_RPC: z.string().url().default('https://sepolia-rollup.arbitrum.io/rpc'),
   /** Local anvil, used for development and the differential tests. */
   LOCAL_RPC: z.string().url().optional(),
-  DATABASE_PATH: z.string().default('./data/aegis.db'),
+  DATABASE_PATH: z.string().default('./data/velanos.db'),
   DEMO_ADMIN_TOKEN: z.string().min(1).default('change-me-local-only'),
   AGENT_URL: z.string().url().default('http://localhost:4100'),
   /** Submits relayed intents and keeps oracle prices fresh. */

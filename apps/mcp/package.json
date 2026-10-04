@@ -1,9 +1,9 @@
 {
-  "name": "@aegis/mcp",
+  "name": "@velanos/mcp",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "bin": { "aegis-mcp": "./dist/index.js" },
+  "bin": { "velanos-mcp": "./dist/index.js" },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.build.json",
@@ -12,8 +12,8 @@
     "lint": "echo ok"
   },
   "dependencies": {
-    "@aegis/agent-sdk": "workspace:*",
-    "@aegis/config": "workspace:*",
+    "@velanos/agent-sdk": "workspace:*",
+    "@velanos/config": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.32.0",
     "viem": "^2.57.2",
     "zod": "^4.6.5"

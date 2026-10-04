@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { Chip, StateChip, formatAmount, formatWad } from '@aegis/ui';
+import { Chip, StateChip, formatAmount, formatWad } from '@velanos/ui';
 import { CHAIN_SHORT, type AgentWithStats, type VaultSummary } from '@/lib/api';
 
 /**

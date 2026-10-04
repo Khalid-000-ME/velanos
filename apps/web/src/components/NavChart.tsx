@@ -13,7 +13,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { formatTime, formatWad } from '@aegis/ui';
+import { formatTime, formatWad } from '@velanos/ui';
 import type { NavSeries } from '@/lib/api';
 
 /**

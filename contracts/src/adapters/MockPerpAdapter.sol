@@ -5,9 +5,9 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
-import {AegisConstants, IntentKind, TradeIntent} from "../AegisTypes.sol";
+import {VelanosConstants, IntentKind, TradeIntent} from "../VelanosTypes.sol";
 import {IAdapter} from "./IAdapter.sol";
-import {AegisPriceOracle} from "../oracle/AegisPriceOracle.sol";
+import {VelanosPriceOracle} from "../oracle/VelanosPriceOracle.sol";
 
 interface IPerpAdapterFactory {
     function isVault(address) external view returns (bool);
@@ -15,7 +15,7 @@ interface IPerpAdapterFactory {
 
 /**
  * @title MockPerpAdapter
- * @notice Internal perpetual positions marked to the Aegis oracle, used when `PERP_MODE=mock`.
+ * @notice Internal perpetual positions marked to the Velanos oracle, used when `PERP_MODE=mock`.
  *
  * GMX on Arbitrum Sepolia depends on a keeper that can lag by minutes, which is fine in
  * production and fatal in a three-minute demo. This adapter keeps the same `IAdapter` surface
@@ -60,7 +60,7 @@ contract MockPerpAdapter is IAdapter {
     /// @dev Mock fills are exactly at oracle price, so slippage never trips in mock mode and a
     ///      perps demo failure always means a rule failure rather than a venue artefact.
     function quote(TradeIntent calldata i) external pure returns (uint256 quotedOut, uint256 oracleOut) {
-        uint256 notional = Math.mulDiv(i.amountIn, i.leverageBps, AegisConstants.BPS);
+        uint256 notional = Math.mulDiv(i.amountIn, i.leverageBps, VelanosConstants.BPS);
         return (notional, notional);
     }
 
@@ -71,8 +71,8 @@ contract MockPerpAdapter is IAdapter {
             if (positionOf[msg.sender].open) revert PositionAlreadyOpen(msg.sender);
             IERC20(settlement).safeTransferFrom(msg.sender, address(this), i.amountIn);
 
-            (uint256 markPrice,) = AegisPriceOracle(oracle).price(i.assetOut);
-            uint256 notionalSettlement = Math.mulDiv(i.amountIn, i.leverageBps, AegisConstants.BPS);
+            (uint256 markPrice,) = VelanosPriceOracle(oracle).price(i.assetOut);
+            uint256 notionalSettlement = Math.mulDiv(i.amountIn, i.leverageBps, VelanosConstants.BPS);
 
             positionOf[msg.sender] = Position({
                 market: i.assetOut,
@@ -121,7 +121,7 @@ contract MockPerpAdapter is IAdapter {
     }
 
     function _valueOf(Position memory p) internal view returns (uint256) {
-        (uint256 markPrice,) = AegisPriceOracle(oracle).price(p.market);
+        (uint256 markPrice,) = VelanosPriceOracle(oracle).price(p.market);
         uint256 sizeSettlement = _usdToSettlement(p.sizeUsd8);
 
         if (markPrice == p.entryPriceUsd8) return p.collateral;
@@ -139,10 +139,10 @@ contract MockPerpAdapter is IAdapter {
     }
 
     function _settlementToUsd(uint256 amount) internal view returns (uint256) {
-        return Math.mulDiv(amount, AegisConstants.PRICE_SCALE, 10 ** settlementDecimals);
+        return Math.mulDiv(amount, VelanosConstants.PRICE_SCALE, 10 ** settlementDecimals);
     }
 
     function _usdToSettlement(uint256 usd) internal view returns (uint256) {
-        return Math.mulDiv(usd, 10 ** settlementDecimals, AegisConstants.PRICE_SCALE);
+        return Math.mulDiv(usd, 10 ** settlementDecimals, VelanosConstants.PRICE_SCALE);
     }
 }

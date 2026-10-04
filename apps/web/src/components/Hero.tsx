@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { Eyebrow, formatAmount } from '@aegis/ui';
+import { Eyebrow, formatAmount } from '@velanos/ui';
 import { api } from '@/lib/api';
 import { PipelineDiagram } from './PipelineDiagram';
 import { Ticker } from './Ticker';

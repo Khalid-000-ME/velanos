@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { ExternalLink, Gavel } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAccount, useChainId, useSwitchChain, useWriteContract } from 'wagmi';
-import { violationCourtAbi } from '@aegis/config';
-import { Button, Card, Chip, RulePill, formatAmount, relativeTime, shortAddress } from '@aegis/ui';
+import { violationCourtAbi } from '@velanos/config';
+import { Button, Card, Chip, RulePill, formatAmount, relativeTime, shortAddress } from '@velanos/ui';
 import { CHAIN_SHORT, type FeedEntry } from '@/lib/api';
 import { asWalletChain } from '@/lib/wagmi';
 

@@ -1,7 +1,7 @@
 {
-  "name": "@aegis/agent-sdk",
+  "name": "@velanos/agent-sdk",
   "version": "0.1.0",
-  "description": "Sign, pre-flight and submit TradeIntents to Aegis vaults.",
+  "description": "Sign, pre-flight and submit TradeIntents to Velanos vaults.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",
@@ -13,7 +13,7 @@
     "lint": "echo ok"
   },
   "dependencies": {
-    "@aegis/config": "workspace:*",
+    "@velanos/config": "workspace:*",
     "viem": "^2.57.2",
     "zod": "^4.6.5"
   },

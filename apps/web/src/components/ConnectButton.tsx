@@ -1,7 +1,7 @@
 'use client';
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { shortAddress } from '@aegis/ui';
+import { shortAddress } from '@velanos/ui';
 
 /**
  * Connect / disconnect.

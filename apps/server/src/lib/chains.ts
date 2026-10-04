@@ -9,7 +9,7 @@ import {
   http,
 } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import { chainById, isSupportedChainId } from '@aegis/config';
+import { chainById, isSupportedChainId } from '@velanos/config';
 import { activeChains, env } from '../env';
 
 const localAnvil: Chain = defineChain({

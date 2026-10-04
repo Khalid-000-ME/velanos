@@ -1,5 +1,5 @@
 {
-  "name": "@aegis/web",
+  "name": "@velanos/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,9 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aegis/agent-sdk": "workspace:*",
-    "@aegis/config": "workspace:*",
-    "@aegis/ui": "workspace:*",
+    "@velanos/agent-sdk": "workspace:*",
+    "@velanos/config": "workspace:*",
+    "@velanos/ui": "workspace:*",
     "@tanstack/react-query": "^5.104.1",
     "clsx": "^2.1.1",
     "framer-motion": "^14.0.0",

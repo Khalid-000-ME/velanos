@@ -296,7 +296,7 @@ async function main(): Promise<void> {
   }
 
   const vaults = seedVaults();
-  console.log(`\nAegis demo gate — chain ${CHAIN_ID}\n`);
+  console.log(`\nVelanos demo gate — chain ${CHAIN_ID}\n`);
 
   const results: Array<{ id: string; title: string; fails: string[] }> = [];
 

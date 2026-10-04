@@ -4,7 +4,7 @@ pragma solidity 0.8.24;
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
 /**
- * @title AegisPriceOracle
+ * @title VelanosPriceOracle
  * @notice USD prices with 8 decimals for every asset a vault can hold.
  *
  * This is a **test oracle**: a role-gated setter, disclosed as such in the UI and the
@@ -13,7 +13,7 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
  * On a real deployment this contract is replaced by Chainlink feeds; nothing else in the
  * protocol changes, because everything reads prices through this interface.
  */
-contract AegisPriceOracle is AccessControl {
+contract VelanosPriceOracle is AccessControl {
     bytes32 public constant PRICE_UPDATER_ROLE = keccak256("PRICE_UPDATER_ROLE");
 
     struct Price {

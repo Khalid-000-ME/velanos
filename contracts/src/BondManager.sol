@@ -5,7 +5,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
-import {AegisConstants, CompensationKind, Mandate, VaultState} from "./AegisTypes.sol";
+import {VelanosConstants, CompensationKind, Mandate, VaultState} from "./VelanosTypes.sol";
 
 interface IBondedVault {
     function mandate() external view returns (Mandate memory);
@@ -134,7 +134,7 @@ contract BondManager is ReentrancyGuard {
         b.slashedTotal += paid;
 
         uint256 toReporter =
-            reporter == address(0) ? 0 : Math.mulDiv(paid, bountyBps, AegisConstants.BPS);
+            reporter == address(0) ? 0 : Math.mulDiv(paid, bountyBps, VelanosConstants.BPS);
         uint256 toVault = paid - toReporter;
 
         Mandate memory m = IBondedVault(vault).mandate();
@@ -197,7 +197,7 @@ contract BondManager is ReentrancyGuard {
     /// @notice Share of the vault's worst case the bond can actually cover, in bps.
     ///         Surfaced on the fund screen so a depositor sees the unbacked remainder.
     function coverageBps(address vault, uint256 maxShortfall) external view returns (uint256) {
-        if (maxShortfall == 0) return AegisConstants.BPS;
-        return Math.min(Math.mulDiv(_bonds[vault].available, AegisConstants.BPS, maxShortfall), AegisConstants.BPS);
+        if (maxShortfall == 0) return VelanosConstants.BPS;
+        return Math.min(Math.mulDiv(_bonds[vault].available, VelanosConstants.BPS, maxShortfall), VelanosConstants.BPS);
     }
 }

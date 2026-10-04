@@ -1,6 +1,6 @@
 import { createPublicClient, http, type Address, type PublicClient } from 'viem';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { policyGuardAbi, aegisVaultAbi } from '@aegis/config';
+import { policyGuardAbi, velanosVaultAbi } from '@velanos/config';
 import { checkStatic, checkStateful, explain } from '../src/guard.js';
 import { hashIntent } from '../src/eip712.js';
 import { IntentKind, type Mandate, type TradeIntent, VaultKind, VaultState } from '../src/types.js';
@@ -237,7 +237,7 @@ describe('SDK rule mirror matches deployed Solidity', () => {
 
     const onChain = (await client.readContract({
       address: vaultAddress,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'hashIntent',
       args: [intent as never],
     })) as string;

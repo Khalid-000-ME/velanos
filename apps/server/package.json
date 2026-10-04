@@ -1,5 +1,5 @@
 {
-  "name": "@aegis/server",
+  "name": "@velanos/server",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,8 +13,8 @@
     "lint": "echo ok"
   },
   "dependencies": {
-    "@aegis/agent-sdk": "workspace:*",
-    "@aegis/config": "workspace:*",
+    "@velanos/agent-sdk": "workspace:*",
+    "@velanos/config": "workspace:*",
     "@fastify/cors": "^11.1.0",
     "better-sqlite3": "^13.0.3",
     "drizzle-orm": "^0.45.3",

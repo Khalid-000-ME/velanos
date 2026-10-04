@@ -9,7 +9,7 @@ import {
   http,
 } from 'viem';
 import {
-  aegisVaultAbi,
+  velanosVaultAbi,
   bondManagerAbi,
   chainById,
   contractAddress,
@@ -17,7 +17,7 @@ import {
   isSupportedChainId,
   rpcUrlFor,
   violationCourtAbi,
-} from '@aegis/config';
+} from '@velanos/config';
 import { checkStatic, checkStateful, explain } from './guard';
 import { hashIntent, rationaleHash, signIntent } from './eip712';
 import type {
@@ -29,7 +29,7 @@ import type {
   VaultSnapshot,
 } from './types';
 
-export interface AegisClientOptions {
+export interface VelanosClientOptions {
   chainId: number;
   publicClient?: PublicClient;
   walletClient?: WalletClient;
@@ -39,7 +39,7 @@ export interface AegisClientOptions {
   /**
    * Chain definition, for a network the config package does not ship — a local anvil fork, or a
    * testnet added after this SDK was published. Without it the chain is resolved from
-   * `@aegis/config`, which only knows the deployed public chains.
+   * `@velanos/config`, which only knows the deployed public chains.
    */
   chain?: Chain;
   /**
@@ -85,15 +85,15 @@ export interface BuildIntentArgs {
  * agent that skips it is choosing to find out the expensive way — which is exactly what the rogue
  * profiles in the demo do.
  */
-export class AegisClient {
+export class VelanosClient {
   readonly chainId: number;
   readonly publicClient: PublicClient;
   private readonly walletClient?: WalletClient;
   private readonly relayUrl?: string;
   private readonly chain: Chain;
-  private readonly addressOverrides: NonNullable<AegisClientOptions['addresses']>;
+  private readonly addressOverrides: NonNullable<VelanosClientOptions['addresses']>;
 
-  constructor(opts: AegisClientOptions) {
+  constructor(opts: VelanosClientOptions) {
     this.chainId = opts.chainId;
     this.chain = opts.chain ?? chainById(opts.chainId); // throws for an unknown chain unless `chain` is supplied
     this.addressOverrides = opts.addresses ?? {};
@@ -129,7 +129,7 @@ export class AegisClient {
   async getMandate(vault: Address): Promise<Mandate> {
     const raw = await this.publicClient.readContract({
       address: vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'mandate',
     });
     return raw as unknown as Mandate;
@@ -138,7 +138,7 @@ export class AegisClient {
   async getSnapshot(vault: Address, intent: TradeIntent): Promise<VaultSnapshot> {
     const raw = await this.publicClient.readContract({
       address: vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'snapshot',
       args: [intent as never],
     });
@@ -148,7 +148,7 @@ export class AegisClient {
   async getFrozenAt(vault: Address): Promise<bigint> {
     const raw = await this.publicClient.readContract({
       address: vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'frozenAt',
     });
     return BigInt(raw as bigint);
@@ -190,7 +190,7 @@ export class AegisClient {
   private read(vault: Address, fn: string) {
     return this.publicClient.readContract({
       address: vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: fn as never,
     });
   }
@@ -228,7 +228,7 @@ export class AegisClient {
   async verifyDigestAgainstChain(intent: TradeIntent): Promise<boolean> {
     const onChain = (await this.publicClient.readContract({
       address: intent.vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'hashIntent',
       args: [intent as never],
     })) as Hex;
@@ -274,7 +274,7 @@ export class AegisClient {
   async signIntent(intent: TradeIntent, account?: Account | Address): Promise<Hex> {
     const wallet = this.requireWallet();
     const acct = account ?? wallet.account;
-    if (!acct) throw new Error('AegisClient.signIntent needs an account');
+    if (!acct) throw new Error('VelanosClient.signIntent needs an account');
 
     return signIntent({
       signTypedData: (args) =>
@@ -289,11 +289,11 @@ export class AegisClient {
   /** Sends the intent straight to the vault. The signature is the authorisation, not the sender. */
   async submitDirect(intent: TradeIntent, sig: Hex): Promise<Hex> {
     const wallet = this.requireWallet();
-    if (!wallet.account) throw new Error('AegisClient.submitDirect needs an account');
+    if (!wallet.account) throw new Error('VelanosClient.submitDirect needs an account');
 
     return wallet.writeContract({
       address: intent.vault,
-      abi: aegisVaultAbi,
+      abi: velanosVaultAbi,
       functionName: 'execute',
       args: [intent as never, sig],
       chain: this.chain,
@@ -312,7 +312,7 @@ export class AegisClient {
     intent: TradeIntent,
     sig: Hex,
   ): Promise<{ submitted: boolean; txHash?: Hex; ruleId?: RuleId | 0; published?: boolean }> {
-    if (!this.relayUrl) throw new Error('AegisClient needs a relayUrl to submit via relay');
+    if (!this.relayUrl) throw new Error('VelanosClient needs a relayUrl to submit via relay');
 
     const res = await fetch(`${this.relayUrl}/intents`, {
       method: 'POST',
@@ -331,7 +331,7 @@ export class AegisClient {
   /** Reports a signed static violation and collects the bounty. Used by the watcher. */
   async reportViolation(intent: TradeIntent, sig: Hex): Promise<Hex> {
     const wallet = this.requireWallet();
-    if (!wallet.account) throw new Error('AegisClient.reportViolation needs an account');
+    if (!wallet.account) throw new Error('VelanosClient.reportViolation needs an account');
 
     return wallet.writeContract({
       address: this.addressOf('ViolationCourt'),
@@ -355,7 +355,7 @@ export class AegisClient {
   }
 
   private requireWallet(): WalletClient {
-    if (!this.walletClient) throw new Error('AegisClient was constructed without a walletClient');
+    if (!this.walletClient) throw new Error('VelanosClient was constructed without a walletClient');
     return this.walletClient;
   }
 }

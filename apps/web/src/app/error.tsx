@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@aegis/ui';
+import { Button } from '@velanos/ui';
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
   return (

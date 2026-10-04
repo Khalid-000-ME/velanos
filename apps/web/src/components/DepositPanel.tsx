@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount, useChainId, useReadContract, useSwitchChain, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { toast } from 'sonner';
-import { aegisVaultAbi, mockUsdgAbi } from '@aegis/config';
-import { Button, Card, formatAmount } from '@aegis/ui';
+import { velanosVaultAbi, mockUsdgAbi } from '@velanos/config';
+import { Button, Card, formatAmount } from '@velanos/ui';
 import { asWalletChain } from '@/lib/wagmi';
 
 /**
@@ -63,7 +63,7 @@ export function DepositPanel({
 
   const { data: maxDeposit } = useReadContract({
     address: vault as `0x${string}`,
-    abi: aegisVaultAbi,
+    abi: velanosVaultAbi,
     functionName: 'maxDeposit',
     args: address ? [address] : undefined,
     chainId,
@@ -226,7 +226,7 @@ export function DepositPanel({
                 run('Deposit', () =>
                   writeContractAsync({
                     address: vault as `0x${string}`,
-                    abi: aegisVaultAbi,
+                    abi: velanosVaultAbi,
                     functionName: 'deposit',
                     args: [parsed, address as `0x${string}`],
                     chainId,

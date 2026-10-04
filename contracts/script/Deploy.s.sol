@@ -11,7 +11,7 @@ import {PolicyGuard} from "../src/PolicyGuard.sol";
 import {ViolationCourt} from "../src/ViolationCourt.sol";
 import {VaultFactory} from "../src/VaultFactory.sol";
 import {PerpAdapterDeployer, VaultDeployer} from "../src/VaultDeployer.sol";
-import {AegisPriceOracle} from "../src/oracle/AegisPriceOracle.sol";
+import {VelanosPriceOracle} from "../src/oracle/VelanosPriceOracle.sol";
 import {StockSwapAdapter} from "../src/adapters/StockSwapAdapter.sol";
 import {MockStockToken} from "../src/testenv/MockStockToken.sol";
 import {MockUSDG} from "../src/testenv/MockUSDG.sol";
@@ -33,7 +33,7 @@ contract Deploy is Script {
     using stdJson for string;
 
     struct Deployed {
-        AegisPriceOracle oracle;
+        VelanosPriceOracle oracle;
         PolicyGuard guard;
         VaultFactory factory;
         AgentRegistry registry;
@@ -74,7 +74,7 @@ contract Deploy is Script {
     }
 
     function _deployCore(address deployer) internal returns (Deployed memory d) {
-        d.oracle = new AegisPriceOracle(deployer);
+        d.oracle = new VelanosPriceOracle(deployer);
         d.guard = new PolicyGuard();
         d.factory = new VaultFactory(address(d.guard), address(d.oracle), warnCooldown, settleGrace, deployer);
         d.registry = new AgentRegistry(address(d.factory));
@@ -157,7 +157,7 @@ contract Deploy is Script {
 
         string memory contracts = string.concat(
             "{",
-            '"AegisPriceOracle":"', vm.toString(address(d.oracle)), '",',
+            '"VelanosPriceOracle":"', vm.toString(address(d.oracle)), '",',
             '"PolicyGuard":"', vm.toString(address(d.guard)), '",',
             '"AgentRegistry":"', vm.toString(address(d.registry)), '",',
             '"BondManager":"', vm.toString(address(d.bond)), '",',

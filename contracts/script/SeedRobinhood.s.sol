@@ -5,12 +5,12 @@ import {Script} from "forge-std/Script.sol";
 import {console2} from "forge-std/console2.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 
-import {AegisVault} from "../src/AegisVault.sol";
+import {VelanosVault} from "../src/VelanosVault.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {BondManager} from "../src/BondManager.sol";
 import {VaultFactory} from "../src/VaultFactory.sol";
 import {MockUSDG} from "../src/testenv/MockUSDG.sol";
-import {Mandate, VaultKind} from "../src/AegisTypes.sol";
+import {Mandate, VaultKind} from "../src/VelanosTypes.sol";
 
 /**
  * @notice Creates the five demo vaults (A–E) described in the demo runbook and funds them.
@@ -136,7 +136,7 @@ contract SeedRobinhood is Script {
 
     function _fund(address vault, uint256 amount) internal {
         usdg.approve(vault, amount);
-        AegisVault(vault).deposit(amount, depositor);
+        VelanosVault(vault).deposit(amount, depositor);
     }
 
     function _writeSeedFile() internal {

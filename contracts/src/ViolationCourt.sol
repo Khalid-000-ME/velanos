@@ -3,14 +3,14 @@ pragma solidity 0.8.24;
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {
-    AegisConstants,
+    VelanosConstants,
     CompensationKind,
     FreezeReason,
     Mandate,
     Rules,
     TradeIntent,
     VaultState
-} from "./AegisTypes.sol";
+} from "./VelanosTypes.sol";
 import {IPolicyGuard} from "./PolicyGuard.sol";
 
 interface ICourtVault {
@@ -169,7 +169,7 @@ contract ViolationCourt {
         uint256 paid = ICourtBondManager(bondManager).slash(
             vaultAddr, m.perViolationPenalty, reporter, m.reporterBountyBps, CompensationKind.PENALTY
         );
-        uint256 bounty = reporter == address(0) ? 0 : Math.mulDiv(paid, m.reporterBountyBps, AegisConstants.BPS);
+        uint256 bounty = reporter == address(0) ? 0 : Math.mulDiv(paid, m.reporterBountyBps, VelanosConstants.BPS);
 
         emit ViolationReported(vaultAddr, i.nonce, ruleId, msg.sender, paid, bounty);
     }

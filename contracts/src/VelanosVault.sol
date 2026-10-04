@@ -12,7 +12,7 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
 import {
-    AegisConstants,
+    VelanosConstants,
     CompensationKind,
     ExecStatus,
     FreezeReason,
@@ -23,11 +23,11 @@ import {
     VaultKind,
     VaultSnapshot,
     VaultState
-} from "./AegisTypes.sol";
+} from "./VelanosTypes.sol";
 import {IPolicyGuard} from "./PolicyGuard.sol";
-import {AegisVaultLib} from "./AegisVaultLib.sol";
+import {VelanosVaultLib} from "./VelanosVaultLib.sol";
 import {IAdapter} from "./adapters/IAdapter.sol";
-import {AegisPriceOracle} from "./oracle/AegisPriceOracle.sol";
+import {VelanosPriceOracle} from "./oracle/VelanosPriceOracle.sol";
 
 interface IViolationCourt {
     function slashFromVault(TradeIntent calldata i, bytes calldata sig, uint16 ruleId, address submitter) external;
@@ -38,7 +38,7 @@ interface IAgentRegistryLike {
 }
 
 /**
- * @title AegisVault
+ * @title VelanosVault
  * @notice One agent, one immutable mandate, one pot of depositor capital.
  *
  * Three ideas hold the design together:
@@ -55,7 +55,7 @@ interface IAgentRegistryLike {
  * 3. **Pay.** A static breach slashes the agent's bond to depositors in the same
  *    transaction, before the agent can do anything about it.
  */
-contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
+contract VelanosVault is ERC4626, EIP712, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     // ─────────────────────────────── constants ──────────────────────────────────
@@ -156,7 +156,7 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
     constructor(Config memory c)
         ERC4626(IERC20(c.mandate.settlementAsset))
         ERC20(c.name, c.symbol)
-        EIP712("AegisProp", "1")
+        EIP712("Velanos", "1")
     {
         _mandate = c.mandate;
         mandateHash = keccak256(abi.encode(c.mandate));
@@ -172,8 +172,8 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
         settleGrace = c.settleGrace;
 
         state = VaultState.PENDING_BOND;
-        hwmPricePerShareWad = AegisConstants.WAD;
-        dayOpenPricePerShareWad = AegisConstants.WAD;
+        hwmPricePerShareWad = VelanosConstants.WAD;
+        dayOpenPricePerShareWad = VelanosConstants.WAD;
         dayOpenTs = uint64(block.timestamp);
     }
 
@@ -186,7 +186,7 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
      *      another vault or onto another chain even with the same mandate and nonce.
      */
     function hashIntent(TradeIntent calldata i) public view returns (bytes32) {
-        return _hashTypedDataV4(AegisVaultLib.intentStructHash(i));
+        return _hashTypedDataV4(VelanosVaultLib.intentStructHash(i));
     }
 
     function recoverSigner(TradeIntent calldata i, bytes calldata sig) public view returns (address) {
@@ -283,7 +283,7 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
         recentStrikes[1] = recentStrikes[2];
         recentStrikes[2] = nowTs;
 
-        uint8 inWindow = AegisVaultLib.strikesInWindow(recentStrikes, nowTs, STRIKE_WINDOW);
+        uint8 inWindow = VelanosVaultLib.strikesInWindow(recentStrikes, nowTs, STRIKE_WINDOW);
         emit StrikeRecorded(nonce, inWindow);
 
         if (inWindow >= STRIKES_TO_WARN && state == VaultState.ACTIVE) {
@@ -293,7 +293,7 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
     }
 
     function strikesInWindow() public view returns (uint8) {
-        return AegisVaultLib.strikesInWindow(recentStrikes, uint64(block.timestamp), STRIKE_WINDOW);
+        return VelanosVaultLib.strikesInWindow(recentStrikes, uint64(block.timestamp), STRIKE_WINDOW);
     }
 
     // ───────────────────────────── lifecycle / poke ─────────────────────────────
@@ -330,7 +330,7 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
         if (state != VaultState.PENDING_BOND) revert WrongState(state);
         _setState(VaultState.ACTIVE, FreezeReason.NONE);
         dayOpenTs = uint64(block.timestamp);
-        dayOpenPricePerShareWad = AegisConstants.WAD;
+        dayOpenPricePerShareWad = VelanosConstants.WAD;
     }
 
     function freeze(FreezeReason r) external {
@@ -388,7 +388,7 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
             uint256 out = IAdapter(adapter).closeAll(address(this));
             emit Unwound(address(0), 0, out);
         } else {
-            AegisVaultLib.unwindSpot(heldAssets, _mandate.allowedAdapters[0], asset());
+            VelanosVaultLib.unwindSpot(heldAssets, _mandate.allowedAdapters[0], asset());
         }
         _poke();
     }
@@ -431,7 +431,7 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
 
     function _heldAssetValue() internal view returns (uint256) {
         if (_mandate.kind == VaultKind.PERP) return 0;
-        return AegisVaultLib.heldAssetValue(oracle, address(this), heldAssets, decimals());
+        return VelanosVaultLib.heldAssetValue(oracle, address(this), heldAssets, decimals());
     }
 
     function _openPositionValue() internal view returns (uint256) {
@@ -446,8 +446,8 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
 
     function _pricePerShareWad(uint256 nav) internal view returns (uint256) {
         uint256 supply = totalSupply();
-        if (supply == 0) return AegisConstants.WAD;
-        return Math.mulDiv(nav, AegisConstants.WAD, supply);
+        if (supply == 0) return VelanosConstants.WAD;
+        return Math.mulDiv(nav, VelanosConstants.WAD, supply);
     }
 
     /**
@@ -457,12 +457,12 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
      *      bank a gain, reset expectations and then lose it.
      */
     function floorPricePerShareWad() public view returns (uint256) {
-        return AegisVaultLib.floorWad(hwmPricePerShareWad, _mandate.maxDrawdownBps);
+        return VelanosVaultLib.floorWad(hwmPricePerShareWad, _mandate.maxDrawdownBps);
     }
 
     /// @notice What it would cost, right now, to lift every share back to the floor.
     function drawdownShortfall() public view returns (uint256) {
-        return AegisVaultLib.shortfall(pricePerShareWad(), floorPricePerShareWad(), totalSupply());
+        return VelanosVaultLib.shortfall(pricePerShareWad(), floorPricePerShareWad(), totalSupply());
     }
 
     // ──────────────────────────────── snapshot ──────────────────────────────────
@@ -473,9 +473,9 @@ contract AegisVault is ERC4626, EIP712, ReentrancyGuard {
     ///         SDK and the inspector all judge an intent against identical inputs.
     function snapshot(TradeIntent calldata i) public view returns (VaultSnapshot memory) {
         uint256 nav = navSettlement();
-        return AegisVaultLib.buildSnapshot(
+        return VelanosVaultLib.buildSnapshot(
             i,
-            AegisVaultLib.SnapshotParams({
+            VelanosVaultLib.SnapshotParams({
                 vault: address(this),
                 oracle: oracle,
                 settlementAsset: asset(),

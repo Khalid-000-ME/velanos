@@ -1,5 +1,5 @@
 {
-  "name": "@aegis/watcher",
+  "name": "@velanos/watcher",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -11,8 +11,8 @@
     "lint": "echo ok"
   },
   "dependencies": {
-    "@aegis/agent-sdk": "workspace:*",
-    "@aegis/config": "workspace:*",
+    "@velanos/agent-sdk": "workspace:*",
+    "@velanos/config": "workspace:*",
     "viem": "^2.57.2",
     "zod": "^4.6.5"
   },

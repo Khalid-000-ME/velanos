@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { desc, eq } from 'drizzle-orm';
-import { modeLabels, modesFromEnv } from '@aegis/config';
+import { modeLabels, modesFromEnv } from '@velanos/config';
 import { db, schema } from '../db/index';
 import { activeChains, env } from '../env';
 import { publicClientFor } from '../lib/chains';

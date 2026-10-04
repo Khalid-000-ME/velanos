@@ -15,13 +15,13 @@ const TARGET = join(ROOT, 'packages', 'config', 'src', 'abis.ts');
 
 /** `[exported name, solidity file, contract name]` */
 const WANTED: ReadonlyArray<readonly [string, string, string]> = [
-  ['aegisVaultAbi', 'AegisVault.sol', 'AegisVault'],
+  ['velanosVaultAbi', 'VelanosVault.sol', 'VelanosVault'],
   ['policyGuardAbi', 'PolicyGuard.sol', 'PolicyGuard'],
   ['agentRegistryAbi', 'AgentRegistry.sol', 'AgentRegistry'],
   ['bondManagerAbi', 'BondManager.sol', 'BondManager'],
   ['violationCourtAbi', 'ViolationCourt.sol', 'ViolationCourt'],
   ['vaultFactoryAbi', 'VaultFactory.sol', 'VaultFactory'],
-  ['aegisPriceOracleAbi', 'AegisPriceOracle.sol', 'AegisPriceOracle'],
+  ['velanosPriceOracleAbi', 'VelanosPriceOracle.sol', 'VelanosPriceOracle'],
   ['stockSwapAdapterAbi', 'StockSwapAdapter.sol', 'StockSwapAdapter'],
   ['mockPerpAdapterAbi', 'MockPerpAdapter.sol', 'MockPerpAdapter'],
   ['oracleSwapPoolAbi', 'OracleSwapPool.sol', 'OracleSwapPool'],

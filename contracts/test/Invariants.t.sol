@@ -5,13 +5,13 @@ import {CommonBase} from "forge-std/Base.sol";
 import {StdCheats} from "forge-std/StdCheats.sol";
 import {StdInvariant} from "forge-std/StdInvariant.sol";
 import {Harness} from "./Harness.sol";
-import {AegisVault} from "../src/AegisVault.sol";
+import {VelanosVault} from "../src/VelanosVault.sol";
 import {BondManager} from "../src/BondManager.sol";
 import {ViolationCourt} from "../src/ViolationCourt.sol";
 import {MockStockToken} from "../src/testenv/MockStockToken.sol";
 import {MockUSDG} from "../src/testenv/MockUSDG.sol";
-import {AegisPriceOracle} from "../src/oracle/AegisPriceOracle.sol";
-import {IntentKind, TradeIntent, VaultState} from "../src/AegisTypes.sol";
+import {VelanosPriceOracle} from "../src/oracle/VelanosPriceOracle.sol";
+import {IntentKind, TradeIntent, VaultState} from "../src/VelanosTypes.sol";
 
 /**
  * @notice Drives the protocol the way an unsupervised agent would, including badly.
@@ -26,10 +26,10 @@ import {IntentKind, TradeIntent, VaultState} from "../src/AegisTypes.sol";
  */
 contract InvariantHandler is CommonBase, StdCheats {
     struct Wiring {
-        AegisVault vault;
+        VelanosVault vault;
         BondManager bond;
         ViolationCourt court;
-        AegisPriceOracle oracle;
+        VelanosPriceOracle oracle;
         MockUSDG usdg;
         MockStockToken tsla;
         MockStockToken pltr;
@@ -49,7 +49,7 @@ contract InvariantHandler is CommonBase, StdCheats {
         w = w_;
     }
 
-    function vault() external view returns (AegisVault) {
+    function vault() external view returns (VelanosVault) {
         return w.vault;
     }
 
