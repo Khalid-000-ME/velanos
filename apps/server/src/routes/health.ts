@@ -101,9 +101,22 @@ export async function healthRoutes(app: FastifyInstance): Promise<void> {
       .orderBy(desc(schema.intents.ts))
       .limit(1_000);
 
+    const feed = await db.select().from(schema.feedIntents);
+
     const totalBonded = vaults.reduce((acc, v) => acc + BigInt(v.bondAvailable), 0n);
     const totalSlashed = slashes.reduce((acc, s) => acc + BigInt(s.penaltyPaid), 0n);
-    const violationsBlocked = intents.filter((i) => i.status === 'slashed' || i.status === 'rejected').length;
+
+    // A violation can be stopped in two places: inside the vault (an IntentRejected event, which
+    // lands in `intents`) or at the relay, which refuses to submit and publishes the signature
+    // instead (which lands only in `feed_intents`). Counting just the first undercounted every
+    // relay-refused violation — the hero showed "0 blocked" beside a non-zero payout. Keyed by
+    // vault and nonce so an intent present in both places is counted once.
+    const blocked = new Set<string>();
+    for (const i of intents) {
+      if (i.status === 'slashed' || i.status === 'rejected') blocked.add(`${i.chainId}:${i.vault}:${i.nonce}`);
+    }
+    for (const f of feed) blocked.add(`${f.chainId}:${f.vault}:${f.nonce}`);
+    const violationsBlocked = blocked.size;
 
     return {
       totalBonded: totalBonded.toString(),
