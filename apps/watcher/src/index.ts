@@ -17,6 +17,7 @@ import {
 import { RULES, type RuleId, type TradeIntent } from '@velanos/agent-sdk';
 import { env, rpcFor } from './env';
 import { TxQueue, isTerminalFailure } from './txqueue';
+import { startPriceUpdater } from './prices';
 
 const anvil: Chain = defineChain({
   id: 31337,
@@ -82,6 +83,7 @@ async function main(): Promise<void> {
   await loadCourtAddresses();
   setInterval(() => void loadCourtAddresses(), 60_000);
   setInterval(() => void heartbeat(), 10_000);
+  startPriceUpdater();
 
   // Two independent loops. The feed loop is the money-maker and runs tight; the lifecycle sweep is
   // housekeeping and runs on a slower cadence.
