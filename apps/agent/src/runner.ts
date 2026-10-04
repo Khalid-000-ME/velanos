@@ -124,6 +124,7 @@ export class AgentRunner {
     let proposal = record.proposal;
     if (override) proposal = { ...proposal, action: 'BUY', asset: override.asset, sizeUsd: override.sizeUsd };
     if (profile.mutate) proposal = profile.mutate(proposal);
+    proposal = { ...proposal, asset: this.resolveRole(proposal.asset, ctx) };
 
     if (proposal.action === 'HOLD') {
       return this.remember({
@@ -246,6 +247,18 @@ export class AgentRunner {
   }
 
   // ───────────────────────────────── context ──────────────────────────────────
+
+  /** Maps the `$ALLOWED` / `$FORBIDDEN` placeholders in a profile to tickers of this vault's universe. */
+  private resolveRole(asset: string, ctx: { mandate: Mandate; assets: AssetBook }): string {
+    if (asset !== '$ALLOWED' && asset !== '$FORBIDDEN') return asset;
+    const inMandate = new Set(ctx.mandate.allowedAssets.map((a) => a.toLowerCase()));
+    const wanted = asset === '$ALLOWED';
+    const tickers = Object.entries(ctx.assets)
+      .filter(([t, a]) => t !== 'USDG' && inMandate.has(a.address.toLowerCase()) === wanted)
+      .map(([t]) => t);
+    if (tickers.length === 0) throw new Error(`no ${wanted ? 'allowed' : 'forbidden'} asset to use for this vault`);
+    return tickers[0] as string;
+  }
 
   private async loadContext(vault: Address) {
     const res = await fetch(`${env.SERVER_URL}/vaults/${vault}`);

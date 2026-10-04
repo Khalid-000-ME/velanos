@@ -9,11 +9,12 @@ const EnvSchema = z.object({
   /** Used for the `direct` route, where the agent pays its own gas. */
   AGENT_TX_PK: z.string().regex(/^0x[0-9a-fA-F]{64}$/).optional(),
 
-  LLM_PROVIDER: z.enum(['anthropic']).default('anthropic'),
+  LLM_PROVIDER: z.enum(['anthropic', 'groq']).default('anthropic'),
   LLM_MODEL: z.string().default('claude-opus-5-5'),
   LLM_MODE: z.enum(['live', 'replay']).default('replay'),
   LLM_RECORD: z.coerce.number().int().default(0),
   ANTHROPIC_API_KEY: z.string().optional(),
+  GROQ_API_KEY: z.string().optional(),
 
   AGENT_TICK_MS: z.coerce.number().int().default(15_000),
   LOCAL_RPC: z.string().url().optional(),

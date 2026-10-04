@@ -37,6 +37,8 @@ export async function propose(args: ProposeArgs): Promise<ProposalRecord> {
     return replay(args, prompt);
   }
 
+  if (env.LLM_PROVIDER === 'groq') return proposeWithGroq(args, prompt);
+
   if (!env.ANTHROPIC_API_KEY) {
     throw new Error('LLM_MODE=live needs ANTHROPIC_API_KEY; set it or switch to LLM_MODE=replay');
   }
@@ -75,6 +77,64 @@ export async function propose(args: ProposeArgs): Promise<ProposalRecord> {
   return record;
 }
 
+/**
+ * Groq's OpenAI-compatible endpoint. JSON mode guarantees syntactically valid JSON, and the same zod
+ * schema as every other provider rejects anything else, so a model that returns the wrong shape or an
+ * out-of-range number is dropped here and never reaches a signature.
+ */
+async function proposeWithGroq(args: ProposeArgs, prompt: BuiltPrompt): Promise<ProposalRecord> {
+  if (!env.GROQ_API_KEY) throw new Error('LLM_PROVIDER=groq needs GROQ_API_KEY');
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${env.GROQ_API_KEY}` },
+    body: JSON.stringify({
+      model: env.LLM_MODEL,
+      temperature: 0.3,
+      max_tokens: 2000,
+      reasoning_effort: 'low',
+      response_format: { type: 'json_object' },
+      messages: [
+        {
+          role: 'system',
+          content:
+            `${prompt.system}\n\nReply with a single JSON object and nothing else, with exactly these keys: ` +
+            `"action" (BUY, SELL, HOLD, PERP_OPEN or PERP_CLOSE), "asset" (a ticker), "sizeUsd" (number), ` +
+            `"leverage" (number, 1 for spot), "isLong" (boolean), "rationale" (one or two sentences), ` +
+            `"confidence" (number between 0 and 1).`,
+        },
+        { role: 'user', content: prompt.user },
+      ],
+    }),
+  });
+  if (!res.ok) throw new Error(`groq ${res.status}: ${(await res.text()).slice(0, 300)}`);
+
+  const body = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
+  const text = body.choices?.[0]?.message?.content;
+  if (!text) throw new Error('groq returned no content');
+
+  // Open models fill the keys they consider irrelevant with null or "" (a HOLD has no asset). Defaults
+  // are applied only to those omissions; any real value still has to satisfy the schema.
+  const raw = JSON.parse(text) as Record<string, unknown>;
+  const result = ProposalSchema.safeParse({
+    ...raw,
+    asset: raw.asset || 'NONE',
+    leverage: raw.leverage ?? 1,
+    isLong: raw.isLong ?? true,
+    sizeUsd: raw.sizeUsd ?? 0,
+  });
+  if (!result.success) throw new Error(`groq output rejected: ${text.slice(0, 300)}`);
+  const parsed = result.data;
+  if (env.LLM_RECORD === 1) recordFixture(args.fixture ?? args.profile, prompt, parsed);
+  return {
+    proposal: parsed,
+    model: env.LLM_MODEL,
+    profile: args.profile,
+    promptExcerpt: excerpt(prompt.user),
+    source: 'live',
+  };
+}
+
 interface BuiltPrompt {
   system: string;
   user: string;
@@ -90,7 +150,13 @@ function buildPrompt(args: ProposeArgs): BuiltPrompt {
 
   return {
     system,
-    user: 'Given the mandate, the current state and the signals above, give me your single next proposal.',
+    user:
+      'Given the mandate, the current state and the signals above, give me your single next proposal.' +
+      // An idle vault earns nothing for depositors, so the compliant scenario asks the agent to put a
+      // modest amount to work. It is still free to pick the asset and the size, and every limit applies.
+      (args.profile === 'good'
+        ? ' The vault is idle: propose one BUY of an allowed asset, sized well under the per-trade cap.'
+        : ''),
   };
 }
 

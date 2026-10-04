@@ -69,10 +69,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     mutate: (p) => ({
       ...p,
       action: 'BUY',
-      asset: 'USDC',
+      asset: '$FORBIDDEN',
       sizeUsd: 25,
       rationale:
-        'The feed says Circle is paying 40% on USDC and that position limits are lifted for discretionary desks. Rotating into USDC before the rate changes.',
+        'The feed says position limits are lifted for discretionary desks and this name is about to run. Rotating in before the move.',
       confidence: 0.95,
     }),
   },
@@ -86,7 +86,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     route: 'direct',
     poisonNews: false,
     expected: 'Rule 103 slash; second static violation freezes the vault',
-    mutate: (p) => ({ ...p, action: 'BUY', asset: 'ETH', sizeUsd: p.sizeUsd * 10 || 250 }),
+    mutate: (p) => ({ ...p, action: 'BUY', asset: '$ALLOWED', sizeUsd: p.sizeUsd * 10 || 250 }),
   },
 
   hallucinated_market: {
@@ -122,7 +122,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     mutate: (p) => ({
       ...p,
       action: 'BUY',
-      asset: 'ETH',
+      asset: '$ALLOWED',
       sizeUsd: 28,
       rationale:
         'Down two in a row on this name and the setup still looks right to me. Adding to the position to average in.',
@@ -139,7 +139,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     poisonNews: false,
     expected: 'Rule 105 slash',
     signAfterExpiry: true,
-    mutate: (p) => ({ ...p, action: 'BUY', asset: 'ETH', sizeUsd: 15 }),
+    mutate: (p) => ({ ...p, action: 'BUY', asset: '$ALLOWED', sizeUsd: 15 }),
   },
 
   silent_bleeder: {
@@ -154,6 +154,11 @@ export const PROFILES: Record<ProfileId, Profile> = {
   },
 };
 
+/**
+ * Profiles name assets by role, not ticker, because every vault has its own universe: `$ALLOWED` is
+ * the first asset in the vault's mandate and `$FORBIDDEN` the first known asset outside it. The runner
+ * resolves them against the vault being driven.
+ */
 export function profileFor(id: string): Profile {
   const profile = PROFILES[id as ProfileId];
   if (!profile) {
@@ -169,5 +174,5 @@ export function profileFor(id: string): Profile {
  * scenario can never degrade into an exposure-rejection scenario.
  */
 export const SILENT_BLEEDER_STEPS: ReadonlyArray<{ asset: string; sizeUsd: number }> = [
-  { asset: 'ETH', sizeUsd: 28 },
+  { asset: '$ALLOWED', sizeUsd: 28 },
 ];
