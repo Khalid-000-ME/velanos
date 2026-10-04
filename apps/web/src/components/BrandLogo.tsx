@@ -5,7 +5,8 @@ import { cn } from '@velanos/ui';
  * Third-party marks for the chains, venues and assets Velanos touches.
  *
  * Each mark sits on the ground it was designed for: dark wordmarks on a white disc, Robinhood's lime
- * feather on black, and badge-shaped marks (Arbitrum's hexagon, GMX's triangle) on no disc at all.
+ * feather on black, badge-shaped marks (Arbitrum's hexagon) on no disc at all, and square token art
+ * clipped to a circle so it matches the round marks beside it.
  * Sources are listed in public/logos/SOURCES.md; marks belong to their owners and are used only to
  * name the asset or network.
  */
@@ -21,9 +22,14 @@ export type LogoKey =
   | 'ROBINHOOD'
   | 'ARBITRUM'
   | 'GMX'
+  | 'USDC'
+  | 'USDG'
   | 'CLAUDE';
 
-const LOGOS: Record<LogoKey, { src: string; name: string; disc: string | null; scale: number }> = {
+const LOGOS: Record<
+  LogoKey,
+  { src: string; name: string; disc: string | null; scale: number; clip?: boolean }
+> = {
   TSLA: { src: '/logos/tesla.svg', name: 'Tesla', disc: '#ffffff', scale: 0.56 },
   AMZN: { src: '/logos/amazon.svg', name: 'Amazon', disc: '#ffffff', scale: 0.58 },
   AMD: { src: '/logos/amd.svg', name: 'AMD', disc: '#ffffff', scale: 0.7 },
@@ -34,7 +40,9 @@ const LOGOS: Record<LogoKey, { src: string; name: string; disc: string | null; s
   DOGE: { src: '/logos/dogecoin.svg', name: 'Dogecoin', disc: '#ffffff', scale: 0.86 },
   ROBINHOOD: { src: '/logos/robinhood.svg', name: 'Robinhood Chain', disc: '#000000', scale: 0.56 },
   ARBITRUM: { src: '/logos/arbitrum.svg', name: 'Arbitrum', disc: null, scale: 1 },
-  GMX: { src: '/logos/gmx.png', name: 'GMX', disc: null, scale: 1 },
+  GMX: { src: '/logos/gmx.png', name: 'GMX', disc: null, scale: 1, clip: true },
+  USDC: { src: '/logos/usdc.png', name: 'Circle USD Coin', disc: null, scale: 1, clip: true },
+  USDG: { src: '/logos/usdg.png', name: 'Paxos Global Dollar', disc: null, scale: 1, clip: true },
   CLAUDE: { src: '/logos/claude.svg', name: 'Claude', disc: '#ffffff', scale: 0.6 },
 };
 
@@ -62,7 +70,7 @@ export function BrandLogo({
         width={inner}
         height={inner}
         unoptimized
-        className={logo === 'GMX' ? 'rounded-full' : undefined}
+        className={entry.clip ? 'rounded-full' : undefined}
       />
     </span>
   );

@@ -8,3 +8,5 @@ Marks belong to their owners and are used only to name the asset or network they
 | arbitrum.svg | Offchain Labs, `arbitrum-docs` repository |
 | amazon.svg | Wikimedia Commons, `Amazon_icon.svg` |
 | gmx.png | Trust Wallet assets, GMX token on Arbitrum |
+| usdc.png | Trust Wallet assets, Circle USDC on Ethereum |
+| usdg.png | Trust Wallet assets, Paxos Global Dollar (USDG) on Ethereum |
