@@ -23,15 +23,32 @@ sleeps). Everything else can start on Starter too, to avoid cold starts during j
    and a **CNAME** `www → cname.vercel-dns.com` (Vercel shows the exact values to copy).
 
 ## 2. API → Render
-- New **Web Service** from the repo. Root `apps/server`.
-  - Build: `corepack enable && pnpm install --frozen-lockfile`
-  - Start: `pnpm --filter @velanos/server start` (or `npx tsx src/index.ts` from `apps/server`)
-  - Attach a **disk** mounted at `apps/server/data` (1 GB).
-- Env: `RH_TESTNET_RPC`, `ARB_SEPOLIA_RPC`, `RELAY_PK`, `DEMO_ADMIN_TOKEN`, `PORT`, `USDG_MODE=official`, `STOCK_TOKEN_MODE=official`, `PERP_MODE=none`,
+
+The fastest route is the blueprint: **New → Blueprint**, point it at this repo, and Render reads
+[`render.yaml`](../render.yaml) and creates all three back-end services with the right commands, disk and
+health check. It then prompts for the secrets. Skip to step 4 if you use it.
+
+To do it by hand instead — new **Web Service** from the repo, **Root Directory left blank** (the services
+share code in `packages/`, so the build has to run from the repo root):
+  - Build: `corepack pnpm install --frozen-lockfile`
+  - Start: `corepack pnpm --filter @velanos/server start:prod`
+  - Health check path: `/health`
+  - Attach a **disk** mounted at `/opt/render/project/src/apps/server/data` (1 GB).
+
+> Do **not** use `corepack enable`. It tries to symlink pnpm into `/usr/bin`, which is read-only on
+> Render's builders, and the build fails with `EROFS: read-only file system`. `corepack pnpm` runs the
+> version pinned in `package.json` without touching `/usr/bin`.
+>
+> The services run through `tsx` rather than a compiled `dist`, because the SDK's extensionless
+> TypeScript imports do not resolve under plain `node`.
+- Env: `RH_TESTNET_RPC`, `ARB_SEPOLIA_RPC`, `RELAY_PK`, `DEMO_ADMIN_TOKEN`, `SERVER_PORT=10000`, `USDG_MODE=official`, `STOCK_TOKEN_MODE=official`, `PERP_MODE=none`,
   `AGENT_URL=<private agent URL>`.
 - Custom domain: `api.velanos.xyz` → Render gives a CNAME target. CORS must allow `https://velanos.xyz`.
 
 ## 3. Watcher and agent → Render
+Both use the same build command as the API and start with
+`corepack pnpm --filter @velanos/<app> start:prod`.
+
 - **Background worker** `apps/watcher`: env `RH_TESTNET_RPC`, `ARB_SEPOLIA_RPC`, `WATCHER_PK`, `PRICE_UPDATER_PK` (keeps the stock prices fresh), `SERVER_URL=https://api.velanos.xyz`.
 - **Private service** `apps/agent`: env `RH_TESTNET_RPC`, `ARB_SEPOLIA_RPC`, `AGENT_SIGNER_PK`, `AGENT_TX_PK`, `GROQ_API_KEY`, `LLM_PROVIDER=groq`, `LLM_MODEL=openai/gpt-oss-120b`, `LLM_MODE=live`, `SERVER_URL`.
 
