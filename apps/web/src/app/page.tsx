@@ -9,7 +9,9 @@ import {
   SectionHeading,
   formatAmount,
 } from '@velanos/ui';
+import { Comparison } from '@/components/Comparison';
 import { Hero } from '@/components/Hero';
+import { LifecycleDiagram } from '@/components/LifecycleDiagram';
 import { VaultCard } from '@/components/VaultCard';
 import { api } from '@/lib/api';
 
@@ -32,11 +34,37 @@ export default async function HomePage() {
       <Hero />
       <Mechanism />
 
+      {/* ── lifecycle ──────────────────────────────────────────────────── */}
+      <section className="band-dark relative overflow-hidden">
+        <div className="grid-field pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+        <div className="content-width relative py-24">
+          <SectionHeading
+            eyebrow="Lifecycle"
+            index="02"
+            onBlack
+            title="Follow one intent to every possible ending"
+            sub="Most agent-safety projects stop at “blocked”. That is the point where this one starts working."
+          />
+          <LifecycleDiagram />
+        </div>
+      </section>
+
+      {/* ── comparison ─────────────────────────────────────────────────── */}
+      <section className="content-width py-24">
+        <SectionHeading
+          eyebrow="Difference"
+          index="03"
+          title="Not another guardrail"
+          sub="A guardrail limits what an agent can do. Velanos makes the agent answerable, with its own money, for what it tries to do."
+        />
+        <Comparison />
+      </section>
+
       {/* ── vaults ─────────────────────────────────────────────────────── */}
-      <section id="vaults" className="content-width scroll-mt-24 py-24">
+      <section id="vaults" className="content-width scroll-mt-24 pb-24 pt-4">
         <SectionHeading
           eyebrow="Live vaults"
-          index="02"
+          index="04"
           title="Capital under mandate"
           sub="Each vault pairs one agent with one immutable set of rules and one bond. Open any of them to see every intent the agent has signed."
         />
@@ -63,7 +91,7 @@ export default async function HomePage() {
           <div className="content-width py-24">
             <SectionHeading
               eyebrow="Incident record"
-              index="03"
+              index="05"
               onBlack
               title="Every failure, replayable"
               sub="Each incident reconstructs the full causal chain — what the agent was shown, what it proposed, what it signed, what the guard decided, and where the money went."
@@ -203,7 +231,7 @@ function Covered() {
       <div className="content-width py-24">
         <SectionHeading
           eyebrow="Scope"
-          index="04"
+          index="06"
           title="What the bond answers for"
           sub="And what it does not. Payouts are capped at the size of the bond, and the fund screen names the unbacked remainder before anyone deposits."
         />

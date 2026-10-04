@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Eyebrow, formatAmount } from '@velanos/ui';
 import { api } from '@/lib/api';
-import { PipelineDiagram } from './PipelineDiagram';
 import { Ticker } from './Ticker';
 
 /**
@@ -62,8 +61,6 @@ export async function Hero() {
             </Link>
           </div>
         </div>
-
-        <PipelineDiagram className="mx-auto mt-16 max-w-2xl" />
 
         {/* Counters sit on the hairline grid rather than in floating cards, so they read as one
             instrument panel instead of three unrelated boasts. */}
