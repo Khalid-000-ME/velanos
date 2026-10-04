@@ -51,7 +51,7 @@ contract Deploy is Script {
     string internal stockMode;
     string internal perpMode;
 
-    function run() external {
+    function run() external virtual {
         uint256 pk = vm.envUint("DEPLOYER_PK");
         address deployer = vm.addr(pk);
 
@@ -169,7 +169,7 @@ contract Deploy is Script {
 
         string memory mode = string.concat(
             '{"usdg":"', usdgMode, '","stocks":"', stockMode, '","perp":',
-            _eq(perpMode, "gmx") ? '"gmx"' : '"mock"', "}"
+            _eq(perpMode, "gmx") ? '"gmx"' : _eq(perpMode, "none") ? '"none"' : '"mock"', "}"
         );
 
         string memory json = string.concat(
