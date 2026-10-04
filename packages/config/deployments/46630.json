@@ -1,7 +1,61 @@
 {
   "chainId": 46630,
-  "mode": { "usdg": "mock", "stocks": "mock", "perp": null },
-  "contracts": {},
-  "assets": {},
-  "deployedAtBlock": 0
+  "mode": {
+    "usdg": "official",
+    "stocks": "official",
+    "perp": "none"
+  },
+  "contracts": {
+    "VelanosPriceOracle": "0x6C54f7F4adb7193e022ba73FcbcD477722C426bC",
+    "PolicyGuard": "0xB6061bC7489bDAe71cAeFd8d86A5800a78fa9bE9",
+    "AgentRegistry": "0x87a06BDf9130dd545ea76e887825D3Fe4642D008",
+    "BondManager": "0xc36d8B1f7bd10664f43B06fCa4efFd1A78D43615",
+    "ViolationCourt": "0xbb0cB18CC4fc7af485AAE77b11A71884849aB98B",
+    "VaultFactory": "0xDc6FeD0028bba0bA222D5b5b5bF5a0FDDf68df26",
+    "StockSwapAdapter": "0xfA7BfA4800D37B81E74FA5B05b2EF6A9FC116733"
+  },
+  "assets": {
+    "USDG": {
+      "address": "0x7E955252E15c84f5768B83c41a71F9eba181802F",
+      "decimals": 6,
+      "symbol": "USDG",
+      "name": "Global Dollar"
+    },
+    "TSLA": {
+      "address": "0xC9f9c86933092BbbfFF3CCb4b105A4A94bf3Bd4E",
+      "decimals": 18,
+      "symbol": "TSLA",
+      "name": "Tesla",
+      "pool": "0xea594eF087e0fE4a428cC2d82698147E784A8D7F"
+    },
+    "AMZN": {
+      "address": "0x5884aD2f920c162CFBbACc88C9C51AA75eC09E02",
+      "decimals": 18,
+      "symbol": "AMZN",
+      "name": "Amazon",
+      "pool": "0xc523EeE7D079b229c603Bcb7E0B77CEef1a78DDf"
+    },
+    "AMD": {
+      "address": "0x71178BAc73cBeb415514eB542a8995b82669778d",
+      "decimals": 18,
+      "symbol": "AMD",
+      "name": "AMD",
+      "pool": "0xEB6d96E0da367A7e4B6A490Ab260255C2Fe32B86"
+    },
+    "PLTR": {
+      "address": "0x1FBE1a0e43594b3455993B5dE5Fd0A7A266298d0",
+      "decimals": 18,
+      "symbol": "PLTR",
+      "name": "Palantir",
+      "pool": "0xE217b2352A49b15e156AD3F93B9874297CEd7f14"
+    },
+    "NFLX": {
+      "address": "0x3b8262A63d25f0477c4DDE23F83cfe22Cb768C93",
+      "decimals": 18,
+      "symbol": "NFLX",
+      "name": "Netflix",
+      "pool": "0x702f3E4A858aCdfdf29E789B40aFa60608417028"
+    }
+  },
+  "deployedAtBlock": 128740665
 }

@@ -13,7 +13,7 @@ import {VaultFactory} from "../src/VaultFactory.sol";
 import {Mandate, VaultKind} from "../src/VelanosTypes.sol";
 
 /**
- * @notice Opens one vault on the live deployment using the operator's and depositor's own USDG.
+ * @notice Opens one vault on the live deployment of the current chain (SEED_ASSETS, SEED_VAULT_NAME, SEED_VAULT_SYMBOL, SEED_METADATA) using the operator's and depositor's own USDG.
  *
  *         Sizes are set by what the wallets actually hold (50 USDG of bond, 80 USDG of deposit), kept
  *         in the same proportions as the protocol's tier-1 rules: a bond of a quarter of the
@@ -25,13 +25,13 @@ contract SeedOnchain is Script {
     uint256 constant ONE_USDG = 1e6;
 
     function run() external {
-        string memory json = vm.readFile(string.concat(vm.projectRoot(), "/../packages/config/deployments/421614.json"));
+        string memory json = vm.readFile(string.concat(vm.projectRoot(), "/../packages/config/deployments/", vm.toString(block.chainid), ".json"));
         AgentRegistry registry = AgentRegistry(json.readAddress(".contracts.AgentRegistry"));
         VaultFactory factory = VaultFactory(json.readAddress(".contracts.VaultFactory"));
         BondManager bond = BondManager(json.readAddress(".contracts.BondManager"));
         address adapter = json.readAddress(".contracts.StockSwapAdapter");
         address usdg = json.readAddress(".assets.USDG.address");
-        address weth = json.readAddress(".assets.ETH.address");
+        string[] memory tickers = vm.envString("SEED_ASSETS", ",");
 
         uint256 operatorPk = vm.envUint("OPERATOR_PK");
         uint256 depositorPk = vm.envUint("DEPOSITOR_PK");
@@ -39,8 +39,10 @@ contract SeedOnchain is Script {
         address depositor = vm.addr(depositorPk);
         address agentSigner = vm.addr(vm.envUint("AGENT_SIGNER_PK"));
 
-        address[] memory assets = new address[](1);
-        assets[0] = weth;
+        address[] memory assets = new address[](tickers.length);
+        for (uint256 i; i < tickers.length; ++i) {
+            assets[i] = json.readAddress(string.concat(".assets.", tickers[i], ".address"));
+        }
         address[] memory adapters = new address[](1);
         adapters[0] = adapter;
 
@@ -67,9 +69,9 @@ contract SeedOnchain is Script {
             perViolationPenalty: 10 * ONE_USDG,
             reporterBountyBps: 1_000,
             riskTier: 1,
-            metadataURI: "ipfs://mandate/delta-eth"
+            metadataURI: vm.envString("SEED_METADATA")
         });
-        (address vault,) = factory.createVault(agentId, m, "Delta ETH I", "vETH1");
+        (address vault,) = factory.createVault(agentId, m, vm.envString("SEED_VAULT_NAME"), vm.envString("SEED_VAULT_SYMBOL"));
 
         IERC20(usdg).approve(address(bond), 50 * ONE_USDG);
         bond.stake(vault, 50 * ONE_USDG);
@@ -83,9 +85,9 @@ contract SeedOnchain is Script {
         console2.log("agentId", agentId);
         console2.log("vault A  Delta ETH I", vault);
         vm.writeFile(
-            string.concat(vm.projectRoot(), "/../packages/config/deployments/seed-421614.json"),
+            string.concat(vm.projectRoot(), "/../packages/config/deployments/seed-", vm.toString(block.chainid), ".json"),
             string.concat(
-                '{"chainId":421614,"agentId":', vm.toString(agentId), ',"vaults":{"A":"', vm.toString(vault), '"}}'
+                '{"chainId":', vm.toString(block.chainid), ',"agentId":', vm.toString(agentId), ',"vaults":{"A":"', vm.toString(vault), '"}}'
             )
         );
     }
