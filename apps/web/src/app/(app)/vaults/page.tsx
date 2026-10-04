@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { Chip, EmptyState, formatAmount } from '@velanos/ui';
+import { Chip, EmptyState, formatAmount, shortAddress } from '@velanos/ui';
 import { VaultTable } from '@/components/VaultTable';
-import { api } from '@/lib/api';
+import { CHAIN_SHORT, api } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Vaults' };
@@ -64,7 +64,12 @@ export default async function VaultsPage() {
                     <span className="font-mono text-[11px] text-[var(--ink-3)]">rule {incident.ruleId}</span>
                   ) : null}
                 </div>
-                <h3 className="mt-5 flex-1 text-[17px] font-semibold leading-snug">{incident.title}</h3>
+                <h3 className="mt-5 text-[17px] font-semibold leading-snug">{incident.title}</h3>
+                <p className="mt-2 flex-1 text-[13px] text-[var(--ink-3)]">
+                  {vaults.find((v) => v.address.toLowerCase() === incident.vault.toLowerCase())?.name ??
+                    shortAddress(incident.vault)}{' '}
+                  · {CHAIN_SHORT[incident.chainId] ?? `chain ${incident.chainId}`}
+                </p>
                 <p className="mt-6 text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--ink-3)]">
                   Paid to depositors
                 </p>

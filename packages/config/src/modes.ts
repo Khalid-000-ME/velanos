@@ -24,9 +24,9 @@ export function modesFromEnv(env: Record<string, string | undefined> = process.e
 /** Human-readable status-bar labels, e.g. "USDG: Paxos". */
 export function modeLabels(m: Modes): Record<string, string> {
   return {
-    stocks: m.stocks === 'official' ? 'Assets: real WETH · USDC' : 'Assets: test tokens',
+    stocks: m.stocks === 'official' ? 'Assets: real stocks · WETH' : 'Assets: test tokens',
     usdg: m.usdg === 'official' ? 'USDG: Paxos' : 'USDG: test token',
-    perp: m.perp === 'gmx' ? 'Perps: GMX v2' : m.perp === 'none' ? 'Prices: Chainlink' : 'Perps: mock (GMX unavailable)',
+    perp: m.perp === 'gmx' ? 'Perps: GMX v2' : m.perp === 'none' ? 'Prices: Chainlink · live quotes' : 'Perps: mock (GMX unavailable)',
     llm: m.llm === 'live' ? 'LLM: live' : 'LLM: replay',
   };
 }

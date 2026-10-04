@@ -63,16 +63,20 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
       <Eyebrow className="mt-6">Deposit</Eyebrow>
       <h1 className="text-h1 mt-3">Fund {vault.name}</h1>
 
+      {/* The deposit card is far shorter than the disclosure beside it, so it sticks rather than
+          stranding half a screen of empty column. */}
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1.05fr] lg:items-start">
-        <DepositPanel
-          vault={vault.address}
-          chainId={vault.chainId}
-          settlementAsset={vault.mandate.settlementAsset}
-          settlementSymbol={sym}
-          settlementDecimals={dec}
-          acceptsDeposits={acceptsDeposits}
-          pricePerShareWad={vault.pricePerShareWad}
-        />
+        <div className="lg:sticky lg:top-24">
+          <DepositPanel
+            vault={vault.address}
+            chainId={vault.chainId}
+            settlementAsset={vault.mandate.settlementAsset}
+            settlementSymbol={sym}
+            settlementDecimals={dec}
+            acceptsDeposits={acceptsDeposits}
+            pricePerShareWad={vault.pricePerShareWad}
+          />
+        </div>
 
         <div className="space-y-4">
           {/* ── the worst case, in black ─────────────────────────────── */}

@@ -34,7 +34,7 @@ export default async function OperatorPage() {
       <Eyebrow>Console</Eyebrow>
       <h1 className="text-h1 mt-3">Operator console</h1>
       <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[var(--ink-3)]">
-        Drives the agent, the test oracle and the news feed. Every control here is a test control and
+        Drives the agent and the news feed. Every control here is a test control and
         is labelled as one — none of them has any authority over a vault. Freezing, slashing and
         settling are decided on-chain by rules, which is exactly the claim the demo is making.
       </p>

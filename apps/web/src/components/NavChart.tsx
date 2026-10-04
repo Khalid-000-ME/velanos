@@ -52,116 +52,119 @@ export function NavChart({ series, height = 280 }: { series: NavSeries; height?:
   const min = Math.min(...values) * 0.985;
   const max = Math.max(...values) * 1.01;
 
-  const nearest = (ts: number) => points.reduce((a, b) => (Math.abs(b.ts - ts) < Math.abs(a.ts - ts) ? b : a));
+  const nearest = (ts: number) =>
+    points.reduce((a, b) => (Math.abs(b.ts - ts) < Math.abs(a.ts - ts) ? b : a));
 
   return (
-    <div style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={points} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
-          <defs>
-            {/* Fades out quickly: a fill that reaches the axis reads as a solid block and collides
+    <div>
+      <div style={{ height }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={points} margin={{ top: 8, right: 22, bottom: 0, left: -12 }}>
+            <defs>
+              {/* Fades out quickly: a fill that reaches the axis reads as a solid block and collides
                 with the floor band underneath it. */}
-            <linearGradient id="navFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--green)" stopOpacity={0.14} />
-              <stop offset="55%" stopColor="var(--green)" stopOpacity={0.03} />
-              <stop offset="100%" stopColor="var(--green)" stopOpacity={0} />
-            </linearGradient>
-          </defs>
+              <linearGradient id="navFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--green)" stopOpacity={0.14} />
+                <stop offset="55%" stopColor="var(--green)" stopOpacity={0.03} />
+                <stop offset="100%" stopColor="var(--green)" stopOpacity={0} />
+              </linearGradient>
+            </defs>
 
-          <CartesianGrid stroke="var(--line)" vertical={false} strokeDasharray="2 4" />
-          <XAxis
-            dataKey="ts"
-            tickFormatter={(ts: number) => formatTime(ts)}
-            stroke="var(--ink-3)"
-            tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }}
-            tickLine={false}
-            axisLine={{ stroke: 'var(--line)' }}
-            minTickGap={48}
-          />
-          <YAxis
-            domain={[min, max]}
-            tickFormatter={(v: number) => v.toFixed(3)}
-            stroke="var(--ink-3)"
-            tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }}
-            tickLine={false}
-            axisLine={false}
-            width={64}
-          />
+            <CartesianGrid stroke="var(--line)" vertical={false} strokeDasharray="2 4" />
+            <XAxis
+              dataKey="ts"
+              tickFormatter={(ts: number) => formatTime(ts)}
+              stroke="var(--ink-3)"
+              tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }}
+              tickLine={false}
+              axisLine={{ stroke: 'var(--line)' }}
+              minTickGap={48}
+            />
+            <YAxis
+              domain={[min, max]}
+              tickFormatter={(v: number) => v.toFixed(3)}
+              stroke="var(--ink-3)"
+              tick={{ fontSize: 11, fontFamily: 'var(--font-mono)' }}
+              tickLine={false}
+              axisLine={false}
+              width={64}
+            />
 
-          {/* Everything below the floor is the region the bond is responsible for. */}
-          <ReferenceArea y1={min} y2={floor} fill="var(--loss)" fillOpacity={0.045} />
+            {/* Everything below the floor is the region the bond is responsible for. */}
+            <ReferenceArea y1={min} y2={floor} fill="var(--loss)" fillOpacity={0.045} />
 
-          <Line
-            type="monotone"
-            dataKey="floor"
-            stroke="var(--loss)"
-            strokeWidth={1}
-            strokeDasharray="4 4"
-            dot={false}
-            name="Loss floor"
-          />
-          <Line
-            type="monotone"
-            dataKey="hwm"
-            stroke="var(--ink)"
-            strokeWidth={1}
-            strokeDasharray="2 3"
-            dot={false}
-            name="High-water mark"
-          />
-          <Area type="monotone" dataKey="pps" stroke="none" fill="url(#navFill)" />
-          <Line
-            type="monotone"
-            dataKey="pps"
-            stroke="var(--green)"
-            strokeWidth={2}
-            dot={false}
-            name="NAV per share"
-          />
+            <Line
+              type="monotone"
+              dataKey="floor"
+              stroke="var(--loss)"
+              strokeWidth={1}
+              strokeDasharray="4 4"
+              dot={false}
+              name="Loss floor"
+            />
+            <Line
+              type="monotone"
+              dataKey="hwm"
+              stroke="var(--ink)"
+              strokeWidth={1}
+              strokeDasharray="2 3"
+              dot={false}
+              name="High-water mark"
+            />
+            <Area type="monotone" dataKey="pps" stroke="none" fill="url(#navFill)" />
+            <Line
+              type="monotone"
+              dataKey="pps"
+              stroke="var(--green)"
+              strokeWidth={2}
+              dot={false}
+              name="NAV per share"
+            />
 
-          {series.markers.shocks.map((s) => {
-            const p = nearest(s.ts);
-            return (
-              <ReferenceDot
-                key={`shock-${s.ts}-${s.symbol}`}
-                x={p.ts}
-                y={p.pps}
-                r={5}
-                fill="var(--ink)"
-                stroke="var(--bg)"
-                strokeWidth={1.5}
-              />
-            );
-          })}
-          {series.markers.slashes.map((s, i) => {
-            const p = nearest(s.ts);
-            return (
-              <ReferenceDot
-                key={`slash-${s.ts}-${i}`}
-                x={p.ts}
-                y={p.pps}
-                r={5}
-                fill="var(--loss)"
-                stroke="var(--bg)"
-                strokeWidth={1.5}
-              />
-            );
-          })}
+            {series.markers.shocks.map((s) => {
+              const p = nearest(s.ts);
+              return (
+                <ReferenceDot
+                  key={`shock-${s.ts}-${s.symbol}`}
+                  x={p.ts}
+                  y={p.pps}
+                  r={5}
+                  fill="var(--ink)"
+                  stroke="var(--bg)"
+                  strokeWidth={1.5}
+                />
+              );
+            })}
+            {series.markers.slashes.map((s, i) => {
+              const p = nearest(s.ts);
+              return (
+                <ReferenceDot
+                  key={`slash-${s.ts}-${i}`}
+                  x={p.ts}
+                  y={p.pps}
+                  r={5}
+                  fill="var(--loss)"
+                  stroke="var(--bg)"
+                  strokeWidth={1.5}
+                />
+              );
+            })}
 
-          <Tooltip
-            contentStyle={{
-              background: 'var(--surface-2)',
-              color: 'var(--ink)',
-              borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--line-strong)',
-              fontSize: 12,
-              fontFamily: 'var(--font-mono)',
-            }}
-            labelFormatter={(ts) => formatTime(Number(ts))}
-            formatter={(value, name) => [Number(value ?? 0).toFixed(4), name]}
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
+            <Tooltip
+              contentStyle={{
+                background: 'var(--surface-2)',
+                color: 'var(--ink)',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--line-strong)',
+                fontSize: 12,
+                fontFamily: 'var(--font-mono)',
+              }}
+              labelFormatter={(ts) => formatTime(Number(ts))}
+              formatter={(value, name) => [Number(value ?? 0).toFixed(4), name]}
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
 
       <Legend floor={floor} />
     </div>
@@ -175,7 +178,6 @@ function Legend({ floor }: { floor: number }) {
       <Item color="var(--ink)" label="High-water mark" dashed />
       <Item color="var(--loss)" label={`Loss floor ${floor.toFixed(4)}`} dashed />
       <Item color="var(--loss)" label="Slash" dot />
-      <Item color="var(--ink)" label="Market shock (test control)" dot />
     </div>
   );
 }

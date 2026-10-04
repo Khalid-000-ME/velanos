@@ -140,7 +140,31 @@ export default async function VaultCockpit({ params }: { params: Promise<{ addre
               <p className="p-5 text-[14px] text-[var(--ink-3)]">No NAV data yet.</p>
             )}
           </Panel>
+        </div>
 
+        <div className="space-y-6 lg:sticky lg:top-24">
+          <Panel
+            label="Intent stream"
+            action={
+              <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
+                <span
+                  className="size-1.5 animate-pulse rounded-full bg-[var(--green)]"
+                  aria-hidden
+                />
+                live
+              </span>
+            }
+          >
+            <div className="max-h-[760px] overflow-y-auto">
+              <IntentStream
+                initial={intents?.intents ?? []}
+                vault={vault.address}
+                chainId={vault.chainId}
+                settlementSymbol={sym}
+                settlementDecimals={dec}
+              />
+            </div>
+          </Panel>
           <Panel label="Positions">
             {vault.positions.length === 0 ? (
               <p className="p-5 text-[14px] text-[var(--ink-3)]">
@@ -163,7 +187,10 @@ export default async function VaultCockpit({ params }: { params: Promise<{ addre
                         {formatAmount(p.amount, 18, { maxFractionDigits: 4 })}
                       </td>
                       <td className="px-5 py-3">
-                        <ExposureBar bps={p.exposureBps} capBps={vault.mandate.maxAssetExposureBps} />
+                        <ExposureBar
+                          bps={p.exposureBps}
+                          capBps={vault.mandate.maxAssetExposureBps}
+                        />
                       </td>
                     </tr>
                   ))}
@@ -171,42 +198,24 @@ export default async function VaultCockpit({ params }: { params: Promise<{ addre
               </table>
             )}
           </Panel>
-
-          <Panel label="Mandate">
-            <ul className="grid gap-x-8 gap-y-2.5 p-5 text-[14px] leading-relaxed text-[var(--ink-2)] sm:grid-cols-2">
-              {vault.mandateEnglish.map((line) => (
-                <li key={line} className="flex gap-2.5">
-                  <span
-                    className="mt-[9px] size-1 shrink-0 rounded-full bg-[var(--green)]"
-                    aria-hidden
-                  />
-                  {line}
-                </li>
-              ))}
-            </ul>
-          </Panel>
         </div>
-
-        <Panel
-          label="Intent stream"
-          action={
-            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
-              <span className="size-1.5 animate-pulse rounded-full bg-[var(--green)]" aria-hidden />
-              live
-            </span>
-          }
-        >
-          <div className="max-h-[760px] overflow-y-auto">
-            <IntentStream
-              initial={intents?.intents ?? []}
-              vault={vault.address}
-              chainId={vault.chainId}
-              settlementSymbol={sym}
-              settlementDecimals={dec}
-            />
-          </div>
-        </Panel>
       </div>
+
+      <Panel label="Mandate">
+        {/* Flowed in columns rather than grid rows: a grid makes every row as tall as its tallest
+            item, which left ragged gaps between short rules. */}
+        <ul className="gap-x-8 p-5 text-[14px] leading-relaxed text-[var(--ink-2)] sm:columns-2">
+          {vault.mandateEnglish.map((line) => (
+            <li key={line} className="flex break-inside-avoid gap-2.5 pb-2.5">
+              <span
+                className="mt-[9px] size-1 shrink-0 rounded-full bg-[var(--green)]"
+                aria-hidden
+              />
+              {line}
+            </li>
+          ))}
+        </ul>
+      </Panel>
     </div>
   );
 }
