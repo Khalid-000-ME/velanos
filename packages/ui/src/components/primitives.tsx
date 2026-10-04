@@ -29,7 +29,7 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        'flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)]',
+        'flex items-center gap-2 text-[11px] font-medium uppercase tracking-[var(--track-label)]',
         tones[tone],
         className,
       )}
@@ -66,7 +66,7 @@ export function Card({
     <div
       className={cn(
         'rounded-[var(--radius)]',
-        dark ? 'bg-[var(--black)] text-[var(--on-black)]' : 'bg-white',
+        dark ? 'bg-[var(--black)] text-[var(--on-black)]' : 'bg-[var(--surface)]',
         !flush && (dark ? 'border border-[var(--line-on-black)]' : 'border border-[var(--line)]'),
         accent && 'border-l-2 border-l-[var(--green)]',
         className,
@@ -109,7 +109,7 @@ export function HairlineGrid({
     <div
       className={cn(
         'overflow-hidden rounded-[var(--radius)] border',
-        dark ? 'border-[var(--line-on-black)] bg-[var(--black)]' : 'border-[var(--line)] bg-white',
+        dark ? 'border-[var(--line-on-black)] bg-[var(--black)]' : 'border-[var(--line)] bg-[var(--surface)]',
         className,
       )}
     >
@@ -189,7 +189,7 @@ export function Metric({
     <div className="flex flex-col gap-2">
       <span
         className={cn(
-          'font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)]',
+          'text-[11px] font-medium uppercase tracking-[var(--track-label)]',
           onBlack ? 'text-[var(--on-black-2)]' : 'text-[var(--ink-3)]',
         )}
       >
@@ -197,7 +197,7 @@ export function Metric({
       </span>
       <span
         className={cn(
-          'font-medium leading-[0.95] tracking-[var(--track-h1)] tabular-nums',
+          'font-semibold leading-[0.95] tracking-[var(--track-h1)] tabular-nums',
           sizes[size],
           tones[tone],
         )}
@@ -240,7 +240,7 @@ export function MetricStrip({
     <div
       className={cn(
         'overflow-hidden rounded-[var(--radius)] border',
-        onBlack ? 'border-[var(--line-on-black)] bg-[var(--black)]' : 'border-[var(--line)] bg-white',
+        onBlack ? 'border-[var(--line-on-black)] bg-[var(--black)]' : 'border-[var(--line)] bg-[var(--surface)]',
         className,
       )}
     >
@@ -321,7 +321,7 @@ export function StateChip({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] border px-2 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.08em]',
+        'inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]',
         onBlack
           ? 'border-[var(--line-on-black)] text-[var(--on-black-2)]'
           : 'border-[var(--line)] text-[var(--ink-2)]',
@@ -357,12 +357,12 @@ export function Chip({
     positive: 'border-transparent bg-[var(--green-tint)] text-[var(--green-ink)]',
     negative: 'border-transparent bg-[var(--loss-tint)] text-[var(--loss)]',
     warn: 'border-transparent bg-[var(--warn-tint)] text-[var(--warn)]',
-    dark: 'border-transparent bg-[var(--black)] text-white',
+    dark: 'border-transparent bg-[var(--ink)] text-[var(--bg)]',
   };
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] border px-2 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.08em]',
+        'inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]',
         tones[tone],
         className,
       )}
@@ -386,7 +386,7 @@ export function RulePill({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1 text-[11px]',
+        'inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-2.5 py-1 text-[11px]',
         slashable
           ? 'bg-[var(--loss-tint)] text-[var(--loss)]'
           : 'bg-[var(--warn-tint)] text-[var(--warn)]',
@@ -410,7 +410,7 @@ export function TestControlBadge({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] bg-[var(--black)] px-2 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-white',
+        'inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[var(--line-strong)] bg-[var(--surface-2)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--ink)]',
         className,
       )}
     >
@@ -433,23 +433,24 @@ export function Button({
   size?: 'sm' | 'md';
 }) {
   const variants = {
-    // Black text on #00C805: white would fail contrast on this green.
-    primary: 'bg-[var(--green)] text-black hover:bg-[var(--green-hover)] active:bg-[var(--green-press)]',
-    secondary: 'bg-[var(--black)] text-white hover:bg-[var(--black-2)]',
-    outline: 'border border-[var(--line-strong)] text-[var(--ink)] hover:bg-[var(--bg-subtle)]',
+    // Black text on lime: white would fail contrast on the brand green.
+    primary:
+      'bg-[var(--green)] text-black hover:bg-[var(--green-hover)] active:bg-[var(--green-press)] shadow-[0_8px_30px_rgba(117,251,101,0.18)]',
+    secondary: 'bg-[var(--surface-2)] text-[var(--ink)] border border-[var(--line-strong)] hover:bg-[var(--bg-muted)]',
+    outline: 'border border-[var(--line-strong)] text-[var(--ink)] hover:bg-[var(--surface-2)]',
     tertiary:
       'text-[var(--ink)] hover:text-[var(--green-ink)] underline decoration-[var(--line-strong)] hover:decoration-[var(--green)] decoration-1 underline-offset-4',
     danger: 'bg-[var(--loss)] text-white hover:brightness-110',
     onBlack: 'border border-white/25 text-white hover:bg-white/10',
   };
   const sizes = {
-    sm: 'px-3 py-1.5 text-[13px]',
-    md: 'px-4 py-2.5 text-[14px]',
+    sm: 'px-4 py-2 text-[13px]',
+    md: 'px-6 py-3 text-[15px]',
   };
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-[var(--radius-sm)] font-medium transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-40',
+        'inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-40',
         variants[variant],
         sizes[size],
         className,
@@ -516,7 +517,7 @@ export function SectionHeading({
         ) : null}
         <h2
           className={cn(
-            'text-[length:var(--t-h2)] font-medium leading-[1.1] tracking-[var(--track-h2)]',
+            'text-[length:var(--t-h2)] font-semibold leading-[1.05] tracking-[var(--track-h2)]',
             onBlack ? 'text-[var(--on-black)]' : 'text-[var(--ink)]',
           )}
         >
