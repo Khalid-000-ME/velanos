@@ -62,7 +62,7 @@ A loss floor is only worth something if its edges are stated. Payouts are capped
 
 ## Proof
 
-Live on **Robinhood Chain testnet** (tokenised stocks) and **Arbitrum Sepolia** (ETH), with the real tokens: Paxos USDG for deposits and bond, the faucet's TSLA, AMZN, AMD, PLTR and NFLX, and WETH and USDC priced by Chainlink. Nothing is minted and nothing is mocked on-chain. Every address is in [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
+Live on **Robinhood Chain testnet** (tokenised stocks) and **Arbitrum Sepolia** (ETH), with the real tokens: Paxos USDG for deposits and bond, the faucet's TSLA, AMZN, AMD, PLTR and NFLX, and WETH and USDC priced by Chainlink. Nothing is minted and nothing is mocked on-chain. Every contract address and transaction is listed under [Deployed addresses](#deployed-addresses). Every address is in [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
 
 ### Robinhood Chain: stocks vault
 
@@ -95,6 +95,95 @@ forge test   →   154 passed, 0 failed
 - Oracle tests cover Chainlink feeds: live reads, decimal normalisation, stale and non-positive answers, and that a feed-backed price can never be overwritten
 
 The fat-finger, revenge-trader and drawdown-breaker paths are covered by the Foundry suite and its handler invariants; the live vault keeps its one remaining breach for demonstration.
+
+---
+
+## Deployed addresses
+
+Everything below is live, verifiable, and uses tokens we did not mint. `packages/config/deployments/`
+is the only place addresses live in the codebase — nothing in the apps, the SDK or the UI contains an
+address literal.
+
+### Robinhood Chain testnet · chain 46630
+
+Explorer: <https://explorer.testnet.chain.robinhood.com>
+
+| Contract | Address |
+|---|---|
+| VaultFactory | [`0xDc6FeD0028bba0bA222D5b5b5bF5a0FDDf68df26`](https://explorer.testnet.chain.robinhood.com/address/0xDc6FeD0028bba0bA222D5b5b5bF5a0FDDf68df26) |
+| PolicyGuard | [`0xB6061bC7489bDAe71cAeFd8d86A5800a78fa9bE9`](https://explorer.testnet.chain.robinhood.com/address/0xB6061bC7489bDAe71cAeFd8d86A5800a78fa9bE9) |
+| BondManager | [`0xc36d8B1f7bd10664f43B06fCa4efFd1A78D43615`](https://explorer.testnet.chain.robinhood.com/address/0xc36d8B1f7bd10664f43B06fCa4efFd1A78D43615) |
+| ViolationCourt | [`0xbb0cB18CC4fc7af485AAE77b11A71884849aB98B`](https://explorer.testnet.chain.robinhood.com/address/0xbb0cB18CC4fc7af485AAE77b11A71884849aB98B) |
+| AgentRegistry | [`0x87a06BDf9130dd545ea76e887825D3Fe4642D008`](https://explorer.testnet.chain.robinhood.com/address/0x87a06BDf9130dd545ea76e887825D3Fe4642D008) |
+| VelanosPriceOracle | [`0x6C54f7F4adb7193e022ba73FcbcD477722C426bC`](https://explorer.testnet.chain.robinhood.com/address/0x6C54f7F4adb7193e022ba73FcbcD477722C426bC) |
+| StockSwapAdapter | [`0xfA7BfA4800D37B81E74FA5B05b2EF6A9FC116733`](https://explorer.testnet.chain.robinhood.com/address/0xfA7BfA4800D37B81E74FA5B05b2EF6A9FC116733) |
+| **Vault — Delta Equities I** | [`0x19f1411a11484Ff574d50D90981019177E6b10A7`](https://explorer.testnet.chain.robinhood.com/address/0x19f1411a11484Ff574d50D90981019177E6b10A7) |
+
+| Asset | Role | Address | Oracle-priced pool |
+|---|---|---|---|
+| USDG | Settlement and bond | [`0x7E955252E15c84f5768B83c41a71F9eba181802F`](https://explorer.testnet.chain.robinhood.com/address/0x7E955252E15c84f5768B83c41a71F9eba181802F) | — |
+| TSLA | In mandate | [`0xC9f9c86933092BbbfFF3CCb4b105A4A94bf3Bd4E`](https://explorer.testnet.chain.robinhood.com/address/0xC9f9c86933092BbbfFF3CCb4b105A4A94bf3Bd4E) | [`0xea594eF087e0fE4a428cC2d82698147E784A8D7F`](https://explorer.testnet.chain.robinhood.com/address/0xea594eF087e0fE4a428cC2d82698147E784A8D7F) |
+| AMZN | In mandate | [`0x5884aD2f920c162CFBbACc88C9C51AA75eC09E02`](https://explorer.testnet.chain.robinhood.com/address/0x5884aD2f920c162CFBbACc88C9C51AA75eC09E02) | [`0xc523EeE7D079b229c603Bcb7E0B77CEef1a78DDf`](https://explorer.testnet.chain.robinhood.com/address/0xc523EeE7D079b229c603Bcb7E0B77CEef1a78DDf) |
+| AMD | In mandate | [`0x71178BAc73cBeb415514eB542a8995b82669778d`](https://explorer.testnet.chain.robinhood.com/address/0x71178BAc73cBeb415514eB542a8995b82669778d) | [`0xEB6d96E0da367A7e4B6A490Ab260255C2Fe32B86`](https://explorer.testnet.chain.robinhood.com/address/0xEB6d96E0da367A7e4B6A490Ab260255C2Fe32B86) |
+| PLTR | Forbidden | [`0x1FBE1a0e43594b3455993B5dE5Fd0A7A266298d0`](https://explorer.testnet.chain.robinhood.com/address/0x1FBE1a0e43594b3455993B5dE5Fd0A7A266298d0) | [`0xE217b2352A49b15e156AD3F93B9874297CEd7f14`](https://explorer.testnet.chain.robinhood.com/address/0xE217b2352A49b15e156AD3F93B9874297CEd7f14) |
+| NFLX | Forbidden | [`0x3b8262A63d25f0477c4DDE23F83cfe22Cb768C93`](https://explorer.testnet.chain.robinhood.com/address/0x3b8262A63d25f0477c4DDE23F83cfe22Cb768C93) | [`0x702f3E4A858aCdfdf29E789B40aFa60608417028`](https://explorer.testnet.chain.robinhood.com/address/0x702f3E4A858aCdfdf29E789B40aFa60608417028) |
+
+Stock-token prices have no feed on testnet, so a dedicated updater key writes live market quotes; see
+`apps/watcher/src/prices.ts`.
+
+### Arbitrum Sepolia · chain 421614
+
+Explorer: <https://sepolia.arbiscan.io>
+
+| Contract | Address |
+|---|---|
+| VaultFactory | [`0x232d130A4308b3b995491ee7b2129c98A02eAae8`](https://sepolia.arbiscan.io/address/0x232d130A4308b3b995491ee7b2129c98A02eAae8) |
+| PolicyGuard | [`0xacFb0dC77101a45757FCE54BC6cb3923a71dBDF9`](https://sepolia.arbiscan.io/address/0xacFb0dC77101a45757FCE54BC6cb3923a71dBDF9) |
+| BondManager | [`0x2BedD45CB914C39c75440c6Aeb16C0003A07b0c5`](https://sepolia.arbiscan.io/address/0x2BedD45CB914C39c75440c6Aeb16C0003A07b0c5) |
+| ViolationCourt | [`0x1614857E261bc26Ca0a716a127303078267284b6`](https://sepolia.arbiscan.io/address/0x1614857E261bc26Ca0a716a127303078267284b6) |
+| AgentRegistry | [`0x1D6025BCFDCFC61f58A16A20365aD462786D6f47`](https://sepolia.arbiscan.io/address/0x1D6025BCFDCFC61f58A16A20365aD462786D6f47) |
+| VelanosPriceOracle | [`0x190431a6F749f1aEa9858cD6b0e3a7492Cb66048`](https://sepolia.arbiscan.io/address/0x190431a6F749f1aEa9858cD6b0e3a7492Cb66048) |
+| StockSwapAdapter | [`0x44c6058B4df8468A96FA66276d8429016b7Fe0d4`](https://sepolia.arbiscan.io/address/0x44c6058B4df8468A96FA66276d8429016b7Fe0d4) |
+| **Vault — Delta ETH I** | [`0x13DE916B91A8143b7CB7d051ED2adD85cE8F9a3d`](https://sepolia.arbiscan.io/address/0x13DE916B91A8143b7CB7d051ED2adD85cE8F9a3d) |
+
+| Asset | Role | Address | Priced by |
+|---|---|---|---|
+| USDG | Settlement and bond | [`0xFFC95faa3d63Cde504a05B567C600B78C0b41892`](https://sepolia.arbiscan.io/address/0xFFC95faa3d63Cde504a05B567C600B78C0b41892) | pinned at $1 |
+| WETH | In mandate | [`0x980B62Da83eFf3D4576C647993b0c1D7faf17c73`](https://sepolia.arbiscan.io/address/0x980B62Da83eFf3D4576C647993b0c1D7faf17c73) | Chainlink ETH/USD [`0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165`](https://sepolia.arbiscan.io/address/0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165) |
+| USDC | Forbidden | [`0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d`](https://sepolia.arbiscan.io/address/0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d) | Chainlink USDC/USD [`0x0153002d20B96532C639313c2d54c3dA09109309`](https://sepolia.arbiscan.io/address/0x0153002d20B96532C639313c2d54c3dA09109309) |
+
+Swap pools: WETH [`0x2bc0fF990129317eb2dF521398Fe7F6bc9cC14C8`](https://sepolia.arbiscan.io/address/0x2bc0fF990129317eb2dF521398Fe7F6bc9cC14C8) · USDC [`0xda912C08AA4553AF6F8AeADD87EE860DB660B123`](https://sepolia.arbiscan.io/address/0xda912C08AA4553AF6F8AeADD87EE860DB660B123)
+
+### Transactions a judge can open
+
+Every row below is a real transaction. The slash rows are the claim this project is making.
+
+**Robinhood Chain — Delta Equities I**
+
+| What happened | Transaction |
+|---|---|
+| Agent registered | [`0x36c93d07…a5c7`](https://explorer.testnet.chain.robinhood.com/tx/0x36c93d070bcefc54f794b9e46ebf269b973c707bd53a08a84f52afdb6cfca5c7) |
+| Vault created with its immutable mandate | [`0x06e09b0b…5c72`](https://explorer.testnet.chain.robinhood.com/tx/0x06e09b0b5fb7e61ccda66048f7d778f5c415dc475e4d43481e5434a0b1c25c72) |
+| Operator staked a 50 USDG bond | [`0xae8c4444…c44f`](https://explorer.testnet.chain.robinhood.com/tx/0xae8c444454c66b2806dfb2ef035a6a3b560e519678b31e0c227c60d06966c44f) |
+| Depositor funded the vault with 80 USDG | [`0x2dd5b430…d225`](https://explorer.testnet.chain.robinhood.com/tx/0x2dd5b430d7fd5d0295003d947ef670537af11b73d1523640edb5f0a1174cd225) |
+| Compliant trade — the model chose AMD, all 14 checks green | [`0x76bdcef8…8685`](https://explorer.testnet.chain.robinhood.com/tx/0x76bdcef814d729478727e62dd59e35be18766b639fc6321cd68ca8bbf3288685) |
+| **Prompt injection → slash.** Agent signed a forbidden PLTR buy; relay refused it, a watcher reported the signature, bond **50 → 40 USDG** (9 to depositors, 1 to the reporter) | [`0xdb6b12aa…38a4`](https://explorer.testnet.chain.robinhood.com/tx/0xdb6b12aad114a34e072111f9f32550f818e7ae45ac1f8ad35dfa47bf17db38a4) |
+| Trade submitted by Claude Code through the MCP server | [`0xecfcafda…2320`](https://explorer.testnet.chain.robinhood.com/tx/0xecfcafda20d663536fdb0aa2aaa73dbe4fb30af797e32e8619681f9ce0c22320) |
+
+**Arbitrum Sepolia — Delta ETH I**
+
+| What happened | Transaction |
+|---|---|
+| Agent registered | [`0x1bf3d134…4864`](https://sepolia.arbiscan.io/tx/0x1bf3d134793f70b05eddfe96be49fd87890df7c425b62118328975b772314864) |
+| Vault created with its immutable mandate | [`0xe4ad4735…2b9c`](https://sepolia.arbiscan.io/tx/0xe4ad4735a8f225dbabb91d011fbe388b11f5784294dcaf80b3effe16d2c92b9c) |
+| Operator staked a 50 USDG bond | [`0x7f7fbb35…5454`](https://sepolia.arbiscan.io/tx/0x7f7fbb359f8118c388060de57cb2c388ec9aa6ce91897e7f296219cb94465454) |
+| Depositor funded the vault with 80 USDG | [`0xf53ac391…21f6`](https://sepolia.arbiscan.io/tx/0xf53ac391940a63acf58e5e4eee934923d776ae071b35c6426263ae2c91b821f6) |
+| Compliant trade — 20 USDG into WETH | [`0xe7ce3977…0660`](https://sepolia.arbiscan.io/tx/0xe7ce3977d2b93565ab1f54a9e2c2500ad9413d0515ca693437b738027e360660) |
+| **Prompt injection → slash.** Forbidden USDC buy refused, reported, bond **50 → 40 USDG** | [`0x670cd565…815f`](https://sepolia.arbiscan.io/tx/0x670cd56563127434844f37282c72de9c6e560946f9faf6ae28ff682f3b78815f) |
+| Trade submitted by Claude Code through the MCP server | [`0x6d127897…f466`](https://sepolia.arbiscan.io/tx/0x6d12789762c49e7c0a1327bf75c77cdaa008f30d286323213dcade7cdd1af466) |
+
+In both slashes **nothing executed**. The trade never reached the vault, and the agent still paid — which
+is the whole point.
 
 ---
 
