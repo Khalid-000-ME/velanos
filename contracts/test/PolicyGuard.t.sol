@@ -483,11 +483,14 @@ contract PolicyGuardTest is Test, Fixtures {
         uint256 quotedOut,
         uint256 pricePerShareWad
     ) public view {
+        // Snapshots are built from token balances and prices, so they are bounded by real supplies. 1e36
+        // is far beyond any token's total supply and keeps the fuzzer out of arithmetic that no vault
+        // can ever reach.
         VaultSnapshot memory s = healthySnapshot();
-        s.navSettlement = nav;
-        s.assetValueBefore = assetValueBefore;
-        s.quotedOut = quotedOut;
-        s.pricePerShareWad = pricePerShareWad;
+        s.navSettlement = bound(nav, 0, 1e36);
+        s.assetValueBefore = bound(assetValueBefore, 0, 1e36);
+        s.quotedOut = bound(quotedOut, 0, 1e36);
+        s.pricePerShareWad = bound(pricePerShareWad, 0, 1e36);
 
         uint16 rule = guard.checkStateful(buyIntent(), spotMandate(), s, 2_010);
         assertFalse(Rules.isSlashable(rule), "a stateful check must never produce a slashable rule");
