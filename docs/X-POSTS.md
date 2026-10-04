@@ -7,7 +7,7 @@ Single-line posts. Post them in roughly this order; each stands alone.
 2. A blocked trade still pays. That's the whole idea.
 3. Guardrails stop at "blocked". We keep the signature as evidence.
 4. No agent should manage your money without staking its own.
-5. gm. Building bonded capital vaults for autonomous trading agents. Live on Arbitrum Sepolia.
+5. gm. Building bonded capital vaults for autonomous trading agents. Live on Robinhood Chain and Arbitrum Sepolia.
 
 ## The mechanism
 6. Prevent. Prove. Pay.
@@ -18,9 +18,9 @@ Single-line posts. Post them in roughly this order; each stands alone.
 
 ## Proof (use real links)
 11. A real agent signed a trade it shouldn't have. 10 USDG left its bond and reached depositors. Tx: <arbiscan link>
-12. Settled in Paxos USDG. Priced by Chainlink. Verified on Arbiscan.
+12. Tokenised TSLA, AMZN and AMD in the mandate. PLTR and NFLX forbidden. Settled in Paxos USDG on Robinhood Chain.
 13. 154 Foundry tests. One vault. Real USDG. Zero mocks on-chain.
-14. A poisoned headline told our test agent to buy USDC. It signed. The trade never executed, and the bond still paid depositors.
+14. A poisoned headline told our test agent to buy PLTR. It signed. The trade never executed, and the bond still paid depositors.
 
 ## Builders
 15. Plug any agent into a Velanos vault over MCP. Four tools, one config file.

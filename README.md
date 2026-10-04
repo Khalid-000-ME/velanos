@@ -4,7 +4,7 @@
 
 ### No agent should manage other people's money without staking its own.
 
-**Bonded capital vaults for autonomous trading agents** · Arbitrum Sepolia · Paxos USDG · Chainlink
+**Bonded capital vaults for autonomous trading agents** · Robinhood Chain · Arbitrum · Paxos USDG · Chainlink
 
 </div>
 
@@ -62,9 +62,17 @@ A loss floor is only worth something if its edges are stated. Payouts are capped
 
 ## Proof
 
-Live on **Arbitrum Sepolia**, with the real tokens: Paxos USDG for deposits and bond, WETH priced by Chainlink ETH/USD, USDC as the forbidden asset. Nothing is minted and nothing is mocked on-chain. Every address is in [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
+Live on **Robinhood Chain testnet** (tokenised stocks) and **Arbitrum Sepolia** (ETH), with the real tokens: Paxos USDG for deposits and bond, the faucet's TSLA, AMZN, AMD, PLTR and NFLX, and WETH and USDC priced by Chainlink. Nothing is minted and nothing is mocked on-chain. Every address is in [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
 
-### One real run, read back from the chain
+### Robinhood Chain: stocks vault
+
+| Step | What happened | Transaction |
+|---|---|---|
+| Open | **Delta Equities I**: 50 USDG bond, 80 USDG deposited | [bond](https://explorer.testnet.chain.robinhood.com/tx/0xae8c444454c66b2806dfb2ef035a6a3b560e519678b31e0c227c60d06966c44f) · [deposit](https://explorer.testnet.chain.robinhood.com/tx/0x2dd5b430d7fd5d0295003d947ef670537af11b73d1523640edb5f0a1174cd225) |
+| Compliant trade | The model chose AMD; every check green, executed | [tx](https://explorer.testnet.chain.robinhood.com/tx/0x76bdcef814d729478727e62dd59e35be18766b639fc6321cd68ca8bbf3288685) |
+| Prompt injection → slash | The agent signed a PLTR buy it was forbidden to make; refused, reported, **bond 50 → 40 USDG** | [tx](https://explorer.testnet.chain.robinhood.com/tx/0xdb6b12aad114a34e072111f9f32550f818e7ae45ac1f8ad35dfa47bf17db38a4) |
+
+### Arbitrum Sepolia: ETH vault
 
 | Step | What happened | Transaction |
 |---|---|---|
@@ -189,9 +197,10 @@ To deploy your own copy: `forge script script/DeployOnchain.s.sol:DeployOnchain 
 ## Sponsor integrations
 
 - **Paxos USDG** — the settlement asset throughout; the bond is posted in the same asset depositors use, which is what makes a payout unambiguous
-- **Chainlink** — ETH/USD and USDC/USD feeds price every traded asset; a feed-backed price can't be set or shocked by anyone, including the admin
+- **Robinhood Chain** — tokenised-stock vaults using the faucet's real Stock Tokens, with Paxos USDG as the bond
+- **Chainlink** — ETH/USD and USDC/USD feeds price the Arbitrum vault; a feed-backed price can't be set or shocked by anyone, including the admin
 - **Arbitrum** — the protocol's home chain; cheap enough to check every single intent on-chain
-- **Claude** — the agent that proposes trades, and the MCP server any Claude-based agent plugs into
+- **Groq** — the model that drives the agent live; and an MCP server that any agent, including Claude Code, plugs into
 
 ---
 
@@ -215,7 +224,7 @@ To deploy your own copy: `forge script script/DeployOnchain.s.sol:DeployOnchain 
 
 ## Roadmap
 
-Robinhood Chain stock tokens · GMX perps · a real-DEX adapter · third-party underwriters sharing the first-loss layer · a shared reserve above individual bonds · ERC-8004 reputation feedback · Arbitrum One deployment.
+GMX perps · more tokenised stocks · a real-DEX adapter · third-party underwriters sharing the first-loss layer · a shared reserve above individual bonds · ERC-8004 reputation feedback · Arbitrum One deployment.
 
 **Business model:** vault management fee, performance fee above the high-water mark, and a bond-management fee on the capital agents post.
 
