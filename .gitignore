@@ -35,3 +35,4 @@ AEGIS_PROP_PRD.md
 packages/config/deployments/31337.json
 packages/config/deployments/seed-*.json
 .demo-logs/
+.logs/
