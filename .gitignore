@@ -34,5 +34,4 @@ AEGIS_PROP_PRD.md
 # local-chain deployment artifacts (anvil); real chains are committed
 packages/config/deployments/31337.json
 packages/config/deployments/seed-*.json
-.mcp.json
 .demo-logs/

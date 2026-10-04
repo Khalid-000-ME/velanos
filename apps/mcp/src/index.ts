@@ -209,9 +209,13 @@ server.registerTool(
     const client = clientFor(info.chainId);
     const mandate = await client.getMandate(vault as Address);
 
+    const assetSymbols = Object.fromEntries(
+      Object.entries(deployment(info.chainId)?.assets ?? {}).map(([ticker, a]) => [a.address.toLowerCase(), ticker]),
+    );
     const english = mandateToEnglish(mandate, {
       settlementSymbol: info.settlementSymbol,
       settlementDecimals: info.settlementDecimals,
+      assetSymbols,
     });
 
     return {

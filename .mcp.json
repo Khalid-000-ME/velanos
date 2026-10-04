@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "velanos": {
+      "command": "bash",
+      "args": ["scripts/mcp.sh"]
+    }
+  }
+}
