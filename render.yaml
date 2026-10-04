@@ -32,11 +32,10 @@ services:
         value: https://rpc.testnet.chain.robinhood.com
       - key: ARB_SEPOLIA_RPC
         value: https://sepolia-rollup.arbitrum.io/rpc
+      # Render's private network resolves a service by name. fromService would give a bare host with
+      # no scheme, which is not a URL the app can fetch.
       - key: AGENT_URL
-        fromService:
-          type: pserv
-          name: velanos-agent
-          property: hostport
+        value: http://velanos-agent:10000
       - key: RELAY_PK
         sync: false
       - key: DEMO_ADMIN_TOKEN
@@ -63,10 +62,7 @@ services:
       - key: ARB_SEPOLIA_RPC
         value: https://sepolia-rollup.arbitrum.io/rpc
       - key: SERVER_URL
-        fromService:
-          type: web
-          name: velanos-api
-          property: host
+        value: http://velanos-api:10000
       - key: GROQ_API_KEY
         sync: false
       - key: AGENT_SIGNER_PK
@@ -89,10 +85,7 @@ services:
       - key: ARB_SEPOLIA_RPC
         value: https://sepolia-rollup.arbitrum.io/rpc
       - key: SERVER_URL
-        fromService:
-          type: web
-          name: velanos-api
-          property: host
+        value: http://velanos-api:10000
       - key: WATCHER_PK
         sync: false
       - key: PRICE_UPDATER_PK
