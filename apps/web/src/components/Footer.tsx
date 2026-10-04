@@ -65,10 +65,8 @@ export function Footer() {
             at its size; losses within a mandate&rsquo;s drawdown limit stay with depositors.
           </p>
           <div className="flex items-center gap-3 text-[13px] text-[var(--ink-3)]">
-            Built for
-            <BrandLogo logo="ROBINHOOD" size={24} />
+            Live on
             <BrandLogo logo="ARBITRUM" size={24} />
-            <BrandLogo logo="GMX" size={24} />
           </div>
         </div>
       </div>

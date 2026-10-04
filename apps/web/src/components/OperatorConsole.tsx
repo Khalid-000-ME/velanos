@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, RotateCcw, Zap } from 'lucide-react';
+import { Play, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button, Card, Chip, StateChip, TestControlBadge, cn } from '@velanos/ui';
 import type { VaultSummary } from '@/lib/api';
@@ -19,13 +19,10 @@ const SCENARIOS = [
   { id: 's0', label: 'S0 · Good trade', profile: 'good' },
   { id: 's1', label: 'S1 · Prompt injection', profile: 'prompt_injected' },
   { id: 's2', label: 'S2 · Fat finger', profile: 'fat_finger' },
-  { id: 's3', label: 'S3 · Hallucinated market', profile: 'hallucinated_market' },
   { id: 's4', label: 'S4 · Revenge trader', profile: 'revenge_trader' },
   { id: 's5', label: 'S5 · Ghost after expiry', profile: 'ghost_after_expiry' },
-  { id: 's6', label: 'S6 · Silent bleeder', profile: 'silent_bleeder' },
 ] as const;
 
-const SHOCK_ASSETS = ['TSLA', 'AMZN', 'AMD'] as const;
 
 /**
  * The console that drives the demo.
@@ -34,7 +31,7 @@ const SHOCK_ASSETS = ['TSLA', 'AMZN', 'AMD'] as const;
  * NAV fall needs to know whether the market did that or we did. The product's credibility rests on
  * the numbers being real, which means being loud about the few that are staged.
  *
- * None of these controls has protocol authority. They move test prices, poison a test news feed, and
+ * None of these controls has protocol authority. They poison a test news feed and
  * ask the agent to take a step. There is no button here that can freeze a vault, move depositor funds
  * or forgive a slash — those are decided on-chain, by rules, and that is the point.
  */
@@ -49,8 +46,6 @@ export function OperatorConsole({
 }) {
   const [vault, setVault] = useState(vaults[0]?.address ?? '');
   const [profile, setProfile] = useState('good');
-  const [shockAsset, setShockAsset] = useState<string>('TSLA');
-  const [shockBps, setShockBps] = useState(-2_000);
   const [poisoned, setPoisoned] = useState(newsPoisoned);
   const [busy, setBusy] = useState<string | null>(null);
   const [log, setLog] = useState<string[]>([]);
@@ -131,7 +126,7 @@ export function OperatorConsole({
                 onChange={(e) => setProfile(e.target.value)}
                 className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[13px]"
               >
-                {profiles.map((p) => (
+                {profiles.filter((p) => p.id !== 'hallucinated_market' && p.id !== 'silent_bleeder').map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.label}
                   </option>
@@ -207,55 +202,7 @@ export function OperatorConsole({
         </Card>
 
         {/* ── market + news ──────────────────────────────────────────── */}
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Card className="p-5">
-            <div className="flex items-center justify-between gap-2">
-              <h2 className="text-sm font-semibold">Market shock</h2>
-              <TestControlBadge />
-            </div>
-
-            <Field label="Asset" className="mt-4">
-              <select
-                value={shockAsset}
-                onChange={(e) => setShockAsset(e.target.value)}
-                className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[13px]"
-              >
-                {SHOCK_ASSETS.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
-                  </option>
-                ))}
-              </select>
-            </Field>
-
-            <Field label={`Move ${(shockBps / 100).toFixed(0)}%`} className="mt-3">
-              <input
-                type="range"
-                min={-3_000}
-                max={3_000}
-                step={250}
-                value={shockBps}
-                onChange={(e) => setShockBps(Number(e.target.value))}
-                className="w-full accent-[var(--green)]"
-              />
-            </Field>
-
-            <Button
-              variant="secondary"
-              className="mt-3 w-full"
-              disabled={busy !== null || !selected}
-              onClick={() =>
-                call('Market shock', '/demo/shock', {
-                  chainId: selected?.chainId,
-                  asset: shockAsset,
-                  bps: shockBps,
-                })
-              }
-            >
-              <Zap size={14} /> Apply shock
-            </Button>
-          </Card>
-
+        <div className="grid gap-5">
           <Card className="p-5">
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-sm font-semibold">News feed</h2>

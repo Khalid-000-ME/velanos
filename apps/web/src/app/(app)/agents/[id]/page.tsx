@@ -30,7 +30,7 @@ export default async function AgentPage({ params }: { params: Promise<{ id: stri
   const { agent, vaults, violations } = data;
   const primary = vaults[0];
   const dec = primary?.settlementDecimals ?? 6;
-  const sym = primary?.settlementSymbol ?? 'tUSDG';
+  const sym = primary?.settlementSymbol ?? 'USDG';
 
   const bondLocked = vaults.reduce((acc, v) => acc + BigInt(v.bondAvailable), 0n);
   const bondSlashed = vaults.reduce((acc, v) => acc + BigInt(v.bondSlashed), 0n);

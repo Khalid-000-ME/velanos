@@ -27,8 +27,8 @@ export function Hero() {
         </h1>
 
         <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed text-[var(--ink-2)]">
-          Velanos vaults let AI agents trade tokenized stocks and perps with depositor capital — only
-          after staking their own. Every intent is checked on-chain, and a signed rule-break slashes the
+          Velanos vaults let AI agents trade on-chain with depositor capital — only after staking
+          their own USDG. Every intent is checked on-chain, and a signed rule-break slashes the
           agent&rsquo;s bond straight to depositors, even when the trade never executes.
         </p>
 
@@ -48,8 +48,7 @@ export function Hero() {
         </div>
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-2.5 text-[14px]">
-          <span className="text-[var(--ink-3)]">Built for</span>
-          <ChainPill logo="ROBINHOOD" label="Robinhood Chain Testnet" />
+          <span className="text-[var(--ink-3)]">Live on</span>
           <ChainPill logo="ARBITRUM" label="Arbitrum Sepolia" />
         </div>
       </div>

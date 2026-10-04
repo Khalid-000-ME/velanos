@@ -12,12 +12,12 @@ export function Stats({ stats }: { stats: StatsData | null }) {
     {
       label: 'Capital bonded by agents',
       value: stats ? formatAmount(stats.totalBonded, 6, { maxFractionDigits: 0 }) : '—',
-      unit: 'tUSDG',
+      unit: 'USDG',
     },
     {
       label: 'Paid to depositors',
       value: stats ? formatAmount(stats.totalSlashedToDepositors, 6, { maxFractionDigits: 0 }) : '—',
-      unit: 'tUSDG',
+      unit: 'USDG',
     },
     { label: 'Violations blocked', value: stats ? String(stats.violationsBlocked) : '—' },
     { label: 'Vaults under mandate', value: stats ? String(stats.vaultCount) : '—' },

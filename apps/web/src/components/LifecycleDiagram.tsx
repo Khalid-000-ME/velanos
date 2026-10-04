@@ -74,7 +74,7 @@ const LANES: LaneSpec[] = [
   {
     code: 'PASS',
     title: 'Inside every rule',
-    example: 'e.g. buy 150 of an allowed stock',
+    example: 'e.g. buy 20 USDG of an allowed asset',
     tone: 'pass',
     steps: [
       { title: 'Exact approval', detail: 'only to an allowlisted venue' },
@@ -100,7 +100,7 @@ const LANES: LaneSpec[] = [
   {
     code: '1xx',
     title: 'Breaks a rule it could have checked',
-    example: 'e.g. buys a stock its mandate forbids',
+    example: 'e.g. buys an asset its mandate forbids',
     tone: 'slash',
     guardrailAfter: 0,
     steps: [

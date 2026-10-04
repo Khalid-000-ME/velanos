@@ -15,9 +15,9 @@ const OUTCOMES = [
     tag: 'Misconduct',
     dot: 'var(--loss)',
     title: 'Broke a rule it could have checked',
-    body: 'Bought a stock outside its mandate, oversized an order, or kept signing after its term ended.',
+    body: 'Traded an asset outside its mandate, oversized an order, or kept signing after its term ended.',
     verdict: 'Slashed',
-    bond: '−50 · 45 to you',
+    bond: '−10 · 9 to you',
     bondTone: 'var(--loss)',
     featured: true,
   },
@@ -96,7 +96,7 @@ export function Outcomes() {
       </div>
 
       <p className="mt-8 text-center text-[13px] text-[var(--ink-3)]">
-        Figures from the demo mandate: 300 tUSDG bond, 50 per violation, 10% reporter bounty, 8% loss
+        Figures from the live vault: 50 USDG bond, 10 per violation, 10% reporter bounty, 8% loss
         floor.{' '}
         <Link href="/docs#lifecycle" className="inline-flex items-center gap-1 text-[var(--ink-2)] hover:text-[var(--ink)]">
           See the full lifecycle <ArrowRight size={12} />

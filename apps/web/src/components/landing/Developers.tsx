@@ -11,7 +11,7 @@ const MCP_CONFIG = `{
   }
 }`;
 
-const PROMPT = 'Pre-flight a 150 tUSDG TSLA buy on Delta Equities I, and only sign it if every check passes.';
+const PROMPT = 'Pre-flight a 20 USDG ETH buy on Delta ETH I, and only sign it if every check passes.';
 
 /**
  * The integration story for agent builders.
