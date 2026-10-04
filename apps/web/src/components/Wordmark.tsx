@@ -1,45 +1,67 @@
 import { cn } from '@velanos/ui';
 
 /**
- * The mark: a V whose descent is cut flat by a floor line.
+ * The Velanos mark: a tapered stroke and a slanted bar that together read as a V.
  *
- * It reads as the initial, and it is also the product in one glyph — a drawdown that stops at a
- * floor instead of running to a point. Drawn as strokes on a filled tile so it holds at favicon size
- * and at hero size without a separate small-size variant.
+ * Traced from the master artwork and checked against it pixel-for-pixel (99.2% overlap at 1448px),
+ * so the vector and the raster app icons are the same shape. The paths keep the master's coordinate
+ * space; the viewBox crops to the mark with a little breathing room.
  */
-export function Mark({ size = 22, className }: { size?: number; className?: string }) {
+const LEFT = 'M494 434L676 430.5Q726 429.5 715 478.3L603.3 973.1Q601.6 981 593.5 981L593.5 981Q585.5 981 583.4 973.2L453.9 487.2Q440 435 494 434Z';
+const RIGHT = 'M809 433L976 433Q1002 433 996.8 458.5L890.6 974.5Q886 997 863 997L700 997Q671 997 676.8 968.6L782.6 454.5Q787 433 809 433Z';
+
+export const BRAND = {
+  lime: '#75FB65',
+  deep: '#0C2104',
+} as const;
+
+export function Mark({
+  size = 24,
+  className,
+  color = 'currentColor',
+}: {
+  size?: number;
+  className?: string;
+  color?: string;
+}) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <rect width="24" height="24" rx="6" fill="currentColor" />
-      <path
-        d="M6.5 6.5 10.6 14.2h2.8L17.5 6.5"
-        stroke="var(--black)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path d="M5.5 17.6h13" stroke="var(--black)" strokeWidth="2" strokeLinecap="round" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="436 427 572 572"
+      fill={color}
+      className={className}
+      aria-hidden
+    >
+      <path d={LEFT} />
+      <path d={RIGHT} />
     </svg>
   );
 }
 
-/**
- * Lowercase wordmark, tightly tracked. A capitalised name with a sector suffix reads like a pitch
- * deck title; lowercase reads like a product.
- */
-export function Wordmark({
-  className,
-  markClassName,
-  size = 22,
-}: {
-  className?: string;
-  markClassName?: string;
-  size?: number;
-}) {
+/** The mark on its deep-green tile — the app icon, used wherever the mark needs its own ground. */
+export function MarkTile({ size = 32, className }: { size?: number; className?: string }) {
   return (
-    <span className={cn('inline-flex items-center gap-2', className)}>
-      <Mark size={size} className={cn('text-[var(--green)]', markClassName)} />
-      <span className="text-[17px] font-medium lowercase tracking-[-0.03em]">velanos</span>
+    <span
+      className={cn('inline-flex shrink-0 items-center justify-center', className)}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size * 0.28,
+        background: BRAND.deep,
+        boxShadow: 'inset 0 0 0 1px rgba(117,251,101,0.18)',
+      }}
+    >
+      <Mark size={size * 0.46} color={BRAND.lime} />
+    </span>
+  );
+}
+
+export function Wordmark({ className, size = 30 }: { className?: string; size?: number }) {
+  return (
+    <span className={cn('inline-flex items-center gap-2.5', className)}>
+      <MarkTile size={size} />
+      <span className="text-[18px] font-semibold tracking-[-0.02em] text-[var(--ink)]">Velanos</span>
     </span>
   );
 }
