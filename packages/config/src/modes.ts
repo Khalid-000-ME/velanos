@@ -7,7 +7,7 @@ import { z } from 'zod';
 export const ModesSchema = z.object({
   usdg: z.enum(['mock', 'official']).default('mock'),
   stocks: z.enum(['mock', 'official']).default('mock'),
-  perp: z.enum(['gmx', 'mock']).default('gmx'),
+  perp: z.enum(['gmx', 'mock', 'none']).default('none'),
   llm: z.enum(['live', 'replay']).default('replay'),
 });
 export type Modes = z.infer<typeof ModesSchema>;
@@ -21,12 +21,12 @@ export function modesFromEnv(env: Record<string, string | undefined> = process.e
   });
 }
 
-/** Human-readable status-bar labels, e.g. "Stock Tokens: test mocks". */
+/** Human-readable status-bar labels, e.g. "USDG: Paxos". */
 export function modeLabels(m: Modes): Record<string, string> {
   return {
-    stocks: m.stocks === 'official' ? 'Stock Tokens: official faucet' : 'Stock Tokens: test mocks',
-    usdg: m.usdg === 'official' ? 'USDG: official test' : 'USDG: test mock',
-    perp: m.perp === 'gmx' ? 'Perps: GMX v2' : 'Perps: mock (GMX unavailable)',
+    stocks: m.stocks === 'official' ? 'Assets: real WETH · USDC' : 'Assets: test tokens',
+    usdg: m.usdg === 'official' ? 'USDG: Paxos' : 'USDG: test token',
+    perp: m.perp === 'gmx' ? 'Perps: GMX v2' : m.perp === 'none' ? 'Prices: Chainlink' : 'Perps: mock (GMX unavailable)',
     llm: m.llm === 'live' ? 'LLM: live' : 'LLM: replay',
   };
 }

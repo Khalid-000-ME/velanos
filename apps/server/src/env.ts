@@ -15,7 +15,7 @@ const EnvSchema = z.object({
   PRICE_UPDATER_PK: z.string().optional(),
   USDG_MODE: z.enum(['mock', 'official']).default('mock'),
   STOCK_TOKEN_MODE: z.enum(['mock', 'official']).default('mock'),
-  PERP_MODE: z.enum(['gmx', 'mock']).default('gmx'),
+  PERP_MODE: z.enum(['gmx', 'mock', 'none']).default('none'),
   LLM_MODE: z.enum(['live', 'replay']).default('replay'),
   INDEXER_POLL_MS: z.coerce.number().int().default(2_000),
   NAV_SNAPSHOT_MS: z.coerce.number().int().default(15_000),

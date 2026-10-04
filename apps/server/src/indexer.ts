@@ -84,7 +84,24 @@ export class Indexer {
 
   // ───────────────────────────────── polling ──────────────────────────────────
 
+  /**
+   * Chains whose scan is still in flight. A public RPC can take longer to answer a batch than the poll
+   * interval, and two overlapping ticks would both read the same cursor and index the same range twice,
+   * double-counting every slash in it.
+   */
+  private scanning = new Set<number>();
+
   private async tick(chainId: number): Promise<void> {
+    if (this.scanning.has(chainId)) return;
+    this.scanning.add(chainId);
+    try {
+      await this.scan(chainId);
+    } finally {
+      this.scanning.delete(chainId);
+    }
+  }
+
+  private async scan(chainId: number): Promise<void> {
     const client = publicClientFor(chainId);
     const head = Number(await client.getBlockNumber());
 

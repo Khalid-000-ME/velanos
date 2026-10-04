@@ -17,6 +17,8 @@ export const AssetEntrySchema = z.object({
   pool: AddressSchema.optional(),
   /** Display name, e.g. "Test Tesla". */
   name: z.string().optional(),
+  /** Chainlink USD feed that prices this asset, where it is feed-priced. */
+  feed: AddressSchema.optional(),
   /** GMX market address for perp "assets". */
   market: AddressSchema.optional(),
 });
@@ -25,7 +27,7 @@ export type AssetEntry = z.infer<typeof AssetEntrySchema>;
 export const DeploymentModesSchema = z.object({
   usdg: z.enum(['mock', 'official']),
   stocks: z.enum(['mock', 'official']).nullable(),
-  perp: z.enum(['gmx', 'mock']).nullable(),
+  perp: z.enum(['gmx', 'mock', 'none']).nullable(),
 });
 export type DeploymentModes = z.infer<typeof DeploymentModesSchema>;
 

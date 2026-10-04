@@ -333,11 +333,9 @@ export function explorerAddressUrl(chainId: number, address: string): string {
 export const CHAIN_LABELS: Record<number, string> = {
   46630: 'Robinhood Chain testnet',
   421614: 'Arbitrum Sepolia',
-  31337: 'Local anvil',
 };
 
 export const CHAIN_SHORT: Record<number, string> = {
   46630: 'Robinhood',
   421614: 'Arbitrum',
-  31337: 'Local',
 };

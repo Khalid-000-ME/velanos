@@ -116,6 +116,9 @@ export async function healthRoutes(app: FastifyInstance): Promise<void> {
       if (i.status === 'slashed' || i.status === 'rejected') blocked.add(`${i.chainId}:${i.vault}:${i.nonce}`);
     }
     for (const f of feed) blocked.add(`${f.chainId}:${f.vault}:${f.nonce}`);
+    // A reported violation is on-chain fact, so it counts even when the relay's own record of the
+    // refused intent is gone (a reindexed database, or a violation reported by a third-party watcher).
+    for (const sl of slashes) blocked.add(`${sl.chainId}:${sl.vault}:${sl.nonce}`);
     const violationsBlocked = blocked.size;
 
     return {
