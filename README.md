@@ -4,7 +4,7 @@
 
 ### No agent should manage other people's money without staking its own.
 
-**Bonded capital vaults for autonomous trading agents** · Robinhood Chain · Arbitrum · Paxos USDG · GMX
+**Bonded capital vaults for autonomous trading agents** · Arbitrum Sepolia · Paxos USDG · Chainlink
 
 </div>
 
@@ -62,39 +62,31 @@ A loss floor is only worth something if its edges are stated. Payouts are capped
 
 ## Proof
 
-Everything below is read back from chain state by an automated gate, not asserted in a slide.
+Live on **Arbitrum Sepolia**, with the real tokens: Paxos USDG for deposits and bond, WETH priced by Chainlink ETH/USD, USDC as the forbidden asset. Nothing is minted and nothing is mocked on-chain. Every address is in [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
 
-### `pnpm demo:all` — 5/5 from a fresh chain
+### One real run, read back from the chain
 
-```
-  PASS  s0   Good trade executes with every check green
-  PASS  s1   Prompt injection is refused, published, reported and paid
-  PASS  s2   Fat finger is slashed and the second breach freezes the vault
-  PASS  s4   Revenge trader is rejected three times with the bond untouched
-  PASS  s6   Market shock trips the breaker and the bond restores the floor
-```
-
-### The numbers, verified on chain
-
-| Scenario | What the agent did | What the protocol did |
+| Step | What happened | Transaction |
 |---|---|---|
-| **S1 · Prompt injection** | A poisoned headline told it to ignore its limits and buy a forbidden stock. It did. | Relay refused to submit. Signature published as evidence. A watcher reported it. Bond **300 → 250**, with **45 to depositors** and **5 to the reporter**. |
-| **S2 · Fat finger** | A decimals bug multiplied a valid 250 order to 2,500. | Rule 103 slash. Second breach → vault **FROZEN** with no admin key involved. Bond **250 → 200**. |
-| **S4 · Revenge trader** | After two losses, tried three times to add to a position already near its cap. | Three rejections, vault **WARNED**, cooling-off cleared itself. **Bond untouched at 300.** Zero violations recorded. |
-| **S6 · Drawdown** | Nothing wrong. Built a fully compliant book, then the market fell. | NAV/share **0.8685 → through the 0.92 floor**. Breaker tripped, vault unwound, bond paid **57.565088 tUSDG** — and NAV/share landed on **0.920000000000000000 exactly**, shortfall zero. |
+| Open | Vault **Delta ETH I** created, **50 USDG** bond staked, **80 USDG** deposited | [bond](https://sepolia.arbiscan.io/tx/0x7f7fbb359f8118c388060de57cb2c388ec9aa6ce91897e7f296219cb94465454) · [deposit](https://sepolia.arbiscan.io/tx/0xf53ac391940a63acf58e5e4eee934923d776ae071b35c6426263ae2c91b821f6) |
+| Compliant trade | 20 USDG → WETH, every check green, executed | [tx](https://sepolia.arbiscan.io/tx/0xe7ce3977d2b93565ab1f54a9e2c2500ad9413d0515ca693437b738027e360660) |
+| Prompt injection | A poisoned headline told the agent to rotate into USDC. It signed. The relay refused it, so **nothing executed**. | published as evidence |
+| Reported and slashed | A watcher reported the signature (rule 101). **Bond 50 → 40 USDG**: 9 to depositors, 1 to the reporter. | [tx](https://sepolia.arbiscan.io/tx/0x670cd56563127434844f37282c72de9c6e560946f9faf6ae28ff682f3b78815f) |
+| Claude Code over MCP | A third-party agent pre-flighted and submitted a trade through the MCP server | [tx](https://sepolia.arbiscan.io/tx/0x6d12789762c49e7c0a1327bf75c77cdaa008f30d286323213dcade7cdd1af466) |
 
-That last row is the headline claim, and it is arithmetic rather than marketing: the floor is a number the bond is spent reaching, to the wei.
-
-### 148 contract tests, including the ones that matter
+### 154 contract tests, including the ones that matter
 
 ```
-forge test   →   148 passed, 0 failed
+forge test   →   154 passed, 0 failed
 ```
 
 - Every rule ID has a passing and a failing case, plus the **check-order** guarantees the UI and the court depend on
 - Fuzzing proved a **stateful rule can never return a slashable verdict** — the formal version of "we punish misconduct, not volatility"
-- Handler-based invariants over an adversarial agent that replays nonces, signs violations and shocks prices: *slashed never exceeds staked*, *no insider ever holds depositor shares*, *two breaches always mean frozen*
+- Handler-based invariants over an adversarial agent that replays nonces, signs violations and shocks prices: *slashed never exceeds staked*, *no insider ever holds depositor shares*, *two breaches always freeze*
 - A **differential test fuzzes the TypeScript rule mirror against the deployed Solidity guard** and compares verdicts intent by intent, so an agent can never be slashed for trusting its own SDK
+- Oracle tests cover Chainlink feeds: live reads, decimal normalisation, stale and non-positive answers, and that a feed-backed price can never be overwritten
+
+The fat-finger, revenge-trader and drawdown-breaker paths are covered by the Foundry suite and its handler invariants; the live vault keeps its one remaining breach for demonstration.
 
 ---
 
@@ -118,7 +110,7 @@ Four screens carry the whole story.
 Leads with the worst case, not a projected return. The big figure is your loss floor and the bond standing behind it. Covered and not-covered are listed side by side, and the mandate is rendered in plain English generated from the on-chain struct.
 
 **2 · Vault cockpit** — `/vaults/<address>`
-NAV per share against its high-water mark and its floor, drawn as a band so a breach is an area rather than a crossing you have to squint at. Slashes and market shocks are marked on the time axis. The live intent stream shows what the agent is doing, colour-coded by outcome, with its stated reasoning expandable on every row.
+NAV per share against its high-water mark and its floor, drawn as a band so a breach is an area rather than a crossing you have to squint at. Slashes are marked on the time axis. The live intent stream shows what the agent is doing, colour-coded by outcome, with its stated reasoning expandable on every row.
 
 **3 · Pre-flight inspector** — `/vaults/<address>/intents/<nonce>`
 Any intent, with the **full ordered checklist the contract evaluated** — every rule, the actual value against the limit, the rule that decided the outcome highlighted. Recomputed live from chain state, not a cached copy. This is where the protocol stops being a claim and becomes auditable.
@@ -130,7 +122,7 @@ Also: `/watch` is the public evidence locker where anyone can claim a bounty, `/
 
 ### Every test control is labelled
 
-A judge who cannot distinguish a market shock *we applied* from one the market produced has no reason to trust any other number on the screen. So staged inputs — price shocks, the poisoned news feed, agent profiles, replay mode — carry a **TEST CONTROL** badge, and the status bar permanently shows which integrations are running against test stand-ins.
+A judge who cannot distinguish an input *we staged* from one the chain produced has no reason to trust any other number on the screen. So staged inputs — the poisoned news feed, agent profiles, replay mode — carry a **TEST CONTROL** badge, and the status bar permanently shows which integrations are running against test stand-ins.
 
 Nothing in the operator console has protocol authority. There is no button anywhere that can freeze a vault, move depositor funds, or forgive a slash. Those are decided on-chain, by rules.
 
@@ -143,18 +135,14 @@ pnpm i
 cp .env.example .env            # fill in testnet keys
 
 pnpm contracts:build            # forge build + generate typed ABIs
-pnpm contracts:test             # 148 tests
+pnpm contracts:test             # 154 tests
 
-pnpm contracts:deploy:rh        # deploy to Robinhood Chain testnet
-pnpm demo:seed                  # register the agent, create and fund vaults A–E
-
-pnpm dev                        # indexer, agent, watcher, web, MCP
-pnpm demo:all                   # run the acceptance gate
+./scripts/up.sh                  # indexer + relay, agent, watcher and web, against the live deployment
 ```
 
 Open `http://localhost:3000`.
 
-The same deploy and seed scripts run against a local fork, so the full stack — contracts, indexer, agent, watcher, UI — can be exercised without waiting on a public testnet.
+To deploy your own copy: `forge script script/DeployOnchain.s.sol:DeployOnchain --sig "deploy()" --rpc-url $ARB_SEPOLIA_RPC --broadcast`, then `script/SeedOnchain.s.sol`.
 
 ---
 
@@ -200,10 +188,10 @@ The same deploy and seed scripts run against a local fork, so the full stack —
 
 ## Sponsor integrations
 
-- **Robinhood Chain** (46630) — tokenised equities vaults; Stock Tokens via the faucet or deterministic test mocks
 - **Paxos USDG** — the settlement asset throughout; the bond is posted in the same asset depositors use, which is what makes a payout unambiguous
-- **GMX v2** — perpetuals vault on Arbitrum Sepolia, one dedicated adapter per vault so position accounting is never a shared balance
+- **Chainlink** — ETH/USD and USDC/USD feeds price every traded asset; a feed-backed price can't be set or shocked by anyone, including the admin
 - **Arbitrum** — the protocol's home chain; cheap enough to check every single intent on-chain
+- **Claude** — the agent that proposes trades, and the MCP server any Claude-based agent plugs into
 
 ---
 
@@ -215,20 +203,19 @@ The same deploy and seed scripts run against a local fork, so the full stack —
 | Signature replayed across vaults or chains | EIP-712 domain binds vault + chainId; `vault` field checked; one-shot nonces |
 | Griefing via fake reports | Requires the agent's own signature, an unresolved nonce, and a rule the guard agrees was broken |
 | Agent self-reports to farm its own bounty | Bounties exist **only** on the reporting path — reaching `execute` requires no discovery, so it pays nothing |
-| Oracle manipulation | Role-gated test oracle, disclosed as such; stateful slippage check; Chainlink in production |
+| Oracle manipulation | Chainlink feeds with staleness and sanity checks; no one can overwrite a feed-backed price; stateful slippage check |
 | Reentrancy via adapters or tokens | `nonReentrant`, CEI ordering, SafeERC20 |
 | Guardian abuse | A guardian can only freeze. It cannot move funds |
 | Mandate mutation | Immutable per vault. New terms require a new vault and a new bond |
 | Bond insufficient for the shortfall | Payout capped and the gap stays visible; the UI shows the unbacked remainder before deposit |
-| GMX keeper delay | Static checks happen at order creation; UI shows keeper status; mock adapter as fallback |
 
-**Known limitations**, stated plainly: the oracle is a role-gated test oracle; the venue is an oracle-priced pool rather than a real DEX; perp NAV is simplified to one position per market; an operator reporting from an unrelated address it controls can recover the bounty share (bounded by the bounty rate, and violating is still strictly worse than not violating); no audit; testnet only.
+**Known limitations**, stated plainly: the venue is Velanos's own oracle-priced pool, funded with real USDG, WETH and USDC, rather than a third-party DEX; an operator reporting from an unrelated address it controls can recover the bounty share (bounded by the bounty rate, and violating is still strictly worse than not violating); no audit; testnet only.
 
 ---
 
 ## Roadmap
 
-Uniswap adapter for Robinhood Chain mainnet · Chainlink price feeds · third-party underwriters sharing the first-loss layer · a shared reserve above individual bonds · ERC-8004 reputation feedback · Arbitrum One deployment.
+Robinhood Chain stock tokens · GMX perps · a real-DEX adapter · third-party underwriters sharing the first-loss layer · a shared reserve above individual bonds · ERC-8004 reputation feedback · Arbitrum One deployment.
 
 **Business model:** vault management fee, performance fee above the high-water mark, and a bond-management fee on the capital agents post.
 
