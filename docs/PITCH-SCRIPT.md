@@ -1,6 +1,8 @@
 # Pitch script — 4 minutes
+
 Deck: https://claude.ai/artifact/1VyjPQq2d6jQf7RUk2kYv7 (private until you share it). Speaker notes are also in the deck.
-Read at a calm pace; the timings add up to about 4:00 at a steady pace. If you are running long, drop slide 8 (the table) and say its one line in the close.
+
+About 4:00 at a steady pace. If you are running long, drop slide 8 (the table) and say its one line in the close.
 
 ## 1. Cover  ~15s
 
@@ -24,7 +26,7 @@ A bond is only credible if it's fair. So we split rules by who's to blame. Misco
 
 ## 6. Proof  ~40s
 
-We didn't mock this. It's live on Arbitrum Sepolia: Paxos USDG, WETH priced by Chainlink feeds. Our agent signed a trade for USDC, which its mandate forbids. The relay refused it, so nothing executed. But the signature went public, a watcher reported it, and the bond paid: fifty USDG down to forty. Ten slashed, nine to depositors, one to the reporter. That's a real transaction you can open on Arbiscan right now. And the contracts are backed by a hundred and fifty-four Foundry tests.
+We didn't mock this. It's live on Robinhood Chain and Arbitrum Sepolia: Paxos USDG, and the real tokenised stocks from the Robinhood faucet. A model on Groq, acting as our agent, signed a trade for Palantir, which its mandate forbids. The relay refused it, so nothing executed. But the signature went public, a watcher reported it, and the bond paid: fifty USDG down to forty. Ten slashed, nine to depositors, one to the reporter. That's a real transaction you can open on the block explorer right now. And the contracts are backed by a hundred and fifty-four Foundry tests.
 
 ## 7. Mcp  ~25s
 
@@ -36,7 +38,7 @@ Why this isn't another guardrail. Guardrails block. Reputation describes. Velano
 
 ## 9. Close  ~15s
 
-Velanos: bonded capital vaults for autonomous trading agents. Live on Arbitrum Sepolia, real USDG, real Chainlink prices, and an MCP server any agent can plug into today. No agent should manage your money without staking its own. Thank you. Now let me show you Claude Code attached to a live vault.
+Velanos: bonded capital vaults for autonomous trading agents. Live on Robinhood Chain and Arbitrum Sepolia, real USDG, real tokenised stocks, and an MCP server any agent can plug into today. No agent should manage your money without staking its own. Thank you. Now let me show you Claude Code attached to a live vault.
 
 ---
-Total ≈ 635 words (~4.0 min at 160 wpm).
+Total ≈ 653 words.
