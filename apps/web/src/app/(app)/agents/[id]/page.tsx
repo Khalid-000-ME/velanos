@@ -99,7 +99,7 @@ export default async function AgentPage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* ── bond pricing ───────────────────────────────────────────────── */}
-      <div className="mt-10 rounded-[var(--radius)] border border-[var(--line)] bg-white p-7">
+      <div className="mt-10 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-7">
         <Eyebrow>Bond cost</Eyebrow>
         <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-[var(--ink-3)]">
           A clean settlement record makes outside capital cheaper to access — which is the reason an
@@ -151,7 +151,7 @@ export default async function AgentPage({ params }: { params: Promise<{ id: stri
                 <p className="mt-3 font-mono text-[11px] tabular-nums text-[var(--ink-3)]">
                   share {formatWad(v.pricePerShareWad, 4)} · floor {formatWad(v.floorWad, 4)}
                 </p>
-                <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--ink-3)]">
+                <p className="mt-1 text-[11px] uppercase tracking-[0.06em] text-[var(--ink-3)]">
                   {CHAIN_LABELS[v.chainId] ?? v.chainId}
                 </p>
               </Link>
@@ -175,10 +175,10 @@ export default async function AgentPage({ params }: { params: Promise<{ id: stri
             hint="This agent has not had its bond slashed."
           />
         ) : (
-          <div className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+          <div className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)]">
             <table className="w-full text-[14px]">
               <thead>
-                <tr className="border-b border-[var(--line)] bg-[var(--bg-subtle)] text-left font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
+                <tr className="border-b border-[var(--line)] bg-[var(--bg-subtle)] text-left text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
                   <th className="px-4 py-2.5">Rule</th>
                   <th className="px-4 py-2.5">Vault</th>
                   <th className="px-4 py-2.5">Penalty</th>

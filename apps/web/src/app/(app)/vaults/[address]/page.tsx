@@ -69,7 +69,7 @@ export default async function VaultCockpit({ params }: { params: Promise<{ addre
 
         <Link
           href={`/vaults/${vault.address}/fund`}
-          className="rounded-[var(--radius-sm)] bg-[var(--green)] px-5 py-2.5 text-[14px] font-medium text-black transition-colors hover:bg-[var(--green-hover)]"
+          className="rounded-[var(--radius-pill)] bg-[var(--green)] px-6 py-3 text-[14px] font-semibold text-black transition-colors hover:bg-[var(--green-hover)]"
         >
           Fund this vault
         </Link>
@@ -149,7 +149,7 @@ export default async function VaultCockpit({ params }: { params: Promise<{ addre
             ) : (
               <table className="w-full text-[14px]">
                 <thead>
-                  <tr className="border-b border-[var(--line)] text-left font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
+                  <tr className="border-b border-[var(--line)] text-left text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
                     <th className="px-5 py-2.5 font-medium">Asset</th>
                     <th className="px-5 py-2.5 font-medium">Amount</th>
                     <th className="w-[45%] px-5 py-2.5 font-medium">Exposure vs cap</th>
@@ -190,7 +190,7 @@ export default async function VaultCockpit({ params }: { params: Promise<{ addre
         <Panel
           label="Intent stream"
           action={
-            <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
+            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.08em] text-[var(--ink-3)]">
               <span className="size-1.5 animate-pulse rounded-full bg-[var(--green)]" aria-hidden />
               live
             </span>
@@ -222,9 +222,9 @@ function Panel({
   action?: React.ReactNode;
 }) {
   return (
-    <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+    <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)]">
       <header className="flex items-center justify-between border-b border-[var(--line)] px-5 py-3">
-        <h2 className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--ink-3)]">
+        <h2 className="text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--ink-3)]">
           {label}
         </h2>
         {action}
@@ -268,7 +268,7 @@ function StateBanner({
         {incidentId ? (
           <Link
             href={`/incidents/${incidentId}`}
-            className="ml-auto rounded-[var(--radius-sm)] border border-white/25 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] transition-colors hover:bg-white/10"
+            className="ml-auto rounded-[var(--radius-sm)] border border-white/25 px-3 py-1.5 text-[11px] uppercase tracking-[0.08em] transition-colors hover:bg-white/10"
           >
             See what happened
           </Link>

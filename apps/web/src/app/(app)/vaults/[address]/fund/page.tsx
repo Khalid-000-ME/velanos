@@ -90,7 +90,7 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
 
             <dl className="mt-7 grid gap-5 border-t border-[var(--line-on-black)] pt-5 sm:grid-cols-2">
               <div>
-                <dt className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
+                <dt className="text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
                   Floor per share
                 </dt>
                 <dd className="mt-2 text-[1.5rem] font-medium leading-none tracking-[-0.03em] tabular-nums">
@@ -98,7 +98,7 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
                 </dd>
               </div>
               <div>
-                <dt className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
+                <dt className="text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
                   Bond coverage
                 </dt>
                 <dd className="mt-2 text-[1.5rem] font-medium leading-none tracking-[-0.03em] tabular-nums">
@@ -162,7 +162,7 @@ export default async function FundPage({ params }: { params: Promise<{ address: 
           </HairlineGrid>
 
           {/* ── the mandate ──────────────────────────────────────────── */}
-          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-6">
             <div className="flex items-center justify-between gap-3">
               <Eyebrow>The mandate you are agreeing to</Eyebrow>
               <Chip>Immutable</Chip>

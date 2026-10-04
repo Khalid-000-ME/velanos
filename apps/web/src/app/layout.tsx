@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { Suspense } from 'react';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Providers } from '@/components/Providers';
-import { StatusBar } from '@/components/StatusBar';
 import './globals.css';
 
+// The italic is a real cut, not a synthesised slant: it carries the one accented word in each
+// headline, and a faked oblique is exactly where a type system starts to look cheap.
 const geist = Geist({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   variable: '--font-geist',
   display: 'swap',
 });
@@ -25,14 +26,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Velanos — bonded capital for autonomous trading agents',
+    default: 'Velanos — trading agents post a bond, rule-breakers pay you',
     template: '%s · Velanos',
   },
   description:
     'Every agent action is checked against an immutable mandate before funds move. Misconduct slashes the agent’s own capital to depositors, automatically and on-chain.',
   openGraph: {
     title: 'Velanos',
-    description: 'The accountability layer for autonomous trading.',
+    description: 'Trading agents post a bond. Rule-breakers pay you.',
     type: 'website',
   },
 };
@@ -43,12 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <Header />
-          {/* Streamed: the status bar reaches both chains' RPCs, and a slow testnet must not hold up
-              the page behind it. */}
-          <Suspense fallback={<div className="h-[var(--status-h)] border-b border-[var(--line)] bg-[var(--bg-subtle)]" />}>
-            <StatusBar />
-          </Suspense>
-          <main className="min-h-[calc(100vh-var(--header-h)-var(--status-h))]">{children}</main>
+          <main className="min-h-[calc(100vh-var(--header-h))]">{children}</main>
           <Footer />
         </Providers>
       </body>

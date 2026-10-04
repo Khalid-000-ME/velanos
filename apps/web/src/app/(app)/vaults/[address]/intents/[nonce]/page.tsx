@@ -31,7 +31,7 @@ export default async function InspectorPage({
     return (
       <div className="content-width py-10">
         <BackLink address={address} name={vault.name} />
-        <div className="mt-6 rounded-[var(--radius)] border border-[var(--line)] bg-white p-8">
+        <div className="mt-6 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-8">
           <h1 className="text-[1.25rem] font-medium tracking-[-0.01em]">
             This intent&rsquo;s body was not captured
           </h1>
@@ -74,7 +74,7 @@ export default async function InspectorPage({
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1.35fr] lg:items-start">
         {/* ── the intent itself ───────────────────────────────────────── */}
         <div className="space-y-4">
-          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-6">
             <Eyebrow className="mb-5">The signed intent</Eyebrow>
             <dl className="space-y-2 text-[13px]">
               <Field label="Kind" value={KIND_NAMES[Number(intent.kind)] ?? '—'} />
@@ -115,7 +115,7 @@ export default async function InspectorPage({
           </div>
 
           {detail.rationale ? (
-            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-6">
               <Eyebrow>Why the agent said it did this</Eyebrow>
               <blockquote className="mt-2 rounded-[var(--radius-sm)] bg-[var(--bg-subtle)] px-3 py-2.5 text-[13px] italic leading-relaxed text-[var(--ink-2)]">
                 &ldquo;{detail.rationale.text}&rdquo;
@@ -134,7 +134,7 @@ export default async function InspectorPage({
 
         {/* ── the checklist ───────────────────────────────────────────── */}
         <div className="space-y-4">
-          <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+          <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)]">
             <header className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--line)] px-5 py-3">
               <Eyebrow>Static rules</Eyebrow>
               <span className="text-[12px] text-[var(--ink-3)]">
@@ -144,7 +144,7 @@ export default async function InspectorPage({
             <CheckList checks={statics} failing={detail.ruleId} />
           </section>
 
-          <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+          <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)]">
             <header className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--line)] px-5 py-3">
               <Eyebrow>Stateful rules</Eyebrow>
               <span className="text-[12px] text-[var(--ink-3)]">

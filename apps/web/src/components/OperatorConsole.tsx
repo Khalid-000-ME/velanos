@@ -106,7 +106,7 @@ export function OperatorConsole({
               <select
                 value={vault}
                 onChange={(e) => setVault(e.target.value)}
-                className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-white px-3 py-2 text-[13px]"
+                className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[13px]"
               >
                 {vaults.length === 0 ? <option value="">no vaults indexed</option> : null}
                 {vaults.map((v) => (
@@ -129,7 +129,7 @@ export function OperatorConsole({
               <select
                 value={profile}
                 onChange={(e) => setProfile(e.target.value)}
-                className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-white px-3 py-2 text-[13px]"
+                className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[13px]"
               >
                 {profiles.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -218,7 +218,7 @@ export function OperatorConsole({
               <select
                 value={shockAsset}
                 onChange={(e) => setShockAsset(e.target.value)}
-                className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-white px-3 py-2 text-[13px]"
+                className="w-full rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[13px]"
               >
                 {SHOCK_ASSETS.map((a) => (
                   <option key={a} value={a}>

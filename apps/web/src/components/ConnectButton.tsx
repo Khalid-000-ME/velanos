@@ -18,7 +18,7 @@ export function ConnectButton() {
     return (
       <button
         onClick={() => disconnect()}
-        className="flex items-center gap-2 rounded-[var(--radius-sm)] border border-[var(--line)] px-3 py-1.5 font-mono text-[12px] text-[var(--ink-2)] transition-colors hover:bg-[var(--bg-subtle)]"
+        className="flex items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--line-strong)] px-4 py-2 font-mono text-[12px] text-[var(--ink-2)] transition-colors hover:bg-[var(--surface-2)]"
         title="Disconnect"
       >
         <span className="size-1.5 rounded-full bg-[var(--green)]" aria-hidden />
@@ -33,7 +33,7 @@ export function ConnectButton() {
     <button
       onClick={() => injected && connect({ connector: injected })}
       disabled={!injected || isPending}
-      className="rounded-[var(--radius-sm)] bg-[var(--black)] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-[var(--black-2)] disabled:opacity-50"
+      className="rounded-[var(--radius-pill)] bg-[var(--green)] px-5 py-2.5 text-[14px] font-semibold text-black transition-colors hover:bg-[var(--green-hover)] disabled:opacity-50"
     >
       {isPending ? 'Connecting…' : injected ? 'Connect wallet' : 'No wallet'}
     </button>

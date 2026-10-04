@@ -79,9 +79,9 @@ export function IncidentTimeline({ steps }: { steps: IncidentStep[] }) {
               <span
                 className="relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border"
                 style={{
-                  background: emphasis ? 'var(--loss)' : blocked ? 'var(--black)' : 'white',
-                  borderColor: emphasis ? 'var(--loss)' : blocked ? 'var(--black)' : 'var(--line-strong)',
-                  color: emphasis || blocked ? 'white' : 'var(--ink-2)',
+                  background: emphasis ? 'var(--loss)' : blocked ? 'var(--ink)' : 'var(--surface-2)',
+                  borderColor: emphasis ? 'var(--loss)' : blocked ? 'var(--ink)' : 'var(--line-strong)',
+                  color: emphasis ? '#fff' : blocked ? 'var(--bg)' : 'var(--ink-2)',
                 }}
               >
                 <Icon size={15} strokeWidth={1.75} />

@@ -56,7 +56,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
             <div className="flex flex-wrap items-center gap-2">
               <Eyebrow tone="onBlack">{copy.kicker}</Eyebrow>
               {incident.rule ? (
-                <span className="rounded-[var(--radius-sm)] border border-[var(--loss)]/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--loss-on-black)]">
+                <span className="rounded-[var(--radius-sm)] border border-[var(--loss)]/40 px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--loss-on-black)]">
                   Rule {incident.ruleId}
                 </span>
               ) : null}
@@ -82,7 +82,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
 
           <div className="space-y-7 rounded-[var(--radius)] border border-[var(--line-on-black)] bg-white/[0.04] p-6">
             <div>
-              <p className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
+              <p className="text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
                 Paid out of the agent&rsquo;s bond
               </p>
               <p className="mt-3 text-[2.75rem] font-medium leading-none tracking-[-0.03em] tabular-nums text-[var(--green-on-black)]">
@@ -103,9 +103,9 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
 
       {/* ── timeline + context ─────────────────────────────────────────── */}
       <div className="mt-10 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-start">
-        <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+        <section className="overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)]">
           <header className="border-b border-[var(--line)] px-6 py-3">
-            <h2 className="font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--ink-3)]">
+            <h2 className="text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--ink-3)]">
               Causal chain
             </h2>
           </header>
@@ -116,7 +116,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
 
         <div className="space-y-4">
           {incident.rule ? (
-            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-6">
               <Eyebrow>Rule {incident.ruleId}</Eyebrow>
               <h2 className="mt-3 text-[1.0625rem] font-medium tracking-[-0.01em]">
                 {incident.rule.title}
@@ -140,7 +140,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
             </div>
           ) : null}
 
-          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+          <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-6">
             <Eyebrow>Scope</Eyebrow>
             <h2 className="mt-3 text-[1.0625rem] font-medium tracking-[-0.01em]">
               What this does not cover
@@ -157,7 +157,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ id: s
 
           <Link
             href={`/vaults/${incident.vault}`}
-            className="flex items-center justify-between rounded-[var(--radius)] border border-[var(--line)] bg-white px-6 py-4 text-[14px] font-medium transition-colors hover:bg-[var(--bg-subtle)]"
+            className="flex items-center justify-between rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] px-6 py-4 text-[14px] font-medium transition-colors hover:bg-[var(--bg-subtle)]"
           >
             Open the vault cockpit
             <span aria-hidden>&rarr;</span>

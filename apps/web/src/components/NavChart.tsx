@@ -128,7 +128,7 @@ export function NavChart({ series, height = 280 }: { series: NavSeries; height?:
                 y={p.pps}
                 r={5}
                 fill="var(--ink)"
-                stroke="white"
+                stroke="var(--bg)"
                 strokeWidth={1.5}
               />
             );
@@ -142,7 +142,7 @@ export function NavChart({ series, height = 280 }: { series: NavSeries; height?:
                 y={p.pps}
                 r={5}
                 fill="var(--loss)"
-                stroke="white"
+                stroke="var(--bg)"
                 strokeWidth={1.5}
               />
             );
@@ -150,8 +150,10 @@ export function NavChart({ series, height = 280 }: { series: NavSeries; height?:
 
           <Tooltip
             contentStyle={{
+              background: 'var(--surface-2)',
+              color: 'var(--ink)',
               borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--line)',
+              border: '1px solid var(--line-strong)',
               fontSize: 12,
               fontFamily: 'var(--font-mono)',
             }}

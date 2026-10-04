@@ -1,4 +1,5 @@
 import { Chip, Eyebrow, HairlineCell, HairlineGrid, SectionHeading } from '@velanos/ui';
+import { LifecycleDiagram } from '@/components/LifecycleDiagram';
 import { CHAIN_LABELS, api, explorerAddressUrl } from '@/lib/api';
 import { ExternalLink } from 'lucide-react';
 
@@ -101,7 +102,7 @@ export default async function DocsPage() {
               {BAND_COPY[band].explain}
             </p>
 
-            <div className="mt-5 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-white">
+            <div className="mt-5 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)]">
               <table className="w-full text-sm">
                 <tbody>
                   {RULES.filter((r) => r.band === band).map((rule) => (
@@ -111,7 +112,7 @@ export default async function DocsPage() {
                       </td>
                       <td className="px-2 py-4 align-top">
                         <p className="text-[14px] font-medium">{rule.title}</p>
-                        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.06em] text-[var(--ink-3)]">
+                        <p className="mt-1 text-[10px] uppercase tracking-[0.06em] text-[var(--ink-3)]">
                           {rule.code}
                         </p>
                         <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-[var(--ink-3)]">
@@ -133,10 +134,22 @@ export default async function DocsPage() {
       </section>
 
       {/* ── deployments ────────────────────────────────────────────────── */}
+      <section id="lifecycle" className="mt-20 scroll-mt-24">
+        <SectionHeading
+          eyebrow="Lifecycle"
+          index="02"
+          title="Follow one intent to every possible ending"
+          sub="The full path from bond to outcome, including where a typical guardrail stops and Velanos keeps going."
+        />
+        <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--surface)] p-6 sm:p-8">
+          <LifecycleDiagram />
+        </div>
+      </section>
+
       <section id="contracts" className="mt-20 scroll-mt-24">
         <SectionHeading
           eyebrow="Deployments"
-          index="02"
+          index="03"
           title="Deployed contracts"
           sub="Read from the deployment files the deploy scripts write. There is no address literal anywhere else in the codebase."
         />
@@ -147,7 +160,7 @@ export default async function DocsPage() {
             .map((chain) => (
               <div
                 key={chain.chainId}
-                className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6"
+                className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-6"
               >
                 <div className="flex items-center justify-between">
                   <h3 className="text-[15px] font-medium">
@@ -198,7 +211,7 @@ export default async function DocsPage() {
               </div>
             ))}
           {(status?.chains ?? []).every((c) => !c.deployed) ? (
-            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-6">
+            <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-6">
               <p className="text-[14px] text-[var(--ink-3)]">
                 Nothing deployed yet. Run <code className="font-mono">pnpm contracts:deploy:rh</code>.
               </p>
@@ -211,11 +224,11 @@ export default async function DocsPage() {
       <section id="limitations" className="mt-20 scroll-mt-24">
         <SectionHeading
           eyebrow="Limitations"
-          index="03"
+          index="04"
           title="Known limitations"
           sub="Stated plainly, because a loss floor is only worth something if its edges are known."
         />
-        <div className="rounded-[var(--radius)] border border-[var(--line)] bg-white p-7">
+        <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-7">
           <ul className="space-y-2.5 text-[13px] leading-relaxed text-[var(--ink-2)]">
             <li>
               <strong className="font-medium">Payouts are capped by the bond.</strong> If a drawdown

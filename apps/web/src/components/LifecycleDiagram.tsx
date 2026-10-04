@@ -135,7 +135,7 @@ export function LifecycleDiagram() {
       <SetupRail />
 
       <div>
-        <p className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
+        <p className="mb-4 text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
           The rulebook returns one of three verdicts
         </p>
         <div className="overflow-hidden rounded-[var(--radius)] border border-[var(--line-on-black)]">
@@ -146,7 +146,7 @@ export function LifecycleDiagram() {
       </div>
 
       <div>
-        <p className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
+        <p className="mb-4 text-[11px] font-medium uppercase tracking-[var(--track-label)] text-[var(--on-black-2)]">
           Separately — an honest agent caught by the market
         </p>
         <div className="overflow-hidden rounded-[var(--radius)] border border-[var(--line-on-black)]">
@@ -203,7 +203,7 @@ function Lane({ lane, first }: { lane: LaneSpec; first?: boolean }) {
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
           <span
-            className="rounded-[var(--radius-sm)] border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.08em]"
+            className="rounded-[var(--radius-sm)] border px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em]"
             style={{ borderColor: tone.border, color: tone.text }}
           >
             {lane.code}
@@ -214,7 +214,7 @@ function Lane({ lane, first }: { lane: LaneSpec; first?: boolean }) {
           <span className="font-mono text-[11px] text-[var(--on-black-2)]">{lane.example}</span>
         </div>
 
-        <div className="flex items-baseline gap-2 font-mono text-[11px] uppercase tracking-[0.08em]">
+        <div className="flex items-baseline gap-2 text-[11px] uppercase tracking-[0.08em]">
           <span className="text-[var(--on-black-2)]">{lane.outcome.label}</span>
           <span style={{ color: tone.text }}>{lane.outcome.value}</span>
         </div>
@@ -294,7 +294,7 @@ function GuardrailMarker() {
         className="hidden h-5 border-l border-dashed border-white/40 lg:block"
         aria-hidden
       />
-      <span className="whitespace-nowrap rounded-[var(--radius-sm)] border border-dashed border-white/40 px-2 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.1em] text-white/70">
+      <span className="whitespace-nowrap rounded-[var(--radius-sm)] border border-dashed border-white/40 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.1em] text-white/70">
         Guardrails stop here
       </span>
       <span
