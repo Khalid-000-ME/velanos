@@ -66,6 +66,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-3 text-[13px] text-[var(--ink-3)]">
             Live on
+            <BrandLogo logo="ROBINHOOD" size={24} />
             <BrandLogo logo="ARBITRUM" size={24} />
           </div>
         </div>

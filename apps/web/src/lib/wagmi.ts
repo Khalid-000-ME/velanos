@@ -2,6 +2,7 @@
 
 import { createConfig, http } from 'wagmi';
 import { arbitrumSepolia } from 'wagmi/chains';
+import { defineChain } from 'viem';
 import { injected } from 'wagmi/connectors';
 
 /**
@@ -11,10 +12,22 @@ import { injected } from 'wagmi/connectors';
  * RainbowKit: RainbowKit still pins wagmi 2, and the look here is a bespoke brokerage theme that
  * would have been overridden wholesale anyway. The whole surface is one small component.
  */
+export const robinhoodTestnet = defineChain({
+  id: 46630,
+  name: 'Robinhood Chain Testnet',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: { default: { http: ['https://rpc.testnet.chain.robinhood.com'] } },
+  blockExplorers: {
+    default: { name: 'Robinhood Chain Explorer', url: 'https://explorer.testnet.chain.robinhood.com' },
+  },
+  testnet: true,
+});
+
 export const wagmiConfig = createConfig({
-  chains: [arbitrumSepolia],
+  chains: [robinhoodTestnet, arbitrumSepolia],
   connectors: [injected()],
   transports: {
+    [robinhoodTestnet.id]: http(),
     [arbitrumSepolia.id]: http(),
   },
   ssr: true,
