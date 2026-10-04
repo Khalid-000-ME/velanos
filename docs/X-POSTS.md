@@ -20,7 +20,7 @@ Single-line posts. Post them in roughly this order; each stands alone.
 11. A real agent signed a trade it shouldn't have. 10 USDG left its bond and reached depositors. Tx: <arbiscan link>
 12. Settled in Paxos USDG. Priced by Chainlink. Verified on Arbiscan.
 13. 154 Foundry tests. One vault. Real USDG. Zero mocks on-chain.
-14. Our agent just tried to buy USDC off a poisoned headline. It cost the agent its bond, not you.
+14. A poisoned headline told our test agent to buy USDC. It signed. The trade never executed, and the bond still paid depositors.
 
 ## Builders
 15. Plug any agent into a Velanos vault over MCP. Four tools, one config file.
