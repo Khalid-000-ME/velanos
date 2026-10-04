@@ -638,16 +638,24 @@ export class Indexer {
     }
   }
 
+  /**
+   * Values each holding in the settlement asset, the same way the vault's own NAV does: the oracle
+   * price is 8-decimal USD and the settlement asset is pinned at $1, so the amount converts straight
+   * through. Exposure is that value against NAV, which is what the per-asset cap is measured on — it
+   * used to be written as a hard zero, so the cockpit's exposure bar was always empty.
+   */
   private async refreshPositions(chainId: number, vault: Address, _state: number): Promise<void> {
     const client = publicClientFor(chainId);
     const symbols = symbolIndex(chainId);
 
     try {
-      const held = (await client.readContract({
-        address: vault,
-        abi: velanosVaultAbi,
-        functionName: 'heldAssetsList',
-      })) as readonly Address[];
+      const oracle = contractOf(readDeployment(chainId)!, 'VelanosPriceOracle');
+      const [held, nav, settlementDecimals] = await Promise.all([
+        client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'heldAssetsList' }) as Promise<readonly Address[]>,
+        client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'navSettlement' }) as Promise<bigint>,
+        client.readContract({ address: vault, abi: velanosVaultAbi, functionName: 'decimals' }) as Promise<number>,
+      ]);
+
       for (const asset of held) {
         const amount = (await client.readContract({
           address: asset,
@@ -657,6 +665,24 @@ export class Indexer {
         })) as bigint;
 
         const meta = symbols[asset.toLowerCase()];
+        let valueSettlement = 0n;
+        if (amount > 0n && meta) {
+          try {
+            const [priceUsd8] = (await client.readContract({
+              address: oracle,
+              abi: velanosPriceOracleAbi,
+              functionName: 'price',
+              args: [asset],
+            })) as readonly [bigint, bigint];
+            valueSettlement =
+              (amount * priceUsd8 * 10n ** BigInt(settlementDecimals)) /
+              (10n ** BigInt(meta.decimals) * 100_000_000n);
+          } catch {
+            /* an asset the oracle does not price yet values at zero rather than failing the sweep */
+          }
+        }
+        const exposureBps = nav > 0n ? Number((valueSettlement * 10_000n) / nav) : 0;
+
         await db
           .insert(schema.positions)
           .values({
@@ -665,13 +691,18 @@ export class Indexer {
             asset,
             symbol: meta?.symbol ?? '',
             amount: amount.toString(),
-            valueSettlement: '0',
-            exposureBps: 0,
+            valueSettlement: valueSettlement.toString(),
+            exposureBps,
             updatedAt: now(),
           })
           .onConflictDoUpdate({
             target: [schema.positions.chainId, schema.positions.vault, schema.positions.asset],
-            set: { amount: amount.toString(), updatedAt: now() },
+            set: {
+              amount: amount.toString(),
+              valueSettlement: valueSettlement.toString(),
+              exposureBps,
+              updatedAt: now(),
+            },
           });
       }
     } catch {
