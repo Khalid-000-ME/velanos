@@ -5,7 +5,35 @@
  * stays fast on a conference network. Writes go through the wallet, not through here — the server
  * has no authority over a vault and this module is not a way to get any.
  */
-const BASE = process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:4000';
+/**
+ * Where the indexer API lives, as seen from this app's server.
+ *
+ * `VELANOS_API_URL` is read per request, so a tunnel URL can be changed in the host's settings without
+ * rebuilding the client bundle. `NEXT_PUBLIC_SERVER_URL` stays supported for local work.
+ */
+export function apiBase(): string {
+  return (
+    process.env.VELANOS_API_URL ?? process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:4000'
+  ).replace(/\/$/, '');
+}
+
+/** ngrok answers a browser-looking request with an interstitial unless this header is present. */
+export function apiHeaders(): Record<string, string> {
+  return { 'ngrok-skip-browser-warning': 'true', 'user-agent': 'velanos-web' };
+}
+
+/** The agent harness, which the operator console asks for its status. */
+export function agentBase(): string {
+  return (process.env.VELANOS_AGENT_URL ?? 'http://localhost:4100').replace(/\/$/, '');
+}
+
+/**
+ * What the browser calls. Always this app's own origin: the proxy behind it reaches the API, so a
+ * tunnelled backend needs no CORS and never shows its interstitial to an EventSource.
+ */
+export const browserApi = '/api/velanos';
+
+const BASE = apiBase();
 
 export const serverUrl = BASE;
 
@@ -264,7 +292,8 @@ export interface NavSeries {
  */
 async function get<T>(path: string, revalidate = 0): Promise<T | null> {
   try {
-    const res = await fetch(`${BASE}${path}`, {
+    const res = await fetch(`${apiBase()}${path}`, {
+      headers: apiHeaders(),
       // Chain state is live; a cached NAV is a wrong NAV.
       next: revalidate > 0 ? { revalidate } : undefined,
       cache: revalidate > 0 ? undefined : 'no-store',

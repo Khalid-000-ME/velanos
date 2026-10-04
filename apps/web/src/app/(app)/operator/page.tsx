@@ -1,13 +1,13 @@
 import { EmptyState, Eyebrow } from '@velanos/ui';
 import { OperatorConsole } from '@/components/OperatorConsole';
-import { api, serverUrl } from '@/lib/api';
+import { agentBase, api, apiHeaders } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
 /** The agent service publishes its own profile list, so the console never duplicates the definitions. */
 async function agentProfiles() {
   try {
-    const res = await fetch(`${serverUrl.replace('4000', '4100')}/status`, { cache: 'no-store' });
+    const res = await fetch(`${agentBase()}/status`, { headers: apiHeaders(), cache: 'no-store' });
     if (!res.ok) return [];
     const data = (await res.json()) as {
       profiles: Array<{

@@ -1,5 +1,8 @@
 # Deploying Velanos on velanos.xyz
 
+> **Demoing today?** The web app is already on Vercel and the back end runs on your laptop behind a
+> tunnel. That path is [`VERCEL-TUNNEL.md`](VERCEL-TUNNEL.md) — this file is the full hosted setup.
+
 The contracts are already live on Robinhood Chain testnet and Arbitrum Sepolia. What remains is hosting three things: the web app,
 the API (relay + indexer), and two small workers.
 

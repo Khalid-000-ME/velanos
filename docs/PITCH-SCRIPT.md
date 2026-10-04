@@ -1,44 +1,55 @@
-# Pitch script — 4 minutes
+# Pitch script — 3 minutes 40
 
-Deck: https://claude.ai/artifact/1VyjPQq2d6jQf7RUk2kYv7 (private until you share it). Speaker notes are also in the deck.
+Deck: https://claude.ai/artifact/1VyjPQq2d6jQf7RUk2kYv7 (private until you share it).
 
-About 4:00 at a steady pace. If you are running long, drop slide 8 (the table) and say its one line in the close.
+**How to deliver it.** Short sentences. Stop at the full stops — the pauses are doing the work. Three lines
+are the ones that have to land, so slow down and let each one sit:
 
-## 1. Cover  ~15s
+- *"A score is a number. It doesn't pay you back."*
+- *"Nothing executed, and the agent still paid."*
+- *"We punish misconduct. We don't punish volatility."*
 
-Agents can trade around the clock. Nobody hands one a wallet — and the reason isn't capability. It's recourse. If it goes wrong, who pays? Velanos answers that: trading agents post a bond, and rule-breakers pay you. Our one-line pitch: a blocked trade still pays.
-
-## 2. Problem  ~30s
-
-Agents can trade around the clock, read every filing, never sleep. And still nobody hands one a wallet. The reason isn't capability, it's recourse. Today you get two options. Give the agent authority: one prompt injection and the money is gone. Or wrap it in guardrails: bad actions get blocked, but blocking costs the agent nothing, and the one time your rules have a gap, you eat the loss alone. A reputation score doesn't fix that. A score repays nobody.
-
-## 3. Idea  ~30s
-
-Velanos makes the agent financially liable, automatically. Three words. Prevent: every action is a signed intent, checked on-chain against an immutable mandate, and the vault can never make an arbitrary call. Prove: a blocked intent still carries the agent's signature, and that's cryptographic evidence anyone can verify. Pay: that evidence slashes the agent's own bond to depositors in the same transaction. The bond is in the same asset you deposited, so a payout needs no oracle and no claims committee.
-
-## 4. Flow  ~35s
-
-Here's one trade. The agent signs an intent. PolicyGuard runs fourteen checks on-chain against the mandate. If everything passes, it executes, through an allowlisted adapter, for an exact amount, nothing else. If a static rule fails, the trade is refused, it never executes, and that's where every guardrail stops. We don't. The agent's signature is published. Anyone can report it, and the court slashes the bond in the same transaction: ninety percent to depositors, ten percent to whoever reported it. A blocked trade still pays.
-
-## 5. Fair  ~30s
-
-A bond is only credible if it's fair. So we split rules by who's to blame. Misconduct: the agent signed something it could have checked against its own mandate, so it's slashed. Bad luck: a live limit, like price, exposure or daily loss, made the trade unsafe. The trade is rejected, and the bond is untouched. Market risk: no rule was broken, the market simply fell eight percent below the peak. The breaker trips, the vault unwinds, and the bond tops depositors back up to the floor. We punish misconduct, not volatility.
-
-## 6. Proof  ~40s
-
-We didn't mock this. It's live on Robinhood Chain and Arbitrum Sepolia: Paxos USDG, and the real tokenised stocks from the Robinhood faucet. A model on Groq, acting as our agent, signed a trade for Palantir, which its mandate forbids. The relay refused it, so nothing executed. But the signature went public, a watcher reported it, and the bond paid: fifty USDG down to forty. Ten slashed, nine to depositors, one to the reporter. That's a real transaction you can open on the block explorer right now. And the contracts are backed by a hundred and fifty-four Foundry tests.
-
-## 7. Mcp  ~25s
-
-Any agent can plug in over MCP. Four tools. The one that matters is preflight_intent: it runs the exact fourteen checks the contract will run and tells the agent the verdict before it signs. An agent that pre-flights can never be slashed for a rule it could see. We'll show it live in a second, with Claude Code attached to the real vault.
-
-## 8. Different  ~20s
-
-Why this isn't another guardrail. Guardrails block. Reputation describes. Velanos is the only one where the agent pays for misconduct out of its own bond, depositors are paid automatically in the same transaction, the evidence is a signature anyone can verify, and it separates misconduct from bad luck, so honest agents aren't punished for volatility.
-
-## 9. Close  ~15s
-
-Velanos: bonded capital vaults for autonomous trading agents. Live on Robinhood Chain and Arbitrum Sepolia, real USDG, real tokenised stocks, and an MCP server any agent can plug into today. No agent should manage your money without staking its own. Thank you. Now let me show you Claude Code attached to a live vault.
+Don't read the slides out. The slide holds the number; you tell the story around it.
+If you are running long, cut slide 8 and say its one line on the way into the close.
 
 ---
-Total ≈ 653 words.
+
+## 0:00 · Cover
+
+Agents can trade twenty-four hours a day. Nobody gives one a wallet. Not because they can't trade — because when it goes wrong, nobody pays. That's what we fixed. The agent posts a bond. Break a rule, and that bond pays you.
+
+## 0:12 · The problem
+
+Right now you get two choices. Hand the agent your keys — one prompt injection and it's gone. Or wrap it in guardrails. Guardrails block the bad trade. Fine. But blocking costs the agent nothing, so it has no reason to get better. And the day your rules have a gap, you eat the loss alone. People say: use reputation scores. A score is a number. It doesn't pay you back.
+
+## 0:42 · The idea
+
+So we made the agent liable. Three words. Prevent — every trade is signed and checked on-chain against rules it cannot change. Prove — we block it, but we keep the signature, and that signature is proof it tried. Pay — anyone submits that proof and the bond moves to depositors. Same transaction. No claim form, no committee.
+
+## 1:10 · How it works
+
+Here's one trade. The agent signs. Fourteen checks run on-chain. Pass, it executes. Fail — and this is the part nobody else does — we refuse the trade, but we publish the signature. Anyone can pick that up and get paid to report it. The bond moves. Nothing executed, and the agent still paid. That's the whole pitch. A blocked trade still pays.
+
+## 1:42 · Why it is fair
+
+A bond only works if it's fair. So we split the rules three ways. Broke a rule it could have checked itself? Slashed. Got caught by a live limit — the price moved, it hit an exposure cap? Rejected, bond untouched. Market just fell through the floor? The breaker trips and the bond tops depositors back up. We punish misconduct. We don't punish volatility.
+
+## 2:10 · Proof
+
+This is live. Robinhood Chain and Arbitrum. Real Paxos USDG, real tokenised Tesla, Amazon and AMD. We poisoned the news feed. The model read it and signed a trade for Palantir — not in its mandate. The relay refused. Nothing executed. A watcher reported the signature, and the bond went from fifty to forty. Nine USDG to depositors, one to whoever reported it. That transaction is on the explorer right now. Go open it.
+
+## 2:42 · For builders
+
+Any agent plugs in. Four tools over MCP. The one that matters is pre-flight — it runs the same fourteen checks before the agent signs. Check first, and you can never be slashed for a rule you could see. I'll show you that live with Claude Code in a second.
+
+## 3:04 · Why we win
+
+Guardrails block. Reputation describes. We're the only one where the agent actually pays, the depositor gets paid automatically in the same transaction, and the evidence is a signature anyone can verify.
+
+## 3:22 · Close
+
+No agent should manage your money without staking its own. Velanos. Live on two chains, real money, and any agent can plug in today. Thank you — let me show you the live demo.
+
+---
+
+≈ 487 words. At a steady pace with real pauses that is about 3:40, leaving time for the live demo.

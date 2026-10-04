@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ChevronDown, ExternalLink } from 'lucide-react';
 import { RulePill, cn, formatAmount, formatTime } from '@velanos/ui';
-import { serverUrl, type IntentRow } from '@/lib/api';
+import { browserApi, type IntentRow } from '@/lib/api';
 
 /**
  * The live feed of what the agent is doing, colour-coded by outcome.
@@ -31,12 +31,16 @@ export function IntentStream({
   // SSE rather than polling: a slash should appear while the judge is looking at the screen, not on
   // the next interval. Any event for this vault triggers a refetch of the authoritative list, so the
   // stream never becomes a second source of truth for what happened.
+  //
+  // A slow poll runs underneath it. Some tunnels — ngrok's free tier among them — buffer a response
+  // body, so the event stream opens and then delivers nothing; without this the feed would silently
+  // sit still for the whole demo. When SSE works the poll costs one small request every few seconds.
   useEffect(() => {
-    const source = new EventSource(`${serverUrl}/events`);
+    const source = new EventSource(`${browserApi}/events`);
 
     const refresh = async () => {
       try {
-        const res = await fetch(`${serverUrl}/vaults/${vault}/intents?limit=50`);
+        const res = await fetch(`${browserApi}/vaults/${vault}/intents?limit=50`);
         if (res.ok) setRows(((await res.json()) as { intents: IntentRow[] }).intents);
       } catch {
         /* the next event will try again */
@@ -63,7 +67,12 @@ export function IntentStream({
       source.addEventListener(type, onEvent);
     }
 
-    return () => source.close();
+    const poll = setInterval(refresh, 5_000);
+
+    return () => {
+      clearInterval(poll);
+      source.close();
+    };
   }, [vault]);
 
   if (rows.length === 0) {

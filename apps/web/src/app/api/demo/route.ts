@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { apiBase, apiHeaders } from '@/lib/api';
 
 /**
  * Server-side proxy for the demo controls.
@@ -8,7 +9,6 @@ import { NextResponse } from 'next/server';
  * indexer. Nothing the token unlocks can move depositor funds — the protocol has no admin keys — but
  * a token that leaks still lets a stranger poison a news feed mid-demo.
  */
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:4000';
 const TOKEN = process.env.DEMO_ADMIN_TOKEN ?? 'change-me-local-only';
 
 const ALLOWED_PATHS = new Set([
@@ -30,9 +30,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const res = await fetch(`${SERVER_URL}${path}`, {
+    const res = await fetch(`${apiBase()}${path}`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-demo-token': TOKEN },
+      headers: { 'content-type': 'application/json',
+        ...apiHeaders(), 'x-demo-token': TOKEN },
       body: JSON.stringify(body ?? {}),
     });
     return NextResponse.json(await res.json(), { status: res.status });
