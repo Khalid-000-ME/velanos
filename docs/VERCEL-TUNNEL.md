@@ -1,4 +1,7 @@
-# Running the live app: Vercel in front, your laptop behind
+# Running the live app from your laptop, behind a tunnel
+
+> This is the fallback for when the back end is not hosted. The free hosted setup is in
+> [`DEPLOYMENT.md`](DEPLOYMENT.md) and does not need your laptop running.
 
 The web app is on Vercel at **velanos.xyz**. The indexer, relay, agent and watcher stay on your machine
 and are exposed through ngrok. The browser never talks to ngrok directly — the Next app proxies every
