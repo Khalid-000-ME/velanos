@@ -18,6 +18,13 @@ import { asWalletChain } from '@/lib/wagmi';
  * The faucet is here too, because a judge should be able to fund a vault themselves rather than
  * taking our word for the numbers.
  */
+const FAUCETS: Record<number, { url: string; note: string }> = {
+  46630: {
+    url: 'https://faucet.testnet.chain.robinhood.com',
+    note: "Robinhood Chain's faucet hands out USDG and the stock tokens.",
+  },
+};
+
 export function DepositPanel({
   vault,
   chainId: rawChainId,
@@ -241,30 +248,23 @@ export function DepositPanel({
       </div>
 
       {/* ── faucet ───────────────────────────────────────────────────── */}
-      <div className="mt-5 border-t border-[var(--line)] pt-4">
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-[12px] leading-snug text-[var(--ink-3)]">
-            Need test {settlementSymbol}? The faucet gives 10,000 per address per day.
-          </p>
-          <Button
-            variant="tertiary"
-            className="shrink-0 px-0 text-xs"
-            disabled={!isConnected || wrongChain}
-            onClick={() =>
-              run('Faucet', () =>
-                writeContractAsync({
-                  address: settlementAsset as `0x${string}`,
-                  abi: mockUsdgAbi,
-                  functionName: 'faucet',
-                  chainId,
-                }),
-              )
-            }
-          >
-            Get test {settlementSymbol}
-          </Button>
+      {FAUCETS[chainId] ? (
+        <div className="mt-5 border-t border-[var(--line)] pt-4">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[12px] leading-snug text-[var(--ink-3)]">
+              Need {settlementSymbol}? {FAUCETS[chainId]!.note}
+            </p>
+            <a
+              href={FAUCETS[chainId]!.url}
+              target="_blank"
+              rel="noreferrer"
+              className="shrink-0 text-xs font-medium text-[var(--ink-2)] underline underline-offset-2 transition-colors hover:text-[var(--ink)]"
+            >
+              Open the faucet
+            </a>
+          </div>
         </div>
-      </div>
+      ) : null}
     </Card>
   );
 }
