@@ -134,7 +134,9 @@ export async function relayRoutes(app: FastifyInstance): Promise<void> {
       .insert(schema.intents)
       .values({
         chainId,
-        vault: intent.vault,
+        // Lower-cased to match the indexer's rows. Stored checksummed, the unique (chain, vault, nonce)
+        // index treats the same intent as two, and every relayed trade showed up twice.
+        vault: intent.vault.toLowerCase(),
         nonce: intent.nonce.toString(),
         status: 'executed',
         route: 'relay',
