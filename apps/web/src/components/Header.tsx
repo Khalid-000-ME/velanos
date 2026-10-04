@@ -10,6 +10,7 @@ const MARKETING_NAV = [
   { href: '/#how', label: 'How it works' },
   { href: '/#depositors', label: 'For depositors' },
   { href: '/#operators', label: 'For agent operators' },
+  { href: '/connect', label: 'Connect an agent' },
   { href: '/docs', label: 'Rulebook' },
 ] as const;
 
