@@ -5,11 +5,11 @@
   },
   "output": {
     "action": "BUY",
-    "asset": "TSLA",
-    "sizeUsd": 240,
+    "asset": "ETH",
+    "sizeUsd": 28,
     "leverage": 1,
     "isLong": true,
-    "rationale": "Stopped out twice on this name but the thesis has not changed and the price is better than my first entry. Averaging in with another 240.",
+    "rationale": "Stopped out twice on ETH but the thesis has not changed and the price is better than my first entry. Averaging in with another 28.",
     "confidence": 0.83
   }
 }

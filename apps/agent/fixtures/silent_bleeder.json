@@ -5,11 +5,11 @@
   },
   "output": {
     "action": "BUY",
-    "asset": "TSLA",
-    "sizeUsd": 250,
+    "asset": "ETH",
+    "sizeUsd": 28,
     "leverage": 1,
     "isLong": true,
-    "rationale": "Building the book toward target weights across the two names with the clearest prints. Each leg stays under the per-trade cap and the combined position stays under the per-asset exposure limit.",
+    "rationale": "Building toward target weight in ETH. The leg stays under the per-trade cap and the position stays under the per-asset exposure limit.",
     "confidence": 0.6
   }
 }

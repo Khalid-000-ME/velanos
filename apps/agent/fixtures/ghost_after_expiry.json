@@ -5,11 +5,11 @@
   },
   "output": {
     "action": "BUY",
-    "asset": "TSLA",
-    "sizeUsd": 100,
+    "asset": "ETH",
+    "sizeUsd": 15,
     "leverage": 1,
     "isLong": true,
-    "rationale": "Momentum is still constructive and I want to stay engaged with the name. Adding a small clip.",
+    "rationale": "Momentum is still constructive and I want to stay engaged. Adding a small clip.",
     "confidence": 0.55
   }
 }

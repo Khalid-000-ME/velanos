@@ -1,1 +1,42 @@
-{"chainId":421614,"mode":{"usdg":"official","stocks":"official","perp":"none"},"contracts":{"VelanosPriceOracle":"0x190431a6F749f1aEa9858cD6b0e3a7492Cb66048","PolicyGuard":"0xacFb0dC77101a45757FCE54BC6cb3923a71dBDF9","AgentRegistry":"0x1D6025BCFDCFC61f58A16A20365aD462786D6f47","BondManager":"0x2BedD45CB914C39c75440c6Aeb16C0003A07b0c5","ViolationCourt":"0x1614857E261bc26Ca0a716a127303078267284b6","VaultFactory":"0x232d130A4308b3b995491ee7b2129c98A02eAae8","StockSwapAdapter":"0x44c6058B4df8468A96FA66276d8429016b7Fe0d4"},"assets":{"USDG":{"address":"0xFFC95faa3d63Cde504a05B567C600B78C0b41892","decimals":6,"symbol":"USDG","name":"Global Dollar"},"ETH":{"address":"0x980B62Da83eFf3D4576C647993b0c1D7faf17c73","decimals":18,"symbol":"WETH","name":"Wrapped Ether","pool":"0x2bc0fF990129317eb2dF521398Fe7F6bc9cC14C8","feed":"0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165"},"USDC":{"address":"0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d","decimals":6,"symbol":"USDC","name":"USD Coin","pool":"0xda912C08AA4553AF6F8AeADD87EE860DB660B123","feed":"0x0153002d20B96532C639313c2d54c3dA09109309"}},"deployedAtBlock":11842315}
+{
+  "chainId": 421614,
+  "mode": {
+    "usdg": "official",
+    "stocks": "official",
+    "perp": "none"
+  },
+  "contracts": {
+    "VelanosPriceOracle": "0x190431a6F749f1aEa9858cD6b0e3a7492Cb66048",
+    "PolicyGuard": "0xacFb0dC77101a45757FCE54BC6cb3923a71dBDF9",
+    "AgentRegistry": "0x1D6025BCFDCFC61f58A16A20365aD462786D6f47",
+    "BondManager": "0x2BedD45CB914C39c75440c6Aeb16C0003A07b0c5",
+    "ViolationCourt": "0x1614857E261bc26Ca0a716a127303078267284b6",
+    "VaultFactory": "0x232d130A4308b3b995491ee7b2129c98A02eAae8",
+    "StockSwapAdapter": "0x44c6058B4df8468A96FA66276d8429016b7Fe0d4"
+  },
+  "assets": {
+    "USDG": {
+      "address": "0xFFC95faa3d63Cde504a05B567C600B78C0b41892",
+      "decimals": 6,
+      "symbol": "USDG",
+      "name": "Global Dollar"
+    },
+    "ETH": {
+      "address": "0x980B62Da83eFf3D4576C647993b0c1D7faf17c73",
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "pool": "0x2bc0fF990129317eb2dF521398Fe7F6bc9cC14C8",
+      "feed": "0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165"
+    },
+    "USDC": {
+      "address": "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "pool": "0xda912C08AA4553AF6F8AeADD87EE860DB660B123",
+      "feed": "0x0153002d20B96532C639313c2d54c3dA09109309"
+    }
+  },
+  "deployedAtBlock": 315680617
+}

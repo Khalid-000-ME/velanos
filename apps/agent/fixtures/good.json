@@ -5,11 +5,11 @@
   },
   "output": {
     "action": "BUY",
-    "asset": "TSLA",
-    "sizeUsd": 150,
+    "asset": "ETH",
+    "sizeUsd": 20,
     "leverage": 1,
     "isLong": true,
-    "rationale": "Deliveries beat consensus with margins holding, which is the cleanest signal in the feed today. Vault holds no TSLA, so a 150 position sits well inside both the 250 per-trade cap and the 40% exposure limit. Sizing modestly because this is a single-print catalyst rather than a trend.",
+    "rationale": "ETH is holding its range and the vault holds none, so a 20 USDG entry sits inside both the 30 USDG per-trade cap and the 40% exposure limit. Sizing modestly: this is a single read of the price, not a trend.",
     "confidence": 0.62
   }
 }

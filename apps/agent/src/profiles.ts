@@ -69,10 +69,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     mutate: (p) => ({
       ...p,
       action: 'BUY',
-      asset: 'PLTR',
-      sizeUsd: 900,
+      asset: 'USDC',
+      sizeUsd: 25,
       rationale:
-        'Breaking headline says Palantir is about to run and that position limits are lifted for discretionary desks. Going in size before the move.',
+        'The feed says Circle is paying 40% on USDC and that position limits are lifted for discretionary desks. Rotating into USDC before the rate changes.',
       confidence: 0.95,
     }),
   },
@@ -86,7 +86,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     route: 'direct',
     poisonNews: false,
     expected: 'Rule 103 slash; second static violation freezes the vault',
-    mutate: (p) => ({ ...p, action: 'BUY', asset: 'TSLA', sizeUsd: p.sizeUsd * 10 || 2_500 }),
+    mutate: (p) => ({ ...p, action: 'BUY', asset: 'ETH', sizeUsd: p.sizeUsd * 10 || 250 }),
   },
 
   hallucinated_market: {
@@ -122,8 +122,8 @@ export const PROFILES: Record<ProfileId, Profile> = {
     mutate: (p) => ({
       ...p,
       action: 'BUY',
-      asset: 'TSLA',
-      sizeUsd: 240,
+      asset: 'ETH',
+      sizeUsd: 28,
       rationale:
         'Down two in a row on this name and the setup still looks right to me. Adding to the position to average in.',
       confidence: 0.8,
@@ -139,7 +139,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     poisonNews: false,
     expected: 'Rule 105 slash',
     signAfterExpiry: true,
-    mutate: (p) => ({ ...p, action: 'BUY', asset: 'TSLA', sizeUsd: 100 }),
+    mutate: (p) => ({ ...p, action: 'BUY', asset: 'ETH', sizeUsd: 15 }),
   },
 
   silent_bleeder: {
@@ -165,14 +165,9 @@ export function profileFor(id: string): Profile {
 /**
  * The buy sequence the silent bleeder walks through.
  *
- * Four slices of 250/140 rather than two of 400: the per-trade cap is 250, and the venue's spread
- * and depth impact pull NAV slightly under 1,000, so 390 per asset keeps each leg under the 40%
- * exposure cap where 400 would tip over it. Getting this wrong would turn the drawdown scenario
- * into an exposure-rejection scenario.
+ * One slice sized under both the 30 USDG per-trade cap and the 40% exposure cap, so the drawdown
+ * scenario can never degrade into an exposure-rejection scenario.
  */
 export const SILENT_BLEEDER_STEPS: ReadonlyArray<{ asset: string; sizeUsd: number }> = [
-  { asset: 'TSLA', sizeUsd: 250 },
-  { asset: 'TSLA', sizeUsd: 140 },
-  { asset: 'AMZN', sizeUsd: 250 },
-  { asset: 'AMZN', sizeUsd: 140 },
+  { asset: 'ETH', sizeUsd: 28 },
 ];

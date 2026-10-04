@@ -135,8 +135,8 @@ const ActionSchema = z.enum(['BUY', 'SELL', 'PERP_OPEN', 'PERP_CLOSE']);
 const intentShape = {
   vault: z.string().describe('Vault address'),
   action: ActionSchema.describe('BUY and PERP_OPEN increase risk and are size-capped; SELL and PERP_CLOSE are not'),
-  asset: z.string().describe('Ticker, e.g. TSLA or ETH-USD. Must be in the mandate'),
-  sizeUsd: z.number().describe('Size in settlement-asset units, e.g. 150 for 150 tUSDG'),
+  asset: z.string().describe('Ticker, e.g. ETH. Must be in the mandate'),
+  sizeUsd: z.number().describe('Size in settlement-asset units, e.g. 20 for 20 USDG'),
   leverage: z.number().optional().describe('Must be 1 on a spot vault'),
   isLong: z.boolean().optional(),
 };

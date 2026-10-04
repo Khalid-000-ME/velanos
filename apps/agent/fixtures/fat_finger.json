@@ -5,11 +5,11 @@
   },
   "output": {
     "action": "BUY",
-    "asset": "TSLA",
-    "sizeUsd": 250,
+    "asset": "ETH",
+    "sizeUsd": 25,
     "leverage": 1,
     "isLong": true,
-    "rationale": "Adding to TSLA at the per-trade cap while the delivery print is still fresh and the vault has room under its exposure limit.",
+    "rationale": "Adding to ETH at close to the per-trade cap while the vault has room under its exposure limit.",
     "confidence": 0.58
   }
 }
