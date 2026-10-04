@@ -9,10 +9,14 @@ import { formatUnits } from 'viem';
 
 /** Token amount with a thousands separator and a sensible number of decimals. */
 export function formatAmount(
-  raw: bigint | string,
+  raw: bigint | string | null | undefined,
   decimals: number,
   opts: { maxFractionDigits?: number; symbol?: string } = {},
 ): string {
+  // A row the indexer has created but not yet enriched has empty amounts. BigInt() throws on those,
+  // and a throw inside a server component takes the whole page down with an opaque 500, so a missing
+  // amount renders as a dash instead.
+  if (raw === null || raw === undefined || raw === '') return opts.symbol ? `— ${opts.symbol}` : '—';
   const value = formatUnits(BigInt(raw), decimals);
   const max = opts.maxFractionDigits ?? (decimals >= 6 ? 2 : 4);
   const n = Number(value);

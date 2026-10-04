@@ -19,9 +19,12 @@ export async function StatusBar() {
     );
   }
 
-  const deployed = status.chains.filter((c) => c.deployed);
-  const watcher = status.services.find((s) => s.service === 'watcher');
-  const agent = status.services.find((s) => s.service === 'agent');
+  // Defaulted because this strip renders on every app page: a partial response from the indexer
+  // should leave the bar quiet, not throw and take the whole page down with it.
+  const deployed = (status.chains ?? []).filter((c) => c.deployed);
+  const services = status.services ?? [];
+  const watcher = services.find((s) => s.service === 'watcher');
+  const agent = services.find((s) => s.service === 'agent');
 
   return (
     <Bar>
@@ -46,7 +49,7 @@ export async function StatusBar() {
       <Service label="Agent" live={agent?.live ?? false} />
 
       <Dot />
-      {Object.values(status.modes).map((label) => (
+      {Object.values(status.modes ?? {}).map((label) => (
         <span key={label}>{label}</span>
       ))}
     </Bar>

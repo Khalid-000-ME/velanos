@@ -32,6 +32,26 @@ export default async function VaultCockpit({ params }: { params: Promise<{ addre
 
   if (!vault) notFound();
 
+  // The indexer writes the vault row when it sees VaultCreated, then fills in the mandate, NAV and
+  // symbol on the next sweep. Between those two moments every mandate field is undefined, which is a
+  // window any visitor hits right after a fresh deploy. Say so rather than rendering half a cockpit.
+  if (!vault.mandateEnglish?.length || vault.mandate?.maxAllocation === undefined) {
+    return (
+      <div className="content-width py-10">
+        <Eyebrow>{CHAIN_LABELS[vault.chainId] ?? vault.chainId}</Eyebrow>
+        <h1 className="text-h1 mt-3">{vault.name || 'Vault'}</h1>
+        <p className="mt-4 font-mono text-[13px] text-[var(--ink-3)]">{vault.address}</p>
+        <div className="mt-8 rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--surface)] p-8">
+          <p className="text-[17px] font-semibold">Still reading this vault from the chain.</p>
+          <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-[var(--ink-2)]">
+            The indexer has seen the vault but has not caught up to its mandate and balances yet. This
+            takes under a minute after a restart. Refresh the page.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const dec = vault.settlementDecimals;
   const sym = vault.settlementSymbol;
   const expiry = Number(vault.mandate.expiry);
